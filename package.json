@@ -47,8 +47,8 @@
 	"scripts": {
 		"preinstall": "test -f pkg/ai-client/package.json || echo 'Updating git submodules...' && git submodule update --init --recursive",
 		"build": "esbuild src/tr-coder.js --bundle --outfile=dist/tr-coder.cjs --format=cjs --platform=node --sourcemap --loader:.node=file",
-  "build-container": "docker build -t token-ring/coder:latest -f docker/Dockerfile .",
-  "coder-container": "docker run -ti --net host -v ./:/repo:rw token-ring/coder:latest",
+		"build-container": "docker build -t token-ring/coder:latest -f docker/Dockerfile .",
+		"coder-container": "docker run -ti --net host -v ./:/repo:rw token-ring/coder:latest",
 		"coder": "dotenvx run -q -- node src/tr-coder.js --source ./",
 		"coder-dist": "dotenvx run -q -- node dist/tr-coder.cjs --source ./",
 		"eslint": "eslint --fix ./",

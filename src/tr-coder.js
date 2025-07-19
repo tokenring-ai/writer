@@ -292,10 +292,9 @@ ser, and call any tools needed, based on the best course of action that you have
 		},
 	};
 
- console.log(chalk.greenBright(banner))
+	console.log(chalk.greenBright(banner));
 
-
- // Initialize the chat context with personas
+	// Initialize the chat context with personas
 	const chatService = new ChatService({
 		personas: config.personas || defaultPersonas, // Use loaded config
 		persona: config.defaults?.persona || "code", // Use loaded config
@@ -407,7 +406,6 @@ ser, and call any tools needed, based on the best course of action that you have
 
 	//console.log(info(`TokenRing Coder initialized and ready with ${registry.services.getServices().length} resources and ${resourceRegistry.getAvailableResourceNames().length} resources`));
 }
-
 
 const banner = `
 ████████╗ ██████╗ ██╗  ██╗███████╗███╗   ██╗██████╗ ██╗███╗   ██╗ ██████╗ 
