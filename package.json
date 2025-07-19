@@ -45,6 +45,7 @@
 	"license": "UNLICENSED",
 	"private": true,
 	"scripts": {
+  "preinstall": "test -f pkg/ai-client/package.json || echo 'Updating git submodules...' && git submodule update --init --recursive",
 		"build": "esbuild src/tr-coder.js --bundle --outfile=dist/tr-coder.cjs --format=cjs --platform=node --sourcemap --loader:.node=file",
 		"coder": "dotenvx run -- node src/tr-coder.js --source ./",
 		"coder-dist": "dotenvx run -- node dist/tr-coder.cjs --source ./",
