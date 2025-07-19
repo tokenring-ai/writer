@@ -3,7 +3,7 @@ import { Command } from "commander";
 import fs from "node:fs";
 import path from "path";
 import { initializeConfigDirectory } from "./initializeConfigDirectory.js";
-import { error } from "../prettyString.js";
+import { error } from "./prettyString.js";
 import initializeLocalDatabase from "@token-ring/sqlite-storage/db/intializeLocalDatabase";
 
 import * as HistoryPackage from "@token-ring/history";
@@ -72,6 +72,7 @@ import * as FileIndexPackage from "@token-ring/file-index";
 //import { ConfigurationManagementService } from '@token-ring/config';
 
 import * as models from "@token-ring/ai-client/models";
+import chalk from "chalk";
 
 // Create a new Commander program
 const program = new Command();
@@ -291,7 +292,10 @@ ser, and call any tools needed, based on the best course of action that you have
 		},
 	};
 
-	// Initialize the chat context with personas
+ console.log(chalk.greenBright(banner))
+
+
+ // Initialize the chat context with personas
 	const chatService = new ChatService({
 		personas: config.personas || defaultPersonas, // Use loaded config
 		persona: config.defaults?.persona || "code", // Use loaded config
@@ -403,3 +407,20 @@ ser, and call any tools needed, based on the best course of action that you have
 
 	//console.log(info(`TokenRing Coder initialized and ready with ${registry.services.getServices().length} resources and ${resourceRegistry.getAvailableResourceNames().length} resources`));
 }
+
+
+const banner = `
+████████╗ ██████╗ ██╗  ██╗███████╗███╗   ██╗██████╗ ██╗███╗   ██╗ ██████╗ 
+╚══██╔══╝██╔═══██╗██║ ██╔╝██╔════╝████╗  ██║██╔══██╗██║████╗  ██║██╔════╝ 
+   ██║   ██║   ██║█████╔╝ █████╗  ██╔██╗ ██║██████╔╝██║██╔██╗ ██║██║  ███╗
+   ██║   ██║   ██║██╔═██╗ ██╔══╝  ██║╚██╗██║██╔══██╗██║██║╚██╗██║██║   ██║
+   ██║   ╚██████╔╝██║  ██╗███████╗██║ ╚████║██║  ██║██║██║ ╚████║╚██████╔╝
+   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+                                                                          
+ ██████╗ ██████╗ ██████╗ ███████╗██████╗                                  
+██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔══██╗                                 
+██║     ██║   ██║██║  ██║█████╗  ██████╔╝                                 
+██║     ██║   ██║██║  ██║██╔══╝  ██╔══██╗                                 
+╚██████╗╚██████╔╝██████╔╝███████╗██║  ██║                                 
+ ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝                                 
+`;

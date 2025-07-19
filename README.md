@@ -20,10 +20,10 @@ The Coder app is an interactive developer assistant tool designed to help you wo
 
 ### Prerequisites
 
-- Node.js environment
+- Node.js 22+
 - Git initialized source directory
 
-### Installation
+### Installation (local)
 
 1. **Sync git submodules**: This project uses git submodules that need to be initialized and updated before installation:
    ```bash
@@ -35,13 +35,36 @@ The Coder app is an interactive developer assistant tool designed to help you wo
    npm install
    ```
 
-### Running the Application
+3. **Run the application**: Use NPM to start the application:
+  ```bash
+  node src/tr-coder.js --source ./path-to-your-codebase
+  ```
+### Installation (As local docker container)
 
-Use the CLI entry point `tr-coder`:
+1. **Sync git submodules**: This project uses git submodules that need to be initialized and updated before installation:
+   ```bash
+   git submodule update --init --recursive
+   ```
 
+2. **Build the docker container**: 
+   ```bash
+   docker build -t token-ring/coder:latest -f docker/Dockerfile .
+   ```
+   
+3. **Run the docker container**:
+   ```bash
+   docker run -ti --net host -v ./:/repo:rw token-ring/coder:latest
+   ```
+
+#### Container Registry
+
+The Docker image is automatically built and published to GitHub Container Registry on each push to the main branch. You can pull the latest image with:
+
+```bash
+docker pull ghcr.io/[owner]/tokenring-coder:latest
 ```
-tr-coder --source ./path-to-your-codebase
-```
+
+Replace `[owner]` with the GitHub repository owner.
 
 ### Initialization
 
