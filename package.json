@@ -8,8 +8,6 @@
   "dependencies": {
     "@dotenvx/dotenvx": "^1.44.2",
     "@inquirer/prompts": "^7.5.3",
-    "@rollup/plugin-commonjs": "^28.0.6",
-    "@rollup/plugin-node-resolve": "^16.0.1",
     "@token-ring/ai-client": "0.1.0",
     "@token-ring/aws": "0.1.0",
     "@token-ring/chat": "0.1.0",
@@ -43,36 +41,15 @@
     "@rollup/plugin-json": "^6.1.0"
   },
   "license": "UNLICENSED",
-  "pkg": {
-    "scripts": [
-      "dist/**/*.js"
-    ],
-    "assets": [
-      "../../.env",
-      "../../**/*.md",
-      "../../**/package.json"
-    ],
-    "targets": [
-      "node18-linux",
-      "node18-win",
-      "node18-macos"
-    ],
-    "outputPath": "dist/binaries",
-    "options": [
-      "experimental-require-module"
-    ]
-  },
   "private": true,
   "scripts": {
     "build": "rollup -c",
     "coder": "dotenvx run -- node src/tr-coder.js --source ./",
     "coder-dist": "dotenvx run -f ../../.env -- node dist/tr-coder.js --source ../../",
-    "eslint": "eslint --fix ./",
-    "pkg": "pkg src/tr-coder.js -o tr-coder",
-    "pkg-all": "pkg dist/tr-coder.js -t node18-linux,node18-win,node18-macos -o tr-coder"
+    "eslint": "eslint --fix ./"
   },
   "type": "module",
   "workspaces": [
-   "pkg/*"
+    "pkg/*"
   ]
 }

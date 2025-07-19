@@ -25,7 +25,15 @@ The Coder app is an interactive developer assistant tool designed to help you wo
 
 ### Installation
 
-Ensure dependencies are installed.
+1. **Sync git submodules**: This project uses git submodules that need to be initialized and updated before installation:
+   ```bash
+   git submodule update --init --recursive
+   ```
+
+2. **Install dependencies**: This project uses NPM as the package manager in a monorepo structure:
+   ```bash
+   npm install
+   ```
 
 ### Running the Application
 

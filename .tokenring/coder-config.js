@@ -10,7 +10,7 @@ function getSubdirectories(srcPath) {
 }
 
 function makeFileTreeEntry(pkgRoot, dir, resources ) {
- const name = `fileTree/${pkgRoot}/${dir}`;
+ const name = `fileTree/${dir}`;
  resources[name] = {
   type: "fileTree",
   description: `${pkgRoot}/${dir} File Tree`,
@@ -21,7 +21,7 @@ function makeFileTreeEntry(pkgRoot, dir, resources ) {
 }
 
 function makeRepoMapEntry(pkgRoot, dir, resources ) {
- const name = `repoMap/${pkgRoot}/${dir}`;
+ const name = `repoMap/${dir}`;
  resources[name] = {
   type: "repoMap",
   description: `${pkgRoot}/${dir} Repo Map`,
@@ -31,7 +31,7 @@ function makeRepoMapEntry(pkgRoot, dir, resources ) {
  };
 }
 function makeWholeFileEntry(pkgRoot, dir, resources ) {
-  const name = `wholeFile/${pkgRoot}/${dir}`;
+  const name = `wholeFile/${dir}`;
   resources[name] = {
    type: "wholeFile",
    description: `${pkgRoot}/${dir} Source Files`,
@@ -91,17 +91,18 @@ for (const pkgRoot of packageRoots) {
     makeTestingEntry(pkgRoot, dir, dynamicResources);
   }
 }
+
 export default {
  defaults: {
-  model: "gpt-4.1-nano",
+  model: "gpt-4.1",
   resources: [
-   'fileTree/*',
-   'testing:*'
+   'fileTree*',
+   'testing*'
   ],
   selectedFiles: [
    ".tokenring/guidelines.txt"
   ],
-  persona: 'deep-rag'
+  persona: 'code'
  },
  models: {
   Anthropic: {
@@ -266,6 +267,13 @@ export default {
   {path: "./", include: /.(js|md|jsx|sql|txt)$/}
  ],
  resources: {
-  ...dynamicResources
+  ...dynamicResources,
+  'fileTree/tr-coder': {
+   type: "fileTree",
+   description: `Coder App File Tree`,
+   items: [
+    {path: `./`, include: /\.(txt|js|jsx|md|json)$/, exclude: /\/pkg\//},
+   ],
+  }
  }
 };
