@@ -33,7 +33,9 @@
     "@token-ring/repo-map": "0.1.0",
     "@token-ring/sqlite-storage": "0.1.0",
     "@token-ring/testing": "0.1.0",
-    "@token-ring/workflow": "0.1.0"
+    "@token-ring/workflow": "0.1.0",
+    "husky": "^9.1.7",
+    "trufflehog": "^0.0.5"
   },
   "devDependencies": {
     "@radically-straightforward/package": "^2.0.1",
@@ -47,7 +49,8 @@
     "coder": "dotenvx run -- node src/tr-coder.js --source ./",
     "coder-dist": "dotenvx run -- node dist/tr-coder.cjs --source ./",
     "eslint": "eslint --fix ./",
-    "test": "vitest run tests/build.test.js"
+    "test": "vitest run tests/build.test.js",
+    "prepare": "husky"
   },
   "type": "module",
   "workspaces": [
