@@ -1,0 +1,84 @@
+[submodule "pkg/ai-client"]
+	path = pkg/ai-client
+	url = git@github.com:Token-Ring/ai-client
+[submodule "pkg/aws"]
+	path = pkg/aws
+	url = git@github.com:Token-Ring/aws
+[submodule "pkg/chat"]
+	path = pkg/chat
+	url = git@github.com:Token-Ring/chat
+[submodule "pkg/chrome"]
+	path = pkg/chrome
+	url = git@github.com:Token-Ring/chrome
+[submodule "pkg/cli"]
+	path = pkg/cli
+	url = git@github.com:Token-Ring/cli
+[submodule "pkg/code-watch"]
+	path = pkg/code-watch
+	url = git@github.com:Token-Ring/code-watch
+[submodule "pkg/codebase"]
+	path = pkg/codebase
+	url = git@github.com:Token-Ring/codebase
+[submodule "pkg/database"]
+	path = pkg/database
+	url = git@github.com:Token-Ring/database
+[submodule "pkg/docker"]
+	path = pkg/docker
+	url = git@github.com:Token-Ring/docker
+[submodule "pkg/eslint-config"]
+	path = pkg/eslint-config
+	url = git@github.com:Token-Ring/eslint-config
+[submodule "pkg/feedback"]
+	path = pkg/feedback
+	url = git@github.com:Token-Ring/feedback
+[submodule "pkg/file-index"]
+	path = pkg/file-index
+	url = git@github.com:Token-Ring/file-index
+[submodule "pkg/filesystem"]
+	path = pkg/filesystem
+	url = git@github.com:Token-Ring/filesystem
+[submodule "pkg/git"]
+	path = pkg/git
+	url = git@github.com:Token-Ring/git
+[submodule "pkg/history"]
+	path = pkg/history
+	url = git@github.com:Token-Ring/history
+[submodule "pkg/javascript"]
+	path = pkg/javascript
+	url = git@github.com:Token-Ring/javascript
+[submodule "pkg/kubernetes"]
+	path = pkg/kubernetes
+	url = git@github.com:Token-Ring/kubernetes
+[submodule "pkg/local-filesystem"]
+	path = pkg/local-filesystem
+	url = git@github.com:Token-Ring/local-filesystem
+[submodule "pkg/memory"]
+	path = pkg/memory
+	url = git@github.com:Token-Ring/memory
+[submodule "pkg/planner"]
+	path = pkg/planner
+	url = git@github.com:Token-Ring/planner
+[submodule "pkg/queue"]
+	path = pkg/queue
+	url = git@github.com:Token-Ring/queue
+[submodule "pkg/registry"]
+	path = pkg/registry
+	url = git@github.com:Token-Ring/registry
+[submodule "pkg/repo-map"]
+	path = pkg/repo-map
+	url = git@github.com:Token-Ring/repo-map
+[submodule "pkg/sqlite-storage"]
+	path = pkg/sqlite-storage
+	url = git@github.com:Token-Ring/sqlite-storage
+[submodule "pkg/testing"]
+	path = pkg/testing
+	url = git@github.com:Token-Ring/testing
+[submodule "pkg/workflow"]
+	path = pkg/workflow
+	url = git@github.com:Token-Ring/workflow
+[submodule "pkg/utility"]
+	path = pkg/utility
+	url = git@github.com:Token-Ring/utility.git
+[submodule "pkg/runnable"]
+	path = pkg/runnable
+	url = git@github.com:Token-Ring/runnable.git

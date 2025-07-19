@@ -12,7 +12,6 @@
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@token-ring/ai-client": "0.1.0",
     "@token-ring/aws": "0.1.0",
-    "@token-ring/brave": "0.1.0",
     "@token-ring/chat": "0.1.0",
     "@token-ring/chrome": "0.1.0",
     "@token-ring/cli": "0.1.0",
@@ -30,18 +29,13 @@
     "@token-ring/kubernetes": "0.1.0",
     "@token-ring/local-filesystem": "0.1.0",
     "@token-ring/memory": "0.1.0",
-    "@token-ring/mysql-file-index": "0.1.0",
     "@token-ring/planner": "0.1.0",
     "@token-ring/queue": "0.1.0",
     "@token-ring/registry": "0.1.0",
     "@token-ring/repo-map": "0.1.0",
     "@token-ring/sqlite-storage": "0.1.0",
     "@token-ring/testing": "0.1.0",
-    "@token-ring/voice": "0.1.0",
-    "@token-ring/workflow": "0.1.0",
-    "@token-ring/zoho": "1.0.0",
-    "@yao-pkg/pkg": "^6.5.1",
-    "ora": "^8.0.1"
+    "@token-ring/workflow": "0.1.0"
   },
   "devDependencies": {
     "@radically-straightforward/package": "^2.0.1",
@@ -71,11 +65,14 @@
   "private": true,
   "scripts": {
     "build": "rollup -c",
-    "coder": "dotenvx run -f ../../.env -- node src/tr-coder.js --source ../../",
+    "coder": "dotenvx run -- node src/tr-coder.js --source ./",
     "coder-dist": "dotenvx run -f ../../.env -- node dist/tr-coder.js --source ../../",
     "eslint": "eslint --fix ./",
     "pkg": "pkg src/tr-coder.js -o tr-coder",
     "pkg-all": "pkg dist/tr-coder.js -t node18-linux,node18-win,node18-macos -o tr-coder"
   },
-  "type": "module"
+  "type": "module",
+  "workspaces": [
+   "pkg/*"
+  ]
 }

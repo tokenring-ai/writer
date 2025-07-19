@@ -38,8 +38,8 @@ import * as CLIPackage from "@token-ring/cli";
 import {REPLService, ReplHumanInterfaceService} from "@token-ring/cli";
 import * as WorkflowPackage from "@token-ring/workflow"
 import {WorkflowService} from "@token-ring/workflow"
-import * as ZohoPackage from "@token-ring/zoho";
-import {ZohoService} from "@token-ring/zoho";
+//import * as ZohoPackage from "@token-ring/zoho";
+//import {ZohoService} from "@token-ring/zoho";
 import * as CodebasePackage from "@token-ring/codebase";
 import {CodeBaseService, FileTreeResource, WholeFileResource} from "@token-ring/codebase";
 import * as CodeWatchPackage from "@token-ring/code-watch";
@@ -54,11 +54,11 @@ import * as JavascriptPackage from "@token-ring/javascript";
 import * as FeedbackPackage from "@token-ring/feedback";
 import * as ChromePackage from "@token-ring/chrome";
 import * as DatabasePackage from "@token-ring/database";
-import * as BravePackage from "@token-ring/brave";
+//import * as BravePackage from "@token-ring/brave";
 import * as FileIndexPackage from "@token-ring/file-index";
 
-import * as ConfigPackage from '@token-ring/config';
-import { ConfigurationManagementService } from '@token-ring/config';
+//import * as ConfigPackage from '@token-ring/config';
+//import { ConfigurationManagementService } from '@token-ring/config';
 
 import * as models from "@token-ring/ai-client/models"
 
@@ -130,14 +130,14 @@ async function runCoder({ source, config: configFile, initialize }) {
 
  await registry.addPackages(
   AWSPackage,
-  BravePackage,
+  //BravePackage,
   ChatPackage,
   ChatRouterPackage,
   ChromePackage,
   CLIPackage,
   CodebasePackage,
   CodeWatchPackage,
-  ConfigPackage,
+  //ConfigPackage,
   DatabasePackage,
   DockerPackage,
   FeedbackPackage,
@@ -161,7 +161,7 @@ async function runCoder({ source, config: configFile, initialize }) {
   TestingPackage,
   //VoicePackage,
   WorkflowPackage,
-  ZohoPackage
+  //ZohoPackage
  );
 
  const baseDirectory = resolvedSource;
@@ -177,7 +177,7 @@ async function runCoder({ source, config: configFile, initialize }) {
 
  await registry.tools.enableTools(defaults.tools ?? defaultTools);
 
- const configurationManagementService = new ConfigurationManagementService(config);
+ //const configurationManagementService = new ConfigurationManagementService(config);
 
  /*
  You are a deep thinking chatbot, that will recieve a user prompt, which you must think about in great detail. You will output a <think> tag in your response, then think about each asp
@@ -288,7 +288,7 @@ ser, and call any tools needed, based on the best course of action that you have
 
  await registry.services.addServices(
   chatService,
-  configurationManagementService,
+  //configurationManagementService,
   new REPLService(),
   new ReplHumanInterfaceService(),
   modelRegistry,
@@ -345,9 +345,10 @@ ser, and call any tools needed, based on the best course of action that you have
   );
  }
 
+ /*
  if (config.zoho) {
   await registry.services.addServices(new ZohoService(config.zoho));
- }
+ }*/
 
  for (const resourceName in config.resources ?? {}) {
   let resources = config.resources[resourceName];
