@@ -42,8 +42,8 @@
 		"husky": "^9.1.7",
 		"trufflehog": "^0.0.5"
 	},
-	"license": "UNLICENSED",
-	"private": true,
+
+	"license": "MIT",
 	"scripts": {
 		"preinstall": "test -f pkg/ai-client/package.json || echo 'Updating git submodules...' && git submodule update --init --recursive",
 		"build": "esbuild src/tr-coder.js --bundle --outfile=dist/tr-coder.cjs --format=cjs --platform=node --sourcemap --loader:.node=file",
