@@ -215,7 +215,7 @@ ser, and call any tools needed, based on the best course of action that you have
 				"When the user tells you to do something, you should assume that the user is asking you to use the available tools to update their codebase. " +
 				"You should prefer using tools to implement code changes, even large code changes. " +
 				"When making code changes, give short and concise responses summarizing the code changes",
-			model: "moonshotai/kimi-k2-instruct",
+			model: "kimi-k2-instruct",
 			temperature: 0.2,
 			top_p: 0.1,
 		},

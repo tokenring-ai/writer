@@ -102,7 +102,7 @@ for (const pkgRoot of packageRoots) {
 
 export default {
 	defaults: {
-		model: "moonshotai/kimi-k2-instruct", //gpt-4.1",
+		model: "kimi-k2-instruct", //gpt-4.1",
 		resources: ["testing*"], //["fileTree*", "testing*"],
 		selectedFiles: [".tokenring/guidelines.txt"],
 		persona: "code",
