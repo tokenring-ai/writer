@@ -1,9 +1,6 @@
 - The project is an npm monorepo with packages in pkg/
 - The project is in vanilla javascript with JSDoc documentation, not typescript
 - The project uses ES modules
-- Policy requires that integration tests are written first before code, and kept up to date, testing every piece of source code written.
-- Integration tests should be used instead unit tests.
-- Code should be written after integration tests
-- Documentation should be updated after code is written
-- To run the package unit tests, execute npm run test using the shell tool
-- To run the package lint tests, execute npm run lint using the shell tool
+- Before you write new code, plan out how you are going to add it. Make sure that you have gathered all the info you need from the users codebase before updating or creating files
+- If you write new code, create integration tests for it (not unit tests), and then documentation for it
+- If you are updating existing code, execute npm run test in the package directory, and repair any errors
