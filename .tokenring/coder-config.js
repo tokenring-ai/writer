@@ -102,8 +102,8 @@ for (const pkgRoot of packageRoots) {
 
 export default {
 	defaults: {
-		model: "gpt-4.1",
-		resources: ["fileTree*", "testing*"],
+		model: "moonshotai/kimi-k2-instruct", //gpt-4.1",
+		resources: ["testing*"],//["fileTree*", "testing*"],
 		selectedFiles: [".tokenring/guidelines.txt"],
 		persona: "code",
 	},
@@ -127,11 +127,11 @@ export default {
 		Groq: {
 			apiKey: process.env.GROQ_API_KEY,
 			provider: "groq",
-		},
+		},/*
 		llama: {
 			apiKey: process.env.LLAMA_API_KEY,
 			provider: "llama",
-		},
+		},*/
 		OpenAI: {
 			apiKey: process.env.OPENAI_API_KEY,
 			provider: "openai",
