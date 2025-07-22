@@ -391,10 +391,8 @@ ser, and call any tools needed, based on the best course of action that you have
 						return new WholeFileResource({
 							items: resource.items,
 						});
-					case "testing":
-						return new ShellCommandTestingResource({
-							tests: resource.tests,
-						});
+					case "shell-testing":
+						return new ShellCommandTestingResource(resource);
 					default:
 						throw new Error(`Unknown resource type ${resource.type}`);
 				}

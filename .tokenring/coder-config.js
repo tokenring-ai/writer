@@ -61,27 +61,25 @@ function makeTestingEntry(pkgRoot, dir, resources) {
 
 		const scripts = packageJson.scripts;
 		if (scripts?.test) {
-			tests.packageTests = {
-				description: "Run package tests",
+			const name = `testing/${dir}/npm-test`;
+			resources[name] = {
+				type: "shell-testing",
+				name,
+				description: `Runs NPM Test`,
 				command: "npm run test",
 				workingDirectory: path.join(pkgRoot, dir),
 			};
 		}
-		if (scripts?.eslint) {
-			tests.eslint = {
+		if (scripts?.lint) {
+			const name = `testing/${dir}/lint`;
+			resources[name] = {
+				type: "shell-testing",
+				name,
 				description: "Verify & fix formatting and lint rules",
 				command: "npm run eslint",
 				workingDirectory: path.join(pkgRoot, dir),
 			};
 		}
-
-		if (Object.keys(tests).length === 0) return null;
-		const name = `testing/${pkgRoot}/${dir}`;
-		resources[name] = {
-			type: "testing",
-			description: `${pkgRoot}/${dir} Testing Context`,
-			tests: tests,
-		};
 	} catch (error) {
 		console.error(`Error while reading ${packageFile}`, error);
 		return null;
@@ -282,6 +280,21 @@ export default {
 			items: [
 				{ path: `./`, include: /\.(txt|js|jsx|md|json)$/, exclude: /\/pkg\// },
 			],
+		},
+		"testing/all/biome": {
+			type: "shell-testing",
+			name: "testing/all/biome",
+			description: `Runs biome on the repository`,
+			command: "npx @biomejs/biome format --write\n",
+			workingDirectory: "./",
+		},
+		"testing/all/tsc": {
+			type: "shell-testing",
+			name: "testing/all/tsc",
+			description: `Runs tsc on the repository`,
+			command:
+				"npx tsc --noEmit --allowJs -t esnext -m nodenext --checkJs src/tr-coder.js",
+			workingDirectory: "./",
 		},
 	},
 };
