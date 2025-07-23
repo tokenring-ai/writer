@@ -1,84 +1,84 @@
 [submodule "pkg/ai-client"]
 	path = pkg/ai-client
-	url = git@github.com:Token-Ring/ai-client
+	url = git@github.com:tokenring-ai/ai-client
 [submodule "pkg/aws"]
 	path = pkg/aws
-	url = git@github.com:Token-Ring/aws
+	url = git@github.com:tokenring-ai/aws
 [submodule "pkg/chat"]
 	path = pkg/chat
-	url = git@github.com:Token-Ring/chat
+	url = git@github.com:tokenring-ai/chat
 [submodule "pkg/chrome"]
 	path = pkg/chrome
-	url = git@github.com:Token-Ring/chrome
+	url = git@github.com:tokenring-ai/chrome
 [submodule "pkg/cli"]
 	path = pkg/cli
-	url = git@github.com:Token-Ring/cli
+	url = git@github.com:tokenring-ai/cli
 [submodule "pkg/code-watch"]
 	path = pkg/code-watch
-	url = git@github.com:Token-Ring/code-watch
+	url = git@github.com:tokenring-ai/code-watch
 [submodule "pkg/codebase"]
 	path = pkg/codebase
-	url = git@github.com:Token-Ring/codebase
+	url = git@github.com:tokenring-ai/codebase
 [submodule "pkg/database"]
 	path = pkg/database
-	url = git@github.com:Token-Ring/database
+	url = git@github.com:tokenring-ai/database
 [submodule "pkg/docker"]
 	path = pkg/docker
-	url = git@github.com:Token-Ring/docker
+	url = git@github.com:tokenring-ai/docker
 [submodule "pkg/eslint-config"]
 	path = pkg/eslint-config
-	url = git@github.com:Token-Ring/eslint-config
+	url = git@github.com:tokenring-ai/eslint-config
 [submodule "pkg/feedback"]
 	path = pkg/feedback
-	url = git@github.com:Token-Ring/feedback
+	url = git@github.com:tokenring-ai/feedback
 [submodule "pkg/file-index"]
 	path = pkg/file-index
-	url = git@github.com:Token-Ring/file-index
+	url = git@github.com:tokenring-ai/file-index
 [submodule "pkg/filesystem"]
 	path = pkg/filesystem
-	url = git@github.com:Token-Ring/filesystem
+	url = git@github.com:tokenring-ai/filesystem
 [submodule "pkg/git"]
 	path = pkg/git
-	url = git@github.com:Token-Ring/git
+	url = git@github.com:tokenring-ai/git
 [submodule "pkg/history"]
 	path = pkg/history
-	url = git@github.com:Token-Ring/history
+	url = git@github.com:tokenring-ai/history
 [submodule "pkg/javascript"]
 	path = pkg/javascript
-	url = git@github.com:Token-Ring/javascript
+	url = git@github.com:tokenring-ai/javascript
 [submodule "pkg/kubernetes"]
 	path = pkg/kubernetes
-	url = git@github.com:Token-Ring/kubernetes
+	url = git@github.com:tokenring-ai/kubernetes
 [submodule "pkg/local-filesystem"]
 	path = pkg/local-filesystem
-	url = git@github.com:Token-Ring/local-filesystem
+	url = git@github.com:tokenring-ai/local-filesystem
 [submodule "pkg/memory"]
 	path = pkg/memory
-	url = git@github.com:Token-Ring/memory
+	url = git@github.com:tokenring-ai/memory
 [submodule "pkg/planner"]
 	path = pkg/planner
-	url = git@github.com:Token-Ring/planner
+	url = git@github.com:tokenring-ai/planner
 [submodule "pkg/queue"]
 	path = pkg/queue
-	url = git@github.com:Token-Ring/queue
+	url = git@github.com:tokenring-ai/queue
 [submodule "pkg/registry"]
 	path = pkg/registry
-	url = git@github.com:Token-Ring/registry
+	url = git@github.com:tokenring-ai/registry
 [submodule "pkg/repo-map"]
 	path = pkg/repo-map
-	url = git@github.com:Token-Ring/repo-map
+	url = git@github.com:tokenring-ai/repo-map
 [submodule "pkg/sqlite-storage"]
 	path = pkg/sqlite-storage
-	url = git@github.com:Token-Ring/sqlite-storage
+	url = git@github.com:tokenring-ai/sqlite-storage
 [submodule "pkg/testing"]
 	path = pkg/testing
-	url = git@github.com:Token-Ring/testing
+	url = git@github.com:tokenring-ai/testing
 [submodule "pkg/workflow"]
 	path = pkg/workflow
-	url = git@github.com:Token-Ring/workflow
+	url = git@github.com:tokenring-ai/workflow
 [submodule "pkg/utility"]
 	path = pkg/utility
-	url = git@github.com:Token-Ring/utility.git
+	url = git@github.com:tokenring-ai/utility.git
 [submodule "pkg/runnable"]
 	path = pkg/runnable
-	url = git@github.com:Token-Ring/runnable.git
+	url = git@github.com:tokenring-ai/runnable.git
