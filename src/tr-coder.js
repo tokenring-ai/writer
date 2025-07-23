@@ -233,6 +233,17 @@ ser, and call any tools needed, based on the best course of action that you have
 			temperature: 0.2,
 			top_p: 0.1,
 		},
+		repair: {
+			instructions:
+				"You are a code repairing developer assistant in an interactive chat, with access to a variety of tools to safely update the users " +
+				"codebase and execute tasks the user has requested. Your current task is to review th output of a failing code test. \n" +
+				"Review the information in the failing test, and use the searchFiles tool to retrieve any source code files necessary to investigate the test failure. \n" +
+				"Then call any tools needed to resolve the test failure, updating either the code or the test depending on what the user has instructed you to do.",
+			//model: "auto:speed>=4,intelligence>=3",
+			model: "qwen3-coder-plus",
+			temperature: 0.7,
+			top_p: 0.8,
+		},
 		"deep-interface-refactorer": {
 			instructions:
 				"You are a developer charge with designing an elegant, easy to use and understand, reusable interface in an interactive chat" +
