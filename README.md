@@ -20,7 +20,7 @@ The Coder app is an interactive developer assistant tool designed to help you wo
 
 ### Prerequisites
 
-- Node.js 22+
+- Bun
 - Git initialized source directory
 
 ### Installation (local)
@@ -30,14 +30,14 @@ The Coder app is an interactive developer assistant tool designed to help you wo
    git submodule update --init --recursive
    ```
 
-2. **Install dependencies**: This project uses NPM as the package manager in a monorepo structure:
+2. **Install dependencies**: This project uses Bun as the package manager in a monorepo structure:
    ```bash
-   npm install
+   bun install
    ```
 
-3. **Run the application**: Use NPM to start the application:
+3. **Run the application**: Use Bun to start the application:
   ```bash
-  node src/tr-coder.js --source ./path-to-your-codebase
+  bun src/tr-coder.js --source ./path-to-your-codebase
   ```
 ### Installation (As local docker container)
 
@@ -48,17 +48,22 @@ The Coder app is an interactive developer assistant tool designed to help you wo
 
 2. **Build the docker container**: 
    ```bash
+   # This command must be run in the root directory of the repo
    docker build -t token-ring/coder:latest -f docker/Dockerfile .
    ```
    
 3. **Run the docker container**:
    ```bash
-   docker run -ti --net host -v ./:/repo:rw token-ring/coder:latest
+   docker run -ti --net host $(env | grep '_KEY' | sed 's/^/-e /') -v ./:/repo:rw token-ring/coder:latest
    ```
 
 #### Container Registry
 
+
+TODO: This is not implemented yet
 The Docker image is automatically built and published to GitHub Container Registry on each push to the main branch. You can pull the latest image with:
+
+
 
 ```bash
 docker pull ghcr.io/[owner]/tokenring-coder:latest
@@ -68,13 +73,14 @@ Replace `[owner]` with the GitHub repository owner.
 
 ### Initialization
 
-To initialize your source directory with the necessary TokenRing configuration file, use:
+To initialize your source directory with the necessary TokenRing configuration file, pass the --initialize flag after your source directory. 
+This will initialize a new .tokenring directory in your project, which stores a coder-config.js config file for your project that you can customize, as well as a sqlite database which stores your chat history.
 
 ```
 tr-coder --source ./path-to-your-codebase --initialize
 ```
 
-This copies a default `coder-config.js` into your source directory.
+This copies a default `.tokenring/coder-config.js` into your source directory.
 
 ### Chat and Commands
 
@@ -102,14 +108,13 @@ Some example commands:
 ## Architecture
 
 - **CLI**: Entry point with argument parsing and session management (`tr-coder.js`).
-- **REPL**: Interactive chat via command-line (`repl.js`).
 - **Engine**: Core logic for commands, chat streaming, and persistent chat management.
 - **Components**: React-based components for browsing chat history.
 - **Utility**: Helper functions for logging, file management, and database initialization.
 
 ## Data Persistence
 
-Chat data and sessions are stored in a SQLite database (`coder-database.sqlite`) managed through the Better-SQLite3 package.
+Chat data and sessions are stored in a SQLite database (`coder-database.sqlite`) managed through the Bun SQLite package.
 
 ## Extensibility
 
@@ -121,7 +126,7 @@ Contributions are welcome! Feel free to fork the repository and submit pull requ
 
 ## License
 
-Specify your license here.
+This project is MIT licensed
 
 ---
 

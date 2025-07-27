@@ -45,7 +45,7 @@ function makeWholeFileEntry(pkgRoot, dir, resources) {
 		items: [
 			{
 				path: `./${pkgRoot}/${dir}`,
-				include: /\.(primsa|graphql|txt|js|jsx|md|json)$/,
+				include: /\.(prisma|graphql|txt|js|jsx|md|json)$/,
 			},
 		],
 	};
@@ -125,17 +125,17 @@ export default {
 		Groq: {
 			apiKey: process.env.GROQ_API_KEY,
 			provider: "groq",
-		} /*
+		},
 		llama: {
 			apiKey: process.env.LLAMA_API_KEY,
 			provider: "llama",
-		},*/,
+		},
 		OpenAI: {
 			apiKey: process.env.OPENAI_API_KEY,
 			provider: "openai",
 		},
 		RunPod: {
-			baseURL: "https://sfsasfasfs-8000.proxy.runpod.net/v1",
+			baseURL: "http://0.0.0.0:18000/v1",
 			apiKey: "sk-ABCD1234567890",
 			provider: "vllm",
 			generateModelSpec(modelInfo) {
@@ -236,6 +236,32 @@ export default {
 						intelligence: 1,
 						speed: 1,
 						contextLength: 128000,
+						costPerMillionInputTokens: 0,
+						costPerMillionOutputTokens: 0,
+					});
+				}
+				return { type, capabilities };
+			},
+		},
+		OllamaRunPod: {
+			baseURL: "https://jw6zy2bs9u3spw-11434.proxy.runpod.net/api",
+			provider: "ollama",
+			generateModelSpec(modelInfo) {
+				let { name, model, details } = modelInfo;
+				name = name.replace(/:latest$/, "");
+				name = name.replace(/^hf.co\/([^\/]*)\//, "");
+				let type = "chat";
+				let capabilities = {};
+				if (model.match(/embed/i)) {
+					type = "embedding";
+					capabilities.alwaysHot = 1;
+				} else if (
+					model.match(/qwen[23]/i) ||
+					details?.family?.match?.(/qwen3/i)
+				) {
+					Object.assign(capabilities, {
+						tools: 1,
+						contextLength: 16000,
 						costPerMillionInputTokens: 0,
 						costPerMillionOutputTokens: 0,
 					});

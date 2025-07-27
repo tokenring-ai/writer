@@ -1,60 +1,135 @@
 /**
  * Default configuration template for the coder application
- * @type {string} JSON-like configuration string
+ * @type {Object} JSON-like configuration
  * @description Provides default settings for AI model, instructions, tools, and file registries
  */
-export default `export default {
- defaults: {
-  model: "gpt-4.1",
-  instructions: "You are an expert developer assistant in an interactive chat, with access to tools to safely update the users existing codebase. Converse informatively and answer user questions clearly about design and codebase. When the user tells you to do something, update the users codebase, using the tools at your disposal, and then give a short response outlining the next steps.",
-  tools: [
-   "memory",
-   "files",
-   "fileIndex",
-   "shell",
-   "javascript",
-   "planner"
-  ],
-  registry: [
-   "src"
-  ],
-  selectedFiles: [
-   "./.tokenring/guidelines.txt"
-  ],
- },
- indexedFiles: [
-  {path: "./"},
- ],
- watchedFiles: [
-  {path: "./", include: /.(js|md|jsx|sql|txt)$/}
- ],
- registry: {
-  src: [
-   {
-    type: "fileTree",
-    description: "Source Files",
-    items: [
-     {path: "./", include: /.(js|md|json)$/},
-    ]
-   },
-   {
-    type: "testing",
-    description: "Coder testing context",
-    tests: {
-     eslint: {
-      description: "Verify & fix formatting and lint rules",
-      command: "yarn run eslint",
-      workingDirectory: "./apps/coder",
-     }
-    }
-   }
-  ],
-  srcWholeFiles: {
-   type: "fileTree",
-   description: "Source Whole Files",
-   items: [
-    {path: "./", include: /.(js|md|json)$/},
-   ]
-  }
- }
-};`;
+
+export default {
+	defaults: {
+		model: "kimi-k2-instruct",
+		resources: ["testing*"],
+		selectedFiles: [],
+		persona: "code",
+	},
+	models: {
+		Anthropic: {
+			apiKey: process.env.ANTHROPIC_API_KEY,
+			provider: "anthropic",
+		},
+		Cerebras: {
+			apiKey: process.env.CEREBRAS_API_KEY,
+			provider: "cerebras",
+		},
+		DeepSeek: {
+			apiKey: process.env.DEEPSEEK_API_KEY,
+			provider: "deepseek",
+		},
+		Google: {
+			apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+			provider: "google",
+		},
+		Groq: {
+			apiKey: process.env.GROQ_API_KEY,
+			provider: "groq",
+		},
+		llama: {
+			apiKey: process.env.LLAMA_API_KEY,
+			provider: "llama",
+		},
+		OpenAI: {
+			apiKey: process.env.OPENAI_API_KEY,
+			provider: "openai",
+		},
+		RunPod: {
+			baseURL: "http://0.0.0.0:18000/v1",
+			apiKey: "sk-ABCD1234567890",
+			provider: "vllm",
+			generateModelSpec(modelInfo) {
+				let { id: model } = modelInfo;
+				model = model.replace(/:latest$/, "");
+				model = model.replace(/^hf.co\/([^\/]*)\//, "");
+				let type = "chat";
+				let capabilities = {};
+				if (model.match(/embed/i)) {
+					type = "embedding";
+					capabilities.alwaysHot = 1;
+				} else if (model.match(/qwen[23]/i)) {
+					Object.assign(capabilities, {
+						reasoning: 2,
+						tools: 2,
+						intelligence: 2,
+						speed: 2,
+						contextLength: 128000,
+						costPerMillionInputTokens: 0,
+						costPerMillionOutputTokens: 0,
+					});
+				}
+				return { type, capabilities };
+			},
+		},
+		OpenRouter: {
+			apiKey: process.env.OPENROUTER_API_KEY,
+			provider: "openrouter",
+			modelFilter: (model) => {
+				if (!model.supported_parameters?.includes("tools")) {
+					return false;
+				} else if (/openai|anthropic|xai|perplexity|cerebras/.test(model.id)) {
+					return false;
+				}
+				return true;
+			},
+		},
+		Perplexity: {
+			apiKey: process.env.PERPLEXITY_API_KEY,
+			provider: "perplexity",
+		},
+		Qwen: {
+			apiKey: process.env.DASHSCOPE_API_KEY,
+			provider: "qwen",
+		},
+		xAi: {
+			apiKey: process.env.XAI_API_KEY,
+			provider: "xai",
+		},
+		Ollama: {
+			baseURL: process.env.OLLAMA_URL,
+			provider: "ollama",
+			generateModelSpec(modelInfo) {
+				let { name, model, details } = modelInfo;
+				name = name.replace(/:latest$/, "");
+				name = name.replace(/^hf.co\/([^\/]*)\//, "");
+				let type = "chat";
+				let capabilities = {};
+				if (model.match(/embed/i)) {
+					type = "embedding";
+					capabilities.alwaysHot = 1;
+				} else if (
+					model.match(/qwen[23]/i) ||
+					details?.family?.match?.(/qwen3/i)
+				) {
+					Object.assign(capabilities, {
+						reasoning: 1,
+						tools: 1,
+						intelligence: 1,
+						speed: 1,
+						contextLength: 128000,
+						costPerMillionInputTokens: 0,
+						costPerMillionOutputTokens: 0,
+					});
+				}
+				return { type, capabilities };
+			},
+		},
+	},
+	indexedFiles: [{ path: "./" }],
+	watchedFiles: [{ path: "./", include: /.(js|md|jsx|sql|txt)$/ }],
+	resources: {
+		fileTree: {
+			type: "fileTree",
+			description: `App File Tree`,
+			items: [
+				{ path: `./`, include: /\.(txt|js|jsx|md|json)$/, exclude: /\/pkg\// },
+			],
+		},
+	},
+};

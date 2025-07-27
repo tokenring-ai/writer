@@ -5,6 +5,7 @@ import path from "path";
 import { initializeConfigDirectory } from "./initializeConfigDirectory.js";
 import { error } from "./prettyString.js";
 import initializeLocalDatabase from "@token-ring/sqlite-storage/db/intializeLocalDatabase";
+import defaultPersonas from "./defaults/personas.js";
 
 import * as HistoryPackage from "@token-ring/history";
 import * as ChatPackage from "@token-ring/chat";
@@ -19,12 +20,6 @@ import * as RegistryPackage from "@token-ring/registry";
 import { Registry } from "@token-ring/registry";
 import * as DockerPackage from "@token-ring/docker";
 import { DockerService } from "@token-ring/docker";
-//import * as FileIndexPackage from "@token-ring/file-index";
-//import { StringSearchFileIndexService } from "@token-ring/file-index";
-//import * as MySQLFileIndexPackage from "@token-ring/mysql-file-index";
-//import { MySQLFileIndexService } from "@token-ring/mysql-file-index";
-//import * as VoicePackage from "@token-ring/voice";
-//import { RecordingService, SpeechToTextService } from "@token-ring/voice";
 import * as FilesystemPackage from "@token-ring/filesystem";
 import * as LocalFileSystemPackage from "@token-ring/local-filesystem";
 import { LocalFileSystemService } from "@token-ring/local-filesystem";
@@ -45,8 +40,6 @@ import * as CLIPackage from "@token-ring/cli";
 import { REPLService, ReplHumanInterfaceService } from "@token-ring/cli";
 import * as WorkflowPackage from "@token-ring/workflow";
 import { WorkflowService } from "@token-ring/workflow";
-//import * as ZohoPackage from "@token-ring/zoho";
-//import {ZohoService} from "@token-ring/zoho";
 import * as CodebasePackage from "@token-ring/codebase";
 import {
 	CodeBaseService,
@@ -65,11 +58,7 @@ import * as JavascriptPackage from "@token-ring/javascript";
 import * as FeedbackPackage from "@token-ring/feedback";
 import * as ChromePackage from "@token-ring/chrome";
 import * as DatabasePackage from "@token-ring/database";
-//import * as BravePackage from "@token-ring/brave";
 import * as FileIndexPackage from "@token-ring/file-index";
-
-//import * as ConfigPackage from '@token-ring/config';
-//import { ConfigurationManagementService } from '@token-ring/config';
 
 import * as models from "@token-ring/ai-client/models";
 import chalk from "chalk";
@@ -150,14 +139,12 @@ async function runCoder({ source, config: configFile, initialize }) {
 
 	await registry.addPackages(
 		AWSPackage,
-		//BravePackage,
 		ChatPackage,
 		ChatRouterPackage,
 		ChromePackage,
 		CLIPackage,
 		CodebasePackage,
 		CodeWatchPackage,
-		//ConfigPackage,
 		DatabasePackage,
 		DockerPackage,
 		FeedbackPackage,
@@ -169,7 +156,6 @@ async function runCoder({ source, config: configFile, initialize }) {
 		KubernetesPackage,
 		LocalFileSystemPackage,
 		MemoryPackage,
-		//MySQLFileIndexPackage,
 		PlannerPackage,
 		QueuePackage,
 		RegistryPackage,
@@ -179,9 +165,7 @@ async function runCoder({ source, config: configFile, initialize }) {
 		SQLiteChatMessageStorage,
 		SQLiteChatStoragePackage,
 		TestingPackage,
-		//VoicePackage,
 		WorkflowPackage,
-		//ZohoPackage
 	);
 
 	const baseDirectory = resolvedSource;
@@ -198,111 +182,6 @@ async function runCoder({ source, config: configFile, initialize }) {
 	});
 
 	await registry.tools.enableTools(defaults.tools ?? defaultTools);
-
-	//const configurationManagementService = new ConfigurationManagementService(config);
-
-	/*
- You are a deep thinking chatbot, that will recieve a user prompt, which you must think about in great detail. You will output a <think> tag in your response, then think about each asp
-ect of the users prompt, thinking about the best way to respond, and after coming up with the best way to handle the users request, you will output a </think> tag, and then responde to the u
-ser, and call any tools needed, based on the best course of action that you have just thought about. The user prompt is: Update runChat, cropping the token cost to 4 decimal places
-  */
-
-	// Create default personas if not provided in config
-	const defaultPersonas = {
-		code: {
-			instructions:
-				"You are an expert developer assistant in an interactive chat, with access to a variety of tools to safely update the users existing codebase and execute tasks the user has requested. " +
-				"When the user tells you to do something, you should assume that the user is asking you to use the available tools to update their codebase. " +
-				"You should prefer using tools to implement code changes, even large code changes. " +
-				"When making code changes, give short and concise responses summarizing the code changes",
-			model: "kimi-k2-instruct",
-			temperature: 0.2,
-			top_p: 0.1,
-		},
-		"deep-rag": {
-			instructions:
-				"You are a deep thinking developer assistant in an interactive chat, with access to a variety of tools to safely update the users " +
-				"codebase and execute tasks the user has requested. \n" +
-				"You will see a variety of message, showing the requests the users has made over time, and a final prompt from the user, with a task " +
-				"they would like you to complete or continue. Review the users prompt and prior information, and think deeply about it. " +
-				"Then output the tag <think>, and output all of your thought about what the user is telling you to do, and what information you might need to " +
-				"complete the task, ending your thoughts with the text </think>" +
-				"Then call any tools you need to complete the task, and tell the user whether the task is complete, or whether their are items remaining to complete",
-			//model: "auto:speed>=4,intelligence>=3",
-			model: "deepseek-chat",
-			temperature: 0.2,
-			top_p: 0.1,
-		},
-		repair: {
-			instructions:
-				"You are a code repairing developer assistant in an interactive chat, with access to a variety of tools to safely update the users " +
-				"codebase and execute tasks the user has requested. Your current task is to review th output of a failing code test. \n" +
-				"Review the information in the failing test, and use the searchFiles tool to retrieve any source code files necessary to investigate the test failure. \n" +
-				"Then call any tools needed to resolve the test failure, updating either the code or the test depending on what the user has instructed you to do.",
-			//model: "auto:speed>=4,intelligence>=3",
-			model: "qwen3-coder-plus",
-			temperature: 0.7,
-			top_p: 0.8,
-		},
-		"deep-interface-refactorer": {
-			instructions:
-				"You are a developer charge with designing an elegant, easy to use and understand, reusable interface in an interactive chat" +
-				"You will see a variety of messages, showing the code the user has provided, and a final prompt from the user, with the task they would" +
-				"like you to complete. Review the users prompt and prior information, and look specifically at the interconnection between the code " +
-				"samples provided. Output the tag <code_interconnection>, and think deeply about how each piece of the code interacts with the others, " +
-				"working through each call that crosses between files, especially files living in different directories. For each interconnection, " +
-				"detail out any tight coupling in the code. Once done, output the tag <interface_design>, and think about how the code can be updated " +
-				"to have one or more reusable, scalable, and elegant interfaces. Once done, output the tag <response>, and respond to the user normally, " +
-				"with your findings and next steps",
-			//model: "auto:speed>=4,intelligence>=3",
-			model: "deepseek-chat",
-			temperature: 0.2,
-			top_p: 0.1,
-		},
-		"deep-thinker": {
-			instructions:
-				"You are a deep thinking developer assistant in an interactive chat, with access to a variety of tools to safely update the users " +
-				"existing codebase and execute tasks the user has requested. \n" +
-				"You will receive a user prompt, which you must think about in great detail. You will output the text <think>, and then think in great " +
-				"detail about what the user is telling you to do, writing at a minimum, several paragraphs of thoughts on what the user has told you to do, " +
-				"and ending your thoughts with the text </think>. \nThen, based on your thoughts, you will then respond to the user, and call any tools " +
-				"needed, to satisfy the users request.",
-			model: "auto:speed>=4,intelligence>=3",
-			temperature: 0.2,
-			top_p: 0.1,
-		},
-		"code-planner": {
-			instructions:
-				"You are a deep thinking code planning assistant. Your role is to carefully analyze requirements and create detailed implementation plans. \n" +
-				"When given a task, you will output <think> and provide a thorough analysis of the problem, considering multiple approaches, edge cases, " +
-				"and potential pitfalls. After your analysis, you will create a step-by-step implementation plan with clear milestones and deliverables. " +
-				"End your thoughts with </think> before presenting your plan to the user.",
-			model: "auto:reasoning>=5,intelligence>=5",
-			temperature: 0.2,
-			top_p: 0.7,
-		},
-		architect: {
-			instructions:
-				"You are a deep thinking software architect. Your role is to design robust system architectures and make high-level technical decisions. \n" +
-				"When given a problem, you will output <think> and analyze the architectural implications, considering scalability, maintainability, " +
-				"performance, and trade-offs between different approaches. You will evaluate design patterns and technology choices before presenting " +
-				"your architectural recommendations. End your thoughts with </think> before sharing your design.",
-			model: "auto:reasoning>=5,intelligence>=5",
-			temperature: 0.3,
-			top_p: 0.8,
-		},
-		"code-reviewer": {
-			instructions:
-				"You are a deep thinking code reviewer. Your role is to critically analyze code for quality, maintainability, and potential issues. \n" +
-				"When reviewing code, you will output <think> and provide a thorough analysis covering code structure, potential bugs, performance " +
-				"implications, security vulnerabilities, and adherence to best practices. After your analysis, you will provide actionable feedback. " +
-				"End your thoughts with </think> before sharing your review findings.",
-			model: "auto:reasoning>=5,intelligence>=5",
-			temperature: 0.4,
-			top_p: 0.9,
-		},
-	};
-
 	console.log(chalk.greenBright(banner));
 
 	// Initialize the chat context with personas
