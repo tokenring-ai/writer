@@ -45,7 +45,7 @@ function makeWholeFileEntry(pkgRoot, dir, resources) {
 		items: [
 			{
 				path: `./${pkgRoot}/${dir}`,
-				include: /\.(primsa|graphql|txt|js|jsx|md|json)$/,
+				include: /\.(prisma|graphql|txt|js|jsx|md|json)$/,
 			},
 		],
 	};
@@ -106,6 +106,32 @@ export default {
 		persona: "code",
 	},
 	models: {
+		UIGen: {
+			provider: "vllm",
+			baseURL: "http://0.0.0.0:18000/v1",
+			generateModelSpec(modelInfo) {
+				let { id: model } = modelInfo;
+				model = model.replace(/:latest$/, "");
+				model = model.replace(/^hf.co\/([^\/]*)\//, "");
+				let type = "chat";
+				let capabilities = {};
+				if (model.match(/embed/i)) {
+					type = "embedding";
+					capabilities.alwaysHot = 1;
+				} else if (model.match(/qwen[23]/i)) {
+					Object.assign(capabilities, {
+						reasoning: 2,
+						tools: 2,
+						intelligence: 2,
+						speed: 2,
+						contextLength: 128000,
+						costPerMillionInputTokens: 0,
+						costPerMillionOutputTokens: 0,
+					});
+				}
+				return { type, capabilities };
+			},
+		},
 		Anthropic: {
 			apiKey: process.env.ANTHROPIC_API_KEY,
 			provider: "anthropic",
@@ -125,17 +151,17 @@ export default {
 		Groq: {
 			apiKey: process.env.GROQ_API_KEY,
 			provider: "groq",
-		} /*
+		},
 		llama: {
 			apiKey: process.env.LLAMA_API_KEY,
 			provider: "llama",
-		},*/,
+		},
 		OpenAI: {
 			apiKey: process.env.OPENAI_API_KEY,
 			provider: "openai",
 		},
 		RunPod: {
-			baseURL: "https://sfsasfasfs-8000.proxy.runpod.net/v1",
+			baseURL: "http://0.0.0.0:18000/v1",
 			apiKey: "sk-ABCD1234567890",
 			provider: "vllm",
 			generateModelSpec(modelInfo) {
@@ -236,6 +262,32 @@ export default {
 						intelligence: 1,
 						speed: 1,
 						contextLength: 128000,
+						costPerMillionInputTokens: 0,
+						costPerMillionOutputTokens: 0,
+					});
+				}
+				return { type, capabilities };
+			},
+		},
+		OllamaRunPod: {
+			baseURL: "https://jw6zy2bs9u3spw-11434.proxy.runpod.net/api",
+			provider: "ollama",
+			generateModelSpec(modelInfo) {
+				let { name, model, details } = modelInfo;
+				name = name.replace(/:latest$/, "");
+				name = name.replace(/^hf.co\/([^\/]*)\//, "");
+				let type = "chat";
+				let capabilities = {};
+				if (model.match(/embed/i)) {
+					type = "embedding";
+					capabilities.alwaysHot = 1;
+				} else if (
+					model.match(/qwen[23]/i) ||
+					details?.family?.match?.(/qwen3/i)
+				) {
+					Object.assign(capabilities, {
+						tools: 1,
+						contextLength: 16000,
 						costPerMillionInputTokens: 0,
 						costPerMillionOutputTokens: 0,
 					});
