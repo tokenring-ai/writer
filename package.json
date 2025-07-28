@@ -49,7 +49,8 @@
 		"preinstall": "test -f pkg/ai-client/package.json || echo 'Updating git submodules...' && git submodule update --init --recursive",
 		"build-container": "docker build -t token-ring/coder:latest -f docker/Dockerfile .",
 		"coder-container": "docker run -ti --net host -v ./:/repo:rw token-ring/coder:latest",
-		"coder": "bun --inspect src/tr-coder.js --source ./",
+		"code-debug": "bun --inspect src/tr-coder.js --source ./",
+		"coder": "bun src/tr-coder.js --source ./",
 		"eslint": "eslint --fix ./",
 		"test": "vitest run tests/build.test.js",
 		"prepare": "husky"
