@@ -1,7 +1,8 @@
-- The project is an bun monorepo with packages in pkg/
+- The project is a bun monorepo with packages in pkg/
 - The project is in vanilla javascript with JSDoc documentation, not typescript
 - The project uses ES modules
 - Before you write new code, plan out how you are going to add it. Make sure that you have gathered all the info you need from the users codebase before updating or creating files
-- If you write new code, create integration tests for it (not unit tests), and then documentation for it
+- If you write new code, create integration tests for it (not unit tests)
+- If you add new features, add them to the README.md file in the pkg/
 - If you update existing code, afterwards execute npm run test in the package directory, and repair any errors
-- This repo uses git submodules. Any changes to submodules must be committed alongside the main repository.
+- This repo uses git submodules. If you commit the main repository, you will also need to commit the submodules.

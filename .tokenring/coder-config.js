@@ -102,7 +102,7 @@ export default {
 	defaults: {
 		model: "kimi-k2-instruct", //gpt-4.1",
 		resources: ["testing*"], //["fileTree*", "testing*"],
-		selectedFiles: [".tokenring/guidelines.txt"],
+		selectedFiles: ["AGENTS.md"],
 		persona: "code",
 	},
 	models: {
