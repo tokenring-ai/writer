@@ -87,7 +87,7 @@ function makeTestingEntry(pkgRoot, dir, resources) {
 }
 
 const packageRoots = ["pkg"];
-let dynamicResources = {};
+const dynamicResources = {};
 for (const pkgRoot of packageRoots) {
 	const dirs = getSubdirectories(pkgRoot);
 	for (const dir of dirs) {

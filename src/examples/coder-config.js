@@ -49,7 +49,7 @@ export default {
 				model = model.replace(/:latest$/, "");
 				model = model.replace(/^hf.co\/([^\/]*)\//, "");
 				let type = "chat";
-				let capabilities = {};
+				const capabilities = {};
 				if (model.match(/embed/i)) {
 					type = "embedding";
 					capabilities.alwaysHot = 1;
@@ -99,7 +99,7 @@ export default {
 				name = name.replace(/:latest$/, "");
 				name = name.replace(/^hf.co\/([^\/]*)\//, "");
 				let type = "chat";
-				let capabilities = {};
+				const capabilities = {};
 				if (model.match(/embed/i)) {
 					type = "embedding";
 					capabilities.alwaysHot = 1;

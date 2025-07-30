@@ -1,6 +1,6 @@
+import fs from "fs";
 /* eslint-disable turbo/no-undeclared-env-vars */
 import path from "path";
-import fs from "fs";
 
 const templateDirectory = path.join(import.meta.dirname, "../templates");
 const templateFiles = fs.readdirSync(templateDirectory);

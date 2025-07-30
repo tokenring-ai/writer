@@ -1,7 +1,7 @@
-import path from "path";
 import fs from "fs";
-import { error, success } from "./prettyString.js";
+import path from "path";
 import exampleConfig from "./examples/coder-config.js";
+import { error, success } from "./prettyString.js";
 
 export function initializeConfigDirectory(configDir) {
 	try {

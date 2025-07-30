@@ -1,6 +1,6 @@
-import { test, expect } from "vitest";
 import { execSync } from "node:child_process";
 import fs from "node:fs";
+import { expect, test } from "vitest";
 
 test("build produces executable dist/tr-coder.cjs", () => {
 	execSync("npm run build", { stdio: "inherit" });
