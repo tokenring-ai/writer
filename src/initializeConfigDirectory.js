@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 import exampleConfig from "./examples/coder-config.js";
 import { error, success } from "./prettyString.js";
 

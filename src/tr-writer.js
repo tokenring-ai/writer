@@ -1,12 +1,6 @@
 #!/usr/bin/env node
 import fs from "node:fs";
-import path from "path";
-import initializeLocalDatabase from "@token-ring/sqlite-storage/db/intializeLocalDatabase";
-import { Command } from "commander";
-import defaultPersonas from "./defaults/personas.js";
-import { initializeConfigDirectory } from "./initializeConfigDirectory.js";
-import { error } from "./prettyString.js";
-
+import path from "node:path";
 import * as ChatRouterPackage from "@token-ring/ai-client";
 import { ModelRegistry } from "@token-ring/ai-client";
 import * as models from "@token-ring/ai-client/models";
@@ -16,8 +10,8 @@ import * as ChromePackage from "@token-ring/chrome";
 import * as CLIPackage from "@token-ring/cli";
 import { REPLService, ReplHumanInterfaceService } from "@token-ring/cli";
 import * as FeedbackPackage from "@token-ring/feedback";
-import { GhostIOService } from "@token-ring/ghost-io";
 import * as GhostPackage from "@token-ring/ghost-io";
+import { GhostIOService } from "@token-ring/ghost-io";
 import * as HistoryPackage from "@token-ring/history";
 import * as MemoryPackage from "@token-ring/memory";
 import { EphemeralMemoryService } from "@token-ring/memory";
@@ -31,9 +25,14 @@ import {
 	SQLiteChatHistoryStorage,
 	SQLiteChatMessageStorage,
 } from "@token-ring/sqlite-storage";
+import initializeLocalDatabase from "@token-ring/sqlite-storage/db/intializeLocalDatabase";
 import * as TemplatePackage from "@token-ring/template";
 import { TemplateRegistry } from "@token-ring/template";
 import chalk from "chalk";
+import { Command } from "commander";
+import defaultPersonas from "./defaults/personas.js";
+import { initializeConfigDirectory } from "./initializeConfigDirectory.js";
+import { error } from "./prettyString.js";
 
 // Create a new Commander program
 const program = new Command();

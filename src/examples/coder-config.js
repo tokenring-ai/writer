@@ -47,7 +47,7 @@ export default {
 			generateModelSpec(modelInfo) {
 				let { id: model } = modelInfo;
 				model = model.replace(/:latest$/, "");
-				model = model.replace(/^hf.co\/([^\/]*)\//, "");
+				model = model.replace(/^hf.co\/([^/]*)\//, "");
 				let type = "chat";
 				const capabilities = {};
 				if (model.match(/embed/i)) {
@@ -97,7 +97,7 @@ export default {
 			generateModelSpec(modelInfo) {
 				let { name, model, details } = modelInfo;
 				name = name.replace(/:latest$/, "");
-				name = name.replace(/^hf.co\/([^\/]*)\//, "");
+				name = name.replace(/^hf.co\/([^/]*)\//, "");
 				let type = "chat";
 				const capabilities = {};
 				if (model.match(/embed/i)) {
