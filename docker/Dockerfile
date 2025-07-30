@@ -8,6 +8,6 @@ RUN sh /repo/docker/install.sh
 
 EXPOSE 80
 
-WORKDIR /repo
-CMD ["bun","/repo/src/tr-coder.js", "--source", "/repo"]
+WORKDIR /work
+CMD ["bun","/repo/src/tr-writer.js", "--source", "/work"]
 

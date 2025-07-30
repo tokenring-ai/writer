@@ -100,38 +100,12 @@ for (const pkgRoot of packageRoots) {
 
 export default {
 	defaults: {
-		model: "kimi-k2-instruct", //gpt-4.1",
-		resources: ["testing*"], //["fileTree*", "testing*"],
+		model: "deepseek-chat",
+		resources: ["testing*", "fileTree*"],
 		selectedFiles: ["AGENTS.md"],
 		persona: "code",
 	},
 	models: {
-		UIGen: {
-			provider: "vllm",
-			baseURL: "http://0.0.0.0:18000/v1",
-			generateModelSpec(modelInfo) {
-				let { id: model } = modelInfo;
-				model = model.replace(/:latest$/, "");
-				model = model.replace(/^hf.co\/([^\/]*)\//, "");
-				let type = "chat";
-				let capabilities = {};
-				if (model.match(/embed/i)) {
-					type = "embedding";
-					capabilities.alwaysHot = 1;
-				} else if (model.match(/qwen[23]/i)) {
-					Object.assign(capabilities, {
-						reasoning: 2,
-						tools: 2,
-						intelligence: 2,
-						speed: 2,
-						contextLength: 128000,
-						costPerMillionInputTokens: 0,
-						costPerMillionOutputTokens: 0,
-					});
-				}
-				return { type, capabilities };
-			},
-		},
 		Anthropic: {
 			apiKey: process.env.ANTHROPIC_API_KEY,
 			provider: "anthropic",
@@ -152,40 +126,9 @@ export default {
 			apiKey: process.env.GROQ_API_KEY,
 			provider: "groq",
 		},
-		llama: {
-			apiKey: process.env.LLAMA_API_KEY,
-			provider: "llama",
-		},
 		OpenAI: {
 			apiKey: process.env.OPENAI_API_KEY,
 			provider: "openai",
-		},
-		RunPod: {
-			baseURL: "http://0.0.0.0:18000/v1",
-			apiKey: "sk-ABCD1234567890",
-			provider: "vllm",
-			generateModelSpec(modelInfo) {
-				let { id: model } = modelInfo;
-				model = model.replace(/:latest$/, "");
-				model = model.replace(/^hf.co\/([^\/]*)\//, "");
-				let type = "chat";
-				let capabilities = {};
-				if (model.match(/embed/i)) {
-					type = "embedding";
-					capabilities.alwaysHot = 1;
-				} else if (model.match(/qwen[23]/i)) {
-					Object.assign(capabilities, {
-						reasoning: 2,
-						tools: 2,
-						intelligence: 2,
-						speed: 2,
-						contextLength: 128000,
-						costPerMillionInputTokens: 0,
-						costPerMillionOutputTokens: 0,
-					});
-				}
-				return { type, capabilities };
-			},
 		},
 		OpenRouter: {
 			apiKey: process.env.OPENROUTER_API_KEY,
@@ -199,10 +142,6 @@ export default {
 				return true;
 			},
 		},
-		Perplexity: {
-			apiKey: process.env.PERPLEXITY_API_KEY,
-			provider: "perplexity",
-		},
 		Qwen: {
 			apiKey: process.env.DASHSCOPE_API_KEY,
 			provider: "qwen",
@@ -211,124 +150,14 @@ export default {
 			apiKey: process.env.XAI_API_KEY,
 			provider: "xai",
 		},
-		OllamaCloud: {
-			baseURL: process.env.OLLAMA_CLOUD_URL,
-			provider: "ollama",
-			generateModelSpec(modelInfo) {
-				let { name, model, details } = modelInfo;
-				name = name.replace(/:latest$/, "");
-				name = name.replace(/^hf.co\/([^\/]*)\//, "");
-				let type = "chat";
-				let capabilities = {};
-				if (model.match(/embed/i)) {
-					type = "embedding";
-					capabilities.alwaysHot = 1;
-				} else if (
-					model.match(/qwen[23]/i) ||
-					details?.family?.match?.(/qwen3/i)
-				) {
-					Object.assign(capabilities, {
-						reasoning: 2,
-						tools: 2,
-						intelligence: 2,
-						speed: 2,
-						contextLength: 128000,
-						costPerMillionInputTokens: 0,
-						costPerMillionOutputTokens: 0,
-					});
-				}
-				return { type, capabilities };
-			},
-		},
-		OllamaLan: {
-			baseURL: process.env.OLLAMA_LAN_URL,
-			provider: "ollama",
-			generateModelSpec(modelInfo) {
-				let { name, model, details } = modelInfo;
-				name = name.replace(/:latest$/, "");
-				name = name.replace(/^hf.co\/([^\/]*)\//, "");
-				let type = "chat";
-				let capabilities = {};
-				if (model.match(/embed/i)) {
-					type = "embedding";
-					capabilities.alwaysHot = 1;
-				} else if (
-					model.match(/qwen[23]/i) ||
-					details?.family?.match?.(/qwen3/i)
-				) {
-					Object.assign(capabilities, {
-						reasoning: 1,
-						tools: 1,
-						intelligence: 1,
-						speed: 1,
-						contextLength: 128000,
-						costPerMillionInputTokens: 0,
-						costPerMillionOutputTokens: 0,
-					});
-				}
-				return { type, capabilities };
-			},
-		},
-		OllamaRunPod: {
-			baseURL: "https://jw6zy2bs9u3spw-11434.proxy.runpod.net/api",
-			provider: "ollama",
-			generateModelSpec(modelInfo) {
-				let { name, model, details } = modelInfo;
-				name = name.replace(/:latest$/, "");
-				name = name.replace(/^hf.co\/([^\/]*)\//, "");
-				let type = "chat";
-				let capabilities = {};
-				if (model.match(/embed/i)) {
-					type = "embedding";
-					capabilities.alwaysHot = 1;
-				} else if (
-					model.match(/qwen[23]/i) ||
-					details?.family?.match?.(/qwen3/i)
-				) {
-					Object.assign(capabilities, {
-						tools: 1,
-						contextLength: 16000,
-						costPerMillionInputTokens: 0,
-						costPerMillionOutputTokens: 0,
-					});
-				}
-				return { type, capabilities };
-			},
-		},
-		OllamaLocal: {
-			baseURL: process.env.OLLAMA_LOCAL_URL,
-			provider: "ollama",
-			generateModelSpec(modelInfo) {
-				let { name, model, details } = modelInfo;
-				name = name.replace(/:latest$/, "");
-				name = name.replace(/^hf.co\/([^\/]*)\//, "");
-				let type = "chat";
-				let capabilities = {};
-				if (model.match(/embed/i)) {
-					type = "embedding";
-					capabilities.alwaysHot = 1;
-				} else if (
-					model.match(/qwen[23]/i) ||
-					details?.family?.match?.(/qwen3/i)
-				) {
-					Object.assign(capabilities, {
-						tools: 1,
-						contextLength: 16000,
-						costPerMillionInputTokens: 0,
-						costPerMillionOutputTokens: 0,
-					});
-				}
-				return { type, capabilities };
-			},
-		},
 	},
 	indexedFiles: [{ path: "./" }],
 	watchedFiles: [{ path: "./", include: /.(js|md|jsx|sql|txt)$/ }],
 	resources: {
 		...dynamicResources,
-		"fileTree/tr-coder": {
+		"fileTree/tr-writer": {
 			type: "fileTree",
-			description: `Coder App File Tree`,
+			description: `TokenRing Writer File Tree`,
 			items: [
 				{ path: `./`, include: /\.(txt|js|jsx|md|json)$/, exclude: /\/pkg\// },
 			],
@@ -345,7 +174,7 @@ export default {
 			name: "testing/all/tsc",
 			description: `Runs tsc on the repository`,
 			command:
-				"npx tsc --noEmit --allowJs -t esnext -m nodenext --checkJs src/tr-coder.js",
+				"npx tsc --noEmit --allowJs -t esnext -m nodenext --checkJs src/tr-writer.js",
 			workingDirectory: "./",
 		},
 	},
