@@ -9,6 +9,9 @@ import { ChatService } from "@token-ring/chat";
 import * as ChromePackage from "@token-ring/chrome";
 import * as CLIPackage from "@token-ring/cli";
 import { REPLService, ReplHumanInterfaceService } from "@token-ring/cli";
+import * as FilesystemPackage from "@token-ring/filesystem";
+import * as LocalFilesystemPackage from "@token-ring/local-filesystem";
+import { LocalFileSystemService } from "@token-ring/local-filesystem";
 import * as FeedbackPackage from "@token-ring/feedback";
 import * as GhostPackage from "@token-ring/ghost-io";
 import { GhostIOService } from "@token-ring/ghost-io";
@@ -119,9 +122,11 @@ async function runWriter({ source, config: configFile, initialize }) {
 		ChatRouterPackage,
 		ChromePackage,
 		CLIPackage,
+		FilesystemPackage,
 		FeedbackPackage,
 		GhostPackage,
 		HistoryPackage,
+		LocalFilesystemPackage,
 		MemoryPackage,
 		RegistryPackage,
 		SQLiteChatCheckpointStorage,
@@ -165,6 +170,7 @@ async function runWriter({ source, config: configFile, initialize }) {
 		chatService,
 		new REPLService(),
 		new ReplHumanInterfaceService(),
+		new LocalFileSystemService({ rootDirectory: resolvedSource }),
 		modelRegistry,
 		templateRegistry,
 		new SQLiteChatMessageStorage({ db }),
