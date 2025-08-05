@@ -146,6 +146,7 @@ async function runWriter({ source, config: configFile, initialize }) {
 	const defaultTools = Object.keys({
 		...MemoryPackage.tools,
 		...ResearchPackage.tools,
+		...TemplatePackage.tools,
 		...(config.ghost ? GhostPackage.tools : {}),
 	});
 
