@@ -1,4 +1,6 @@
 /* eslint-disable turbo/no-undeclared-env-vars */
+// noinspection SpellCheckingInspection
+
 import fs from "fs";
 import path from "path";
 

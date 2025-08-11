@@ -36,7 +36,7 @@ TokenRing Writer (tr-writer) is a unified platform for writing and managing news
 
 3. **Run the application**: Use Bun to start the application:
   ```bash
-  bun src/tr-writer.js --source ./path-to-your-content
+  bun src/tr-writer.ts --source ./path-to-your-content
   ```
 ### Installation (As local docker container)
 
@@ -98,7 +98,7 @@ Some example commands:
 
 ## Architecture
 
-- **CLI**: Entry point with argument parsing and session management (`tr-writer.js`).
+- **CLI**: Entry point with argument parsing and session management (`tr-writer.ts`).
 - **Engine**: Core logic for commands, content streaming, and persistent content management.
 - **Components**: React-based components for browsing content history.
 - **Utility**: Helper functions for logging, file management, and database initialization.

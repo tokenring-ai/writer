@@ -1,0 +1,212 @@
+#!/usr/bin/env bun
+import fs from "node:fs";
+import path from "node:path";
+import * as ChatRouterPackage from "@token-ring/ai-client";
+import ModelRegistry from "@token-ring/ai-client/ModelRegistry";
+import * as models from "@token-ring/ai-client/models";
+import * as ChatPackage from "@token-ring/chat";
+import { ChatService } from "@token-ring/chat";
+import * as ChromePackage from "@token-ring/chrome";
+import * as CLIPackage from "@token-ring/cli";
+import { REPLService, ReplHumanInterfaceService } from "@token-ring/cli";
+import * as FilesystemPackage from "@token-ring/filesystem";
+import * as LocalFilesystemPackage from "@token-ring/local-filesystem";
+import { LocalFileSystemService } from "@token-ring/local-filesystem";
+import * as FeedbackPackage from "@token-ring/feedback";
+import * as GhostPackage from "@token-ring/ghost-io";
+import { GhostIOService } from "@token-ring/ghost-io";
+import * as HistoryPackage from "@token-ring/history";
+import * as MemoryPackage from "@token-ring/memory";
+import { EphemeralMemoryService } from "@token-ring/memory";
+import { WorkQueueService } from "@token-ring/queue";
+import * as RegistryPackage from "@token-ring/registry";
+import { Registry } from "@token-ring/registry";
+import * as ResearchPackage from "@token-ring/research";
+import * as SQLiteChatStoragePackage from "@token-ring/sqlite-storage";
+import {
+  SQLiteChatCheckpointStorage,
+  SQLiteChatHistoryStorage,
+  SQLiteChatMessageStorage,
+} from "@token-ring/sqlite-storage";
+import initializeLocalDatabase from "@token-ring/sqlite-storage/db/initializeLocalDatabase";
+import * as TemplatePackage from "@token-ring/template";
+import { TemplateRegistry } from "@token-ring/template";
+import chalk from "chalk";
+import { Command } from "commander";
+import defaultPersonas from "./defaults/personas.ts";
+import { initializeConfigDirectory } from "./initializeConfigDirectory.ts";
+import { error } from "./prettyString.ts";
+
+// Create a new Commander program
+const program = new Command();
+
+type RunOptions = {
+  source: string;
+  config?: string;
+  initialize?: boolean;
+};
+
+program
+  .name("tr-writer")
+  .description("TokenRing Writer - AI-powered writing assistant")
+  .version("1.0.0")
+  .requiredOption(
+    "-s, --source <path>",
+    "Path to the working directory to store the config and scratch files in",
+  )
+  .option("-c, --config <path>", "Path to the configuration file")
+  .option(
+    "-i, --initialize",
+    "Initialize the source directory with a new config directory",
+  )
+  .addHelpText(
+    "after",
+    `
+Examples:
+  tr-writer --source ./my-app
+  tr-writer --source ./my-app --initialize
+  tr-writer --source ./my-app --config ./custom-config.ts
+`,
+  )
+  .action(async (options: RunOptions) => {
+    try {
+      await runWriter(options);
+    } catch (err) {
+      console.error(error(`Caught Error:`), err);
+      process.exit(1);
+    }
+  });
+
+program.parse();
+
+async function runWriter({ source, config: configFileInput, initialize }: RunOptions): Promise<void> {
+  // noinspection JSCheckFunctionSignatures
+  const resolvedSource = path.resolve(source);
+
+  if (!fs.existsSync(resolvedSource)) {
+    throw new Error(`Source directory not found: ${resolvedSource}`);
+  }
+
+  const configDirectory = path.join(resolvedSource, "/.tokenring");
+
+  let configFile = configFileInput;
+  if (!configFile) {
+    // Try each extension in order
+    const possibleExtensions = ["mjs", "cjs", "js"] as const;
+    for (const ext of possibleExtensions) {
+      const potentialConfig = path.join(
+        configDirectory,
+        `writer-config.${ext}`,
+      );
+      if (fs.existsSync(potentialConfig)) {
+        configFile = potentialConfig;
+        break;
+      }
+    }
+  }
+
+  if (!configFile && initialize) {
+    configFile = initializeConfigDirectory(configDirectory);
+  }
+
+  if (!configFile) {
+    throw new Error(
+      `Source directory ${resolvedSource} does not contain a .tokenring/writer-config.{mjs,cjs,js} file.\n` +
+        `You can create one by adding --initialize:\n` +
+        `./tr-writer --source ${resolvedSource} --initialize`,
+    );
+  }
+
+
+  const { default: config } = await import(/* webpackIgnore: true */ configFile);
+
+  const registry = new Registry();
+  await registry.start();
+
+  await registry.addPackages(
+    ChatPackage as any,
+    ChatRouterPackage as any,
+    ChromePackage as any,
+    CLIPackage as any,
+    FilesystemPackage as any,
+    FeedbackPackage as any,
+    GhostPackage as any,
+    HistoryPackage as any,
+    LocalFilesystemPackage as any,
+    MemoryPackage as any,
+    RegistryPackage as any,
+    SQLiteChatCheckpointStorage as any,
+    SQLiteChatHistoryStorage as any,
+    SQLiteChatMessageStorage as any,
+    SQLiteChatStoragePackage as any,
+    TemplatePackage as any,
+    ResearchPackage as any,
+  );
+
+  const db = initializeLocalDatabase(
+    path.resolve(configDirectory, "./writer-database.sqlite"),
+  );
+
+  const { defaults } = config as any;
+
+  const defaultTools = Object.keys({
+    ...(MemoryPackage as any).tools,
+    ...(ResearchPackage as any).tools,
+    ...(TemplatePackage as any).tools,
+    ...((config as any).ghost ? (GhostPackage as any).tools : {}),
+  });
+
+  await registry.tools.enableTools(defaults?.tools ?? defaultTools);
+  console.log(chalk.greenBright(banner));
+
+  // Initialize the chat context with personas
+  const chatService = new ChatService({
+    personas: (config as any).personas || defaultPersonas, // Use loaded config
+    persona: (config as any).defaults?.persona || "writer", // Use loaded config
+  });
+
+  const modelRegistry = new ModelRegistry();
+  await modelRegistry.initializeModels(models as any, (config as any).models);
+
+  const templateRegistry = new TemplateRegistry();
+  if ((config as any).templates) {
+    templateRegistry.loadTemplates((config as any).templates);
+  }
+
+  await registry.services.addServices(
+    chatService,
+    new REPLService(),
+    new ReplHumanInterfaceService(),
+    new LocalFileSystemService({ rootDirectory: resolvedSource }),
+    modelRegistry,
+    templateRegistry,
+    new SQLiteChatMessageStorage({ db }),
+    new SQLiteChatHistoryStorage({ db }),
+    new SQLiteChatCheckpointStorage({ db }),
+    new WorkQueueService(),
+    new EphemeralMemoryService(),
+  );
+
+  const ghostConfig = (config as any).ghost;
+  if (ghostConfig && ghostConfig.url && ghostConfig.adminApiKey && ghostConfig.contentApiKey) {
+    await registry.services.addServices(new GhostIOService(ghostConfig));
+  } else if (ghostConfig) {
+    console.warn("Ghost configuration detected but incomplete. Skipping GhostIOService initialization. Required: url, adminApiKey, contentApiKey.");
+  }
+}
+
+const banner = `
+████████╗ ██████╗ ██╗  ██╗███████╗███╗   ██╗██████╗ ██╗███╗   ██╗ ██████╗ 
+╚══██╔══╝██╔═══██╗██║ ██╔╝██╔════╝████╗  ██║██╔══██╗██║████╗  ██║██╔════╝ 
+   ██║   ██║   ██║█████╔╝ █████╗  ██╔██╗ ██║██████╔╝██║██╔██╗ ██║██║  ███╗
+   ██║   ██║   ██║██╔═██╗ ██╔══╝  ██║╚██╗██║██╔══██╗██║██║╚██╗██║██║   ██║
+   ██║   ╚██████╔╝██║  ██╗███████╗██║ ╚████║██║  ██║██║██║ ╚████║╚██████╔╝
+   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
+                                                                          
+██╗    ██╗██████╗ ██╗████████╗███████╗██████╗                             
+██║    ██║██╔══██╗██║╚══██╔══╝██╔════╝██╔══██╗                            
+██║ █╗ ██║██████╔╝██║   ██║   █████╗  ██████╔╝                            
+██║███╗██║██╔══██╗██║   ██║   ██╔══╝  ██╔══██╗                            
+╚███╔███╔╝██║  ██║██║   ██║   ███████╗██║  ██║                            
+ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                                               
+`;

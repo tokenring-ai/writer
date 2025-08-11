@@ -2,6 +2,8 @@
 .env
 keys
 
+dist-ts
+
 # dependencies
 node_modules
 .pnp
@@ -38,3 +40,4 @@ yarn-error.log*
 /.zencoder/
 /.idea/
 /.claude/
+/.tokenring/writer-database.sqlite
