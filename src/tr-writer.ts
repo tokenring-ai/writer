@@ -27,6 +27,7 @@ import {
   SQLiteChatCheckpointStorage,
   SQLiteChatHistoryStorage,
   SQLiteChatMessageStorage,
+  SQLiteCLIHistoryStorage,
 } from "@token-ring/sqlite-storage";
 import initializeLocalDatabase from "@token-ring/sqlite-storage/db/initializeLocalDatabase";
 import * as TemplatePackage from "@token-ring/template";
@@ -124,23 +125,20 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
   await registry.start();
 
   await registry.addPackages(
-    ChatPackage as any,
-    ChatRouterPackage as any,
-    ChromePackage as any,
-    CLIPackage as any,
-    FilesystemPackage as any,
-    FeedbackPackage as any,
-    GhostPackage as any,
-    HistoryPackage as any,
-    LocalFilesystemPackage as any,
-    MemoryPackage as any,
-    RegistryPackage as any,
-    SQLiteChatCheckpointStorage as any,
-    SQLiteChatHistoryStorage as any,
-    SQLiteChatMessageStorage as any,
-    SQLiteChatStoragePackage as any,
-    TemplatePackage as any,
-    ResearchPackage as any,
+    ChatPackage,
+    ChatRouterPackage,
+    ChromePackage,
+    CLIPackage,
+    FilesystemPackage,
+    FeedbackPackage,
+    GhostPackage,
+    HistoryPackage,
+    LocalFilesystemPackage,
+    MemoryPackage,
+    RegistryPackage,
+    SQLiteChatStoragePackage,
+    TemplatePackage,
+    ResearchPackage,
   );
 
   const db = initializeLocalDatabase(
@@ -173,9 +171,15 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
     templateRegistry.loadTemplates((config as any).templates);
   }
 
+  // Create CLI history storage with 200 command limit
+  const cliHistoryStorage = new SQLiteCLIHistoryStorage({ 
+    db, 
+    config: { limit: 200 }
+  });
+
   await registry.services.addServices(
     chatService,
-    new REPLService(),
+    new REPLService({ historyStorage: cliHistoryStorage }),
     new ReplHumanInterfaceService(),
     new LocalFileSystemService({ rootDirectory: resolvedSource }),
     modelRegistry,
