@@ -5,9 +5,26 @@
  * @returns {Object} - A chat request object
  */
 export default async function translateToFrench(prompt) {
-	return {
-		system:
-			"You are a French translator. Translate the following text to French.",
-		user: prompt,
-	};
+ return {
+  resetContext: true,
+  activeTools: [],
+  maxSteps: 10,
+  request: {
+   model: 'gemini-2.5-flash',
+   input: [
+    {
+     role: "system",
+     content: `You are an expert french translator. Translate the text the user enters to french.`,
+    },
+    {
+     role: "user",
+     content: `
+            Translate the following text to french:
+            
+            ${prompt}
+          `.trim()
+    }
+   ]
+  }
+ };
 }

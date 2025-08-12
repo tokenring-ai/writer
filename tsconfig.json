@@ -27,7 +27,6 @@
     "**/*.test.*",
     "pkg/**/test/**",
     "pkg/**/__tests__/**",
-    "pkg/registry/**/*.js",
     "pkg/inquirer-command-prompt/examples/**",
     "pkg/inquirer-tree-selector/rollup.config.js",
     "**/vitest.config.*"

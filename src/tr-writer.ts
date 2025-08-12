@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import * as ChatRouterPackage from "@token-ring/ai-client";
-import ModelRegistry from "@token-ring/ai-client/ModelRegistry";
+import ModelRegistry, {ModelConfig} from "@token-ring/ai-client/ModelRegistry";
 import * as models from "@token-ring/ai-client/models";
 import * as ChatPackage from "@token-ring/chat";
 import { ChatService } from "@token-ring/chat";
@@ -37,6 +37,22 @@ import { Command } from "commander";
 import defaultPersonas from "./defaults/personas.ts";
 import { initializeConfigDirectory } from "./initializeConfigDirectory.ts";
 import { error } from "./prettyString.ts";
+import {PersonaConfig} from "@token-ring/chat/ChatService";
+
+interface WriterConfig {
+    defaults: {
+        persona: string;
+        tools?: string[];
+    };
+    personas: Record<string, PersonaConfig>
+    ghost?: {
+        adminApiKey: string;
+        contentApiKey: string;
+        url: string;
+    };
+    models: Record<string, ModelConfig>;
+    templates: Record<string, any>;
+}
 
 // Create a new Commander program
 const program = new Command();
@@ -119,7 +135,8 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
   }
 
 
-  const { default: config } = await import(/* webpackIgnore: true */ configFile);
+  const configImport = await import(configFile);
+  const config = configImport.default as WriterConfig;
 
   const registry = new Registry();
   await registry.start();
@@ -145,13 +162,13 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
     path.resolve(configDirectory, "./writer-database.sqlite"),
   );
 
-  const { defaults } = config as any;
+  const { defaults } = config;
 
   const defaultTools = Object.keys({
-    ...(MemoryPackage as any).tools,
-    ...(ResearchPackage as any).tools,
-    ...(TemplatePackage as any).tools,
-    ...((config as any).ghost ? (GhostPackage as any).tools : {}),
+    ...MemoryPackage.tools,
+    ...ResearchPackage.tools,
+    ...TemplatePackage.tools,
+    ...config.ghost ? (GhostPackage ).tools : {},
   });
 
   await registry.tools.enableTools(defaults?.tools ?? defaultTools);
@@ -159,16 +176,16 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
 
   // Initialize the chat context with personas
   const chatService = new ChatService({
-    personas: (config as any).personas || defaultPersonas, // Use loaded config
-    persona: (config as any).defaults?.persona || "writer", // Use loaded config
+    personas: config.personas || defaultPersonas, // Use loaded config
+    persona: config.defaults?.persona || "writer", // Use loaded config
   });
 
   const modelRegistry = new ModelRegistry();
-  await modelRegistry.initializeModels(models as any, (config as any).models);
+  await modelRegistry.initializeModels(models as any, config.models);
 
   const templateRegistry = new TemplateRegistry();
-  if ((config as any).templates) {
-    templateRegistry.loadTemplates((config as any).templates);
+  if (config.templates) {
+    templateRegistry.loadTemplates(config.templates);
   }
 
   // Create CLI history storage with 200 command limit
@@ -191,7 +208,7 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
     new EphemeralMemoryService(),
   );
 
-  const ghostConfig = (config as any).ghost;
+  const ghostConfig = config.ghost;
   if (ghostConfig && ghostConfig.url && ghostConfig.adminApiKey && ghostConfig.contentApiKey) {
     await registry.services.addServices(new GhostIOService(ghostConfig));
   } else if (ghostConfig) {
