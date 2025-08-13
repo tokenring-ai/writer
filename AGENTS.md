@@ -1,5 +1,5 @@
 - The project is a bun monorepo with packages in pkg/
-- The project is in vanilla javascript with JSDoc documentation, not typescript
+- The project is in typescript
 - The project uses ES modules
 - Before you write new code, plan out how you are going to add it. Make sure that you have gathered all the info you need from the users codebase before updating or creating files
 - If you write new code, create integration tests for it (not unit tests)
