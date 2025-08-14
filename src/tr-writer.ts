@@ -201,6 +201,7 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
     ...ResearchPackage.tools,
     ...TemplatePackage.tools,
     ...(config.ghost ? (GhostPackage).tools : {}),
+    ...(config.serper ? (SerperPackage).tools : {}),
     ...(config.scraperapi ? (ScraperAPIPackage).tools : {}),
     ...(config.newsrpm ? (NewsRPMPackage).tools : {}),
   });
@@ -256,7 +257,14 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
     console.warn("ScraperAPI configuration detected but missing apiKey. Skipping ScraperAPIService initialization.");
   }
 
-  const nrpmConfig = config.newsrpm;
+    const serperConfig = config.serper;
+    if (serperConfig && serperConfig.apiKey) {
+        await registry.services.addServices(new SerperService(serperConfig));
+    } else if (serperConfig) {
+        console.warn("Serper configuration detected but missing apiKey. Skipping SerperService initialization.");
+    }
+
+    const nrpmConfig = config.newsrpm;
   if (nrpmConfig && nrpmConfig.apiKey) {
     await registry.services.addServices(new NewsRPMService(nrpmConfig as any));
   } else if (nrpmConfig) {
