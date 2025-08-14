@@ -32,6 +32,12 @@ import {
 import initializeLocalDatabase from "@token-ring/sqlite-storage/db/initializeLocalDatabase";
 import * as TemplatePackage from "@token-ring/template";
 import { TemplateRegistry } from "@token-ring/template";
+import * as ScraperAPIPackage from "@token-ring/scraperapi";
+import { ScraperAPIService } from "@token-ring/scraperapi";
+import * as SerperPackage from "@token-ring/serper";
+import { SerperService } from "@token-ring/serper";
+import * as NewsRPMPackage from "@token-ring/newsrpm";
+import { NewsRPMService } from "@token-ring/newsrpm";
 import chalk from "chalk";
 import { Command } from "commander";
 import defaultPersonas from "./defaults/personas.ts";
@@ -49,6 +55,29 @@ interface WriterConfig {
         adminApiKey: string;
         contentApiKey: string;
         url: string;
+    };
+    scraperapi?: {
+        apiKey: string;
+        countryCode?: string;
+        tld?: string;
+        outputFormat?: 'json' | 'csv';
+        render?: boolean;
+        deviceType?: 'desktop' | 'mobile';
+    };
+    serper?: {
+        apiKey: string;
+        gl?: string;
+        hl?: string;
+        location?: string;
+        num?: number;
+        page?: number;
+    };
+    newsrpm?: {
+        apiKey: string;
+        authMode?: 'privateHeader' | 'publicHeader' | 'privateQuery' | 'publicQuery';
+        baseUrl?: string;
+        defaults?: { timeoutMs?: number };
+        retry?: { maxRetries?: number; baseDelayMs?: number; maxDelayMs?: number; jitter?: boolean };
     };
     models: Record<string, ModelConfig>;
     templates: Record<string, any>;
@@ -156,6 +185,9 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
     SQLiteChatStoragePackage,
     TemplatePackage,
     ResearchPackage,
+    ScraperAPIPackage,
+    SerperPackage,
+    NewsRPMPackage,
   );
 
   const db = initializeLocalDatabase(
@@ -168,7 +200,9 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
     ...MemoryPackage.tools,
     ...ResearchPackage.tools,
     ...TemplatePackage.tools,
-    ...config.ghost ? (GhostPackage ).tools : {},
+    ...(config.ghost ? (GhostPackage).tools : {}),
+    ...(config.scraperapi ? (ScraperAPIPackage).tools : {}),
+    ...(config.newsrpm ? (NewsRPMPackage).tools : {}),
   });
 
   await registry.tools.enableTools(defaults?.tools ?? defaultTools);
@@ -213,6 +247,20 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
     await registry.services.addServices(new GhostIOService(ghostConfig));
   } else if (ghostConfig) {
     console.warn("Ghost configuration detected but incomplete. Skipping GhostIOService initialization. Required: url, adminApiKey, contentApiKey.");
+  }
+
+  const scraperConfig = config.scraperapi;
+  if (scraperConfig && scraperConfig.apiKey) {
+    await registry.services.addServices(new ScraperAPIService(scraperConfig));
+  } else if (scraperConfig) {
+    console.warn("ScraperAPI configuration detected but missing apiKey. Skipping ScraperAPIService initialization.");
+  }
+
+  const nrpmConfig = config.newsrpm;
+  if (nrpmConfig && nrpmConfig.apiKey) {
+    await registry.services.addServices(new NewsRPMService(nrpmConfig as any));
+  } else if (nrpmConfig) {
+    console.warn("NewsRPM configuration detected but missing apiKey. Skipping NewsRPMService initialization.");
   }
 }
 

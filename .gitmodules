@@ -55,3 +55,12 @@
 [submodule "pkg/inquirer-tree-selector"]
 	path = pkg/inquirer-tree-selector
 	url = git@github.com:tokenring-ai/inquirer-tree-selector.git
+[submodule "pkg/scraperapi"]
+	path = pkg/scraperapi
+	url = git@github.com:tokenring-ai/scraperapi.git
+[submodule "pkg/serper"]
+	path = pkg/serper
+	url = git@github.com:tokenring-ai/serper.git
+[submodule "pkg/newsrpm"]
+	path = pkg/newsrpm
+	url = git@github.com:tokenring-ai/newsrpm.git

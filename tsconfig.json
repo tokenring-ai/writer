@@ -12,7 +12,14 @@
     "allowImportingTsExtensions": true,
     "types": ["node", "vitest"],
     "outDir": "dist-ts",
-    "rootDir": "."
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@token-ring/*": [
+        "pkg/*/index.ts",
+        "pkg/*"
+      ]
+    }
   },
   "include": [
     "src/**/*",
