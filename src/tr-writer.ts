@@ -1,87 +1,49 @@
 #!/usr/bin/env bun
-import fs from "node:fs";
-import path from "node:path";
 import * as ChatRouterPackage from "@token-ring/ai-client";
-import ModelRegistry, {ModelConfig} from "@token-ring/ai-client/ModelRegistry";
+import ModelRegistry from "@token-ring/ai-client/ModelRegistry";
 import * as models from "@token-ring/ai-client/models";
 import * as ChatPackage from "@token-ring/chat";
-import { ChatService } from "@token-ring/chat";
+import {ChatService} from "@token-ring/chat";
 import * as ChromePackage from "@token-ring/chrome";
 import * as CLIPackage from "@token-ring/cli";
-import { REPLService, ReplHumanInterfaceService } from "@token-ring/cli";
-import * as FilesystemPackage from "@token-ring/filesystem";
-import * as LocalFilesystemPackage from "@token-ring/local-filesystem";
-import { LocalFileSystemService } from "@token-ring/local-filesystem";
+import {ReplHumanInterfaceService, REPLService} from "@token-ring/cli";
 import * as FeedbackPackage from "@token-ring/feedback";
+import * as FilesystemPackage from "@token-ring/filesystem";
 import * as GhostPackage from "@token-ring/ghost-io";
-import { GhostIOService } from "@token-ring/ghost-io";
+import {GhostIOService} from "@token-ring/ghost-io";
 import * as HistoryPackage from "@token-ring/history";
+import * as LocalFilesystemPackage from "@token-ring/local-filesystem";
+import {LocalFileSystemService} from "@token-ring/local-filesystem";
 import * as MemoryPackage from "@token-ring/memory";
-import { EphemeralMemoryService } from "@token-ring/memory";
-import { WorkQueueService } from "@token-ring/queue";
+import {EphemeralMemoryService} from "@token-ring/memory";
+import * as NewsRPMPackage from "@token-ring/newsrpm";
+import {NewsRPMService} from "@token-ring/newsrpm";
+import {WorkQueueService} from "@token-ring/queue";
 import * as RegistryPackage from "@token-ring/registry";
-import { Registry } from "@token-ring/registry";
+import {Registry} from "@token-ring/registry";
 import * as ResearchPackage from "@token-ring/research";
+import * as ScraperAPIPackage from "@token-ring/scraperapi";
+import {ScraperAPIService} from "@token-ring/scraperapi";
+import * as SerperPackage from "@token-ring/serper";
+import {SerperService} from "@token-ring/serper";
 import * as SQLiteChatStoragePackage from "@token-ring/sqlite-storage";
 import {
   SQLiteChatCheckpointStorage,
   SQLiteChatHistoryStorage,
   SQLiteChatMessageStorage,
-  SQLiteCLIHistoryStorage,
+  SQLiteCLIHistoryStorage
 } from "@token-ring/sqlite-storage";
 import initializeLocalDatabase from "@token-ring/sqlite-storage/db/initializeLocalDatabase";
 import * as TemplatePackage from "@token-ring/template";
-import { TemplateRegistry } from "@token-ring/template";
-import * as ScraperAPIPackage from "@token-ring/scraperapi";
-import { ScraperAPIService } from "@token-ring/scraperapi";
-import * as SerperPackage from "@token-ring/serper";
-import { SerperService } from "@token-ring/serper";
-import * as NewsRPMPackage from "@token-ring/newsrpm";
-import { NewsRPMService } from "@token-ring/newsrpm";
+import {TemplateRegistry} from "@token-ring/template";
 import chalk from "chalk";
-import { Command } from "commander";
+import {Command} from "commander";
+import fs from "node:fs";
+import path from "node:path";
+import {WriterConfig} from "./config.types.ts";
 import defaultPersonas from "./defaults/personas.ts";
-import { initializeConfigDirectory } from "./initializeConfigDirectory.ts";
-import { error } from "./prettyString.ts";
-import {PersonaConfig} from "@token-ring/chat/ChatService";
-
-interface WriterConfig {
-    defaults: {
-        persona: string;
-        tools?: string[];
-    };
-    personas: Record<string, PersonaConfig>
-    ghost?: {
-        adminApiKey: string;
-        contentApiKey: string;
-        url: string;
-    };
-    scraperapi?: {
-        apiKey: string;
-        countryCode?: string;
-        tld?: string;
-        outputFormat?: 'json' | 'csv';
-        render?: boolean;
-        deviceType?: 'desktop' | 'mobile';
-    };
-    serper?: {
-        apiKey: string;
-        gl?: string;
-        hl?: string;
-        location?: string;
-        num?: number;
-        page?: number;
-    };
-    newsrpm?: {
-        apiKey: string;
-        authMode?: 'privateHeader' | 'publicHeader' | 'privateQuery' | 'publicQuery';
-        baseUrl?: string;
-        defaults?: { timeoutMs?: number };
-        retry?: { maxRetries?: number; baseDelayMs?: number; maxDelayMs?: number; jitter?: boolean };
-    };
-    models: Record<string, ModelConfig>;
-    templates: Record<string, any>;
-}
+import {initializeConfigDirectory} from "./initializeConfigDirectory.ts";
+import {error} from "./prettyString.ts";
 
 // Create a new Commander program
 const program = new Command();
@@ -125,7 +87,7 @@ Examples:
 
 program.parse();
 
-async function runWriter({ source, config: configFileInput, initialize }: RunOptions): Promise<void> {
+async function runWriter({source, config: configFileInput, initialize}: RunOptions): Promise<void> {
   // noinspection JSCheckFunctionSignatures
   const resolvedSource = path.resolve(source);
 
@@ -158,8 +120,8 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
   if (!configFile) {
     throw new Error(
       `Source directory ${resolvedSource} does not contain a .tokenring/writer-config.{mjs,cjs,js} file.\n` +
-        `You can create one by adding --initialize:\n` +
-        `./tr-writer --source ${resolvedSource} --initialize`,
+      `You can create one by adding --initialize:\n` +
+      `./tr-writer --source ${resolvedSource} --initialize`,
     );
   }
 
@@ -194,17 +156,18 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
     path.resolve(configDirectory, "./writer-database.sqlite"),
   );
 
-  const { defaults } = config;
+  const {defaults} = config;
 
-  const defaultTools = Object.keys({
-    ...MemoryPackage.tools,
-    ...ResearchPackage.tools,
-    ...TemplatePackage.tools,
-    ...(config.ghost ? (GhostPackage).tools : {}),
-    ...(config.serper ? (SerperPackage).tools : {}),
-    ...(config.scraperapi ? (ScraperAPIPackage).tools : {}),
-    ...(config.newsrpm ? (NewsRPMPackage).tools : {}),
-  });
+
+  const defaultTools: string[] = [
+    ...Object.values(MemoryPackage.tools).map((tool) => tool.name),
+    ...Object.values(ResearchPackage.tools).map((tool) => tool.name),
+    ...Object.values(TemplatePackage.tools).map((tool) => tool.name),
+    ...(config.ghost ? Object.values(GhostPackage.tools).map(tool => tool.name) : []),
+    ...(config.serper ? Object.values(SerperPackage.tools).map(tool => tool.name) : []),
+    ...(config.scraperapi ? Object.values(ScraperAPIPackage.tools).map(tool => tool.name) : []),
+    ...(config.newsrpm ? Object.values(NewsRPMPackage.tools).map(tool => tool.name) : []),
+  ];
 
   await registry.tools.enableTools(defaults?.tools ?? defaultTools);
   console.log(chalk.greenBright(banner));
@@ -224,21 +187,21 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
   }
 
   // Create CLI history storage with 200 command limit
-  const cliHistoryStorage = new SQLiteCLIHistoryStorage({ 
-    db, 
-    config: { limit: 200 }
+  const cliHistoryStorage = new SQLiteCLIHistoryStorage({
+    db,
+    config: {limit: 200}
   });
 
   await registry.services.addServices(
     chatService,
-    new REPLService({ historyStorage: cliHistoryStorage }),
+    new REPLService({historyStorage: cliHistoryStorage}),
     new ReplHumanInterfaceService(),
-    new LocalFileSystemService({ rootDirectory: resolvedSource }),
+    new LocalFileSystemService({rootDirectory: resolvedSource}),
     modelRegistry,
     templateRegistry,
-    new SQLiteChatMessageStorage({ db }),
-    new SQLiteChatHistoryStorage({ db }),
-    new SQLiteChatCheckpointStorage({ db }),
+    new SQLiteChatMessageStorage({db}),
+    new SQLiteChatHistoryStorage({db}),
+    new SQLiteChatCheckpointStorage({db}),
     new WorkQueueService(),
     new EphemeralMemoryService(),
   );
@@ -257,14 +220,14 @@ async function runWriter({ source, config: configFileInput, initialize }: RunOpt
     console.warn("ScraperAPI configuration detected but missing apiKey. Skipping ScraperAPIService initialization.");
   }
 
-    const serperConfig = config.serper;
-    if (serperConfig && serperConfig.apiKey) {
-        await registry.services.addServices(new SerperService(serperConfig));
-    } else if (serperConfig) {
-        console.warn("Serper configuration detected but missing apiKey. Skipping SerperService initialization.");
-    }
+  const serperConfig = config.serper;
+  if (serperConfig && serperConfig.apiKey) {
+    await registry.services.addServices(new SerperService(serperConfig));
+  } else if (serperConfig) {
+    console.warn("Serper configuration detected but missing apiKey. Skipping SerperService initialization.");
+  }
 
-    const nrpmConfig = config.newsrpm;
+  const nrpmConfig = config.newsrpm;
   if (nrpmConfig && nrpmConfig.apiKey) {
     await registry.services.addServices(new NewsRPMService(nrpmConfig as any));
   } else if (nrpmConfig) {

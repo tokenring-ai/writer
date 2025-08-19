@@ -1,6 +1,7 @@
 # GitHub Action for Docker Build and Push
 
-This document explains the GitHub Action workflow that builds and pushes the Docker image to GitHub Container Registry (GHCR).
+This document explains the GitHub Action workflow that builds and pushes the Docker image to GitHub Container Registry (
+GHCR).
 
 ## Workflow Overview
 
@@ -31,7 +32,8 @@ The Docker image is built from the Dockerfile located at `docker/Dockerfile`. Th
 
 ## Authentication
 
-The workflow uses the `GITHUB_TOKEN` secret for authentication with GitHub Container Registry. No additional secrets need to be configured.
+The workflow uses the `GITHUB_TOKEN` secret for authentication with GitHub Container Registry. No additional secrets
+need to be configured.
 
 ## Permissions
 
@@ -51,6 +53,7 @@ ghcr.io/OWNER/REPOSITORY:TAG
 ```
 
 Where:
+
 - `OWNER` is the GitHub username or organization name
 - `REPOSITORY` is the name of the repository
 - `TAG` is one of the tags mentioned above

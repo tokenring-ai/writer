@@ -13,9 +13,8 @@ const adminAPI = new GhostAdminAPI({
 // Create directory structure: images/YYYY-MM-DD/
 const now = new Date();
 const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD format
-const imageDir = `images/${dateStr}`;
 
-const imageData = fs.readFileSync('../financialcontent-writer/images/2025-08-01/3c445fe5-7ff5-488b-a3f0-022251db0ef9.png','binary');
+const imageData = fs.readFileSync('../financialcontent-writer/images/2025-08-01/3c445fe5-7ff5-488b-a3f0-022251db0ef9.png', 'binary');
 
 const filename = `3c445fe5-7ff5-488b-a3f0-022251db0ef9.png`;
 

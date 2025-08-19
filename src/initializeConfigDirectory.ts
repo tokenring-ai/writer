@@ -1,10 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
-import { error, success } from "./prettyString.ts";
 
 // We will write the TypeScript example file as a .mjs config for end-users
 // by embedding its source text rather than importing the object.
-import { fileURLToPath } from "node:url";
+import {fileURLToPath} from "node:url";
+import {error, success} from "./prettyString.ts";
 
 function readExampleConfigSource(): string {
   const __filename = fileURLToPath(import.meta.url);

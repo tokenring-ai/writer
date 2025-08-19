@@ -1,41 +1,39 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "allowJs": true,
-    "checkJs": true,
-    "allowImportingTsExtensions": true,
-    "types": ["node", "vitest"],
-    "outDir": "dist-ts",
-    "rootDir": ".",
-    "baseUrl": ".",
-    "paths": {
-      "@token-ring/*": [
-        "pkg/*/index.ts",
-        "pkg/*"
-      ]
-    }
-  },
-  "include": [
-    "src/**/*",
-    "pkg/**/*.ts",
-    "pkg/**/*.js",
-    "types/**/*.d.ts"
+ "compilerOptions": {
+  "target": "ES2022",
+  "module": "NodeNext",
+  "moduleResolution": "NodeNext",
+  "resolveJsonModule": true,
+  "esModuleInterop": true,
+  "skipLibCheck": true,
+  "strict": true,
+  "allowJs": true,
+  "checkJs": true,
+  "noEmit": true,
+  "allowImportingTsExtensions": true,
+  "types": [
+   "node",
+   "vitest"
   ],
-  "exclude": [
-    "node_modules",
-    "**/dist",
-    "dist-ts",
-    "**/*.test.*",
-    "pkg/**/test/**",
-    "pkg/**/__tests__/**",
-    "pkg/inquirer-command-prompt/examples/**",
-    "pkg/inquirer-tree-selector/rollup.config.js",
-    "**/vitest.config.*"
-  ]
+  "outDir": "dist-ts",
+  "rootDir": "."
+ },
+ "include": [
+  "src/**/*",
+  "types/**/*.d.ts"
+ ],
+ "exclude": [
+  "node_modules",
+  "**/dist",
+  "dist-ts",
+  "**/*.test.*",
+  "pkg/**/test/**",
+  "pkg/**/__tests__/**",
+  "pkg/**/examples/**",
+  "src/examples/**",
+  "pkg/**/hooks/**",
+  "pkg/inquirer-command-prompt/examples/**",
+  "pkg/inquirer-tree-selector/rollup.config.js",
+  "**/vitest.config.*"
+ ]
 }

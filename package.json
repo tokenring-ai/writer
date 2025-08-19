@@ -1,50 +1,55 @@
 {
-	"name": "@token-ring/writer",
-	"description": "TokenRing Writer Application",
-	"version": "0.1.0",
-	"bin": {
-		"tr-writer": "dist/tr-writer.ts"
-	},
-	"dependencies": {
-		"@dotenvx/dotenvx": "^1.48.4",
-		"@inquirer/prompts": "^7.8.1",
-		"@token-ring/ai-client": "0.1.0",
-		"@token-ring/chat": "0.1.0",
-		"@token-ring/chrome": "0.1.0",
-		"@token-ring/cli": "0.1.0",
-		"@token-ring/feedback": "0.1.0",
-		"@token-ring/ghost-io": "0.1.0",
-		"@token-ring/history": "0.1.0",
-		"@token-ring/local-filesystem": "0.1.0",
-		"@token-ring/memory": "0.1.0",
-		"@token-ring/queue": "0.1.0",
-		"@token-ring/registry": "0.1.0",
-		"@token-ring/sqlite-storage": "0.1.0",
-		"@token-ring/template": "0.1.0",
-		"commander": "^14.0.0",
-		"path-browserify": "^1.0.1"
-	},
-	"devDependencies": {
-		"esbuild": "^0.24.2",
-		"vitest": "^2.1.9",
-		"husky": "^9.1.7",
-		"trufflehog": "^0.0.5",
-		"ts": "^0.2.2",
-		"@biomejs/biome": "^2.1.4"
-	},
-	"license": "MIT",
-	"scripts": {
-		"preinstall": "test -f pkg/ai-client/package.json || echo 'Updating git submodules...' && git submodule update --init --recursive",
-		"build-container": "docker build -t token-ring/writer:latest -f docker/Dockerfile .",
-		"writer-container": "docker run -ti --net host -v ./:/repo:rw token-ring/writer:latest",
-		"code-debug": "bun --inspect src/tr-writer.ts --source ./",
-		"writer": "bun src/tr-writer.ts --source ./",
-		"typecheck": "tsc -p tsconfig.tson --noEmit",
-		"build:ts": "tsc -p tsconfig.tson",
-		"test": "vitest run",
-		"prepare": "husky",
-		"biome": "biome format --fix"
-	},
-	"type": "module",
-	"workspaces": ["pkg/*"]
+ "name": "@token-ring/writer",
+ "description": "TokenRing Writer Application",
+ "version": "0.1.0",
+ "bin": {
+  "tr-writer": "dist/tr-writer.ts"
+ },
+ "dependencies": {
+  "@dotenvx/dotenvx": "^1.48.4",
+  "@inquirer/prompts": "^7.8.1",
+  "@token-ring/ai-client": "0.1.0",
+  "@token-ring/chat": "0.1.0",
+  "@token-ring/chrome": "0.1.0",
+  "@token-ring/cli": "0.1.0",
+  "@token-ring/feedback": "0.1.0",
+  "@token-ring/ghost-io": "0.1.0",
+  "@token-ring/history": "0.1.0",
+  "@token-ring/local-filesystem": "0.1.0",
+  "@token-ring/memory": "0.1.0",
+  "@token-ring/queue": "0.1.0",
+  "@token-ring/registry": "0.1.0",
+  "@token-ring/sqlite-storage": "0.1.0",
+  "@token-ring/template": "0.1.0",
+  "commander": "^14.0.0",
+  "path-browserify": "^1.0.1"
+ },
+ "devDependencies": {
+  "@biomejs/biome": "^2.2.0",
+  "husky": "^9.1.7",
+  "jsdom": "^26.1.0",
+  "node-gyp": "^11.3.0",
+  "trufflehog": "^0.0.5",
+  "ts": "^0.2.2",
+  "vitest": "^3.2.4"
+ },
+ "license": "MIT",
+ "scripts": {
+  "xpreinstall": "test -f pkg/ai-client/package.json || echo 'Updating git submodules...' && git submodule update --init --recursive",
+  "build-container": "docker build -t token-ring/coder:latest -f docker/Dockerfile .",
+  "coder-container": "docker run -ti --net host -v ./:/repo:rw token-ring/coder:latest",
+  "build": "tsc",
+  "code-debug": "bun --inspect src/tr-coder.js --source ./",
+  "coder": "bun src/tr-coder.js --source ./",
+  "typecheck": "tsc -p tsconfig.tson --noEmit",
+  "build:ts": "tsc -p tsconfig.tson",
+  "test": "vitest run",
+  "prepare": "husky",
+  "biome": "biome format --fix",
+  "update-all-dependencies-latest": "git submodule foreach npx npm-check-updates -u"
+ },
+ "type": "module",
+ "workspaces": [
+  "pkg/*"
+ ]
 }

@@ -22,21 +22,21 @@ export default {
 		url: process.env.GHOST_URL,
 	},
 	models: {
-		Google: {
+		google: {
+			displayName: "Google",
 			apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-			provider: "google",
 		},
-		OpenAI: {
+		openai: {
+			displayName: "OpenAI",
 			apiKey: process.env.OPENAI_API_KEY,
-			provider: "openai",
 		},
-		Perplexity: {
+		perplexity: {
+			displayName: "Perplexity",
 			apiKey: process.env.PERPLEXITY_API_KEY,
-			provider: "perplexity",
 		},
-		xAi: {
+		xai: {
+			displayName: "xAi",
 			apiKey: process.env.XAI_API_KEY,
-			provider: "xai",
 		},
 	},
 	templates,
