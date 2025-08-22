@@ -26,6 +26,10 @@ export default {
 			displayName: "Google",
 			apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
 		},
+  fal: {
+    displayName: "Fal",
+    apiKey: process.env.FAL_API_KEY,
+  },
 		openai: {
 			displayName: "OpenAI",
 			apiKey: process.env.OPENAI_API_KEY,

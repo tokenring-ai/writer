@@ -35,6 +35,9 @@ export interface WriterConfig {
     defaults?: { timeoutMs?: number };
     retry?: { maxRetries?: number; baseDelayMs?: number; maxDelayMs?: number; jitter?: boolean };
   };
+  research: {
+    researchModel: string;
+  };
   models: Record<string, ModelConfig>;
   templates: Record<string, any>;
 }

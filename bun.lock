@@ -40,6 +40,7 @@
         "@ai-sdk/azure": "^2.0.15",
         "@ai-sdk/cerebras": "^1.0.7",
         "@ai-sdk/deepseek": "^1.0.7",
+        "@ai-sdk/fal": "^1.0.8",
         "@ai-sdk/google": "^2.0.6",
         "@ai-sdk/groq": "^2.0.10",
         "@ai-sdk/openai": "^2.0.15",
@@ -378,6 +379,8 @@
     "@ai-sdk/cerebras": ["@ai-sdk/cerebras@1.0.8", "", { "dependencies": { "@ai-sdk/openai-compatible": "1.0.8", "@ai-sdk/provider": "2.0.0", "@ai-sdk/provider-utils": "3.0.3" }, "peerDependencies": { "zod": "^3.25.76 || ^4" } }, "sha512-UGB5uRuCg1D7p43cD73I/ZBYknlKTj9wbjTHvdtAUrcAGMFk4jm6VB6uIgjUeDOcR2gv7jFnk3iLvMj87MLviA=="],
 
     "@ai-sdk/deepseek": ["@ai-sdk/deepseek@1.0.8", "", { "dependencies": { "@ai-sdk/openai-compatible": "1.0.8", "@ai-sdk/provider": "2.0.0", "@ai-sdk/provider-utils": "3.0.3" }, "peerDependencies": { "zod": "^3.25.76 || ^4" } }, "sha512-Lu6g34ca1noAabj3E+uuaoAECc9JuQ8aQwyQjJ+pF92r5knucPHy219RCmFquAhpH4ae+M74jLNdxhpPTjBRHg=="],
+
+    "@ai-sdk/fal": ["@ai-sdk/fal@1.0.8", "", { "dependencies": { "@ai-sdk/provider": "2.0.0", "@ai-sdk/provider-utils": "3.0.5" }, "peerDependencies": { "zod": "^3.25.76 || ^4" } }, "sha512-HDkGznLzbeT/gNPHXW5lSjIjd6pTB1Nux2n++zG0kiipXSxfhx93cdfibQNZFBrZJrKqUhgPU7TAhDW4ygTMcA=="],
 
     "@ai-sdk/gateway": ["@ai-sdk/gateway@1.0.7", "", { "dependencies": { "@ai-sdk/provider": "2.0.0", "@ai-sdk/provider-utils": "3.0.3" }, "peerDependencies": { "zod": "^3.25.76 || ^4" } }, "sha512-Athrq7OARuNc0iHZJP6InhSQ53tImCc990vMWyR1UHaZgPZJbXjKhIMiOj54F0I0Nlemx48V4fHYUTfLkJotnQ=="],
 
@@ -2140,6 +2143,8 @@
     "zod": ["zod@4.0.17", "", {}, "sha512-1PHjlYRevNxxdy2JZ8JcNAw7rX8V9P1AKkP+x/xZfxB0K5FYfuV+Ug6P/6NVSR2jHQ+FzDDoDHS04nYUsOIyLQ=="],
 
     "zod-to-json-schema": ["zod-to-json-schema@3.24.6", "", { "peerDependencies": { "zod": "^3.24.1" } }, "sha512-h/z3PKvcTcTetyjl1fkj79MHNEjm+HpD6NXheWjzOekY7kV+lwDYnHw+ivHkijnCSMz1yJaWBD9vu/Fcmk+vEg=="],
+
+    "@ai-sdk/fal/@ai-sdk/provider-utils": ["@ai-sdk/provider-utils@3.0.5", "", { "dependencies": { "@ai-sdk/provider": "2.0.0", "@standard-schema/spec": "^1.0.0", "eventsource-parser": "^3.0.3", "zod-to-json-schema": "^3.24.1" }, "peerDependencies": { "zod": "^3.25.76 || ^4" } }, "sha512-HliwB/yzufw3iwczbFVE2Fiwf1XqROB/I6ng8EKUsPM5+2wnIa8f4VbljZcDx+grhFrPV+PnRZH7zBqi8WZM7Q=="],
 
     "@asamuzakjp/css-color/lru-cache": ["lru-cache@10.4.3", "", {}, "sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ=="],
 

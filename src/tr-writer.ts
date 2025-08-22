@@ -22,6 +22,7 @@ import {WorkQueueService} from "@token-ring/queue";
 import * as RegistryPackage from "@token-ring/registry";
 import {Registry} from "@token-ring/registry";
 import * as ResearchPackage from "@token-ring/research";
+import ResearchService from "@token-ring/research/ResearchService";
 import * as ScraperAPIPackage from "@token-ring/scraperapi";
 import {ScraperAPIService} from "@token-ring/scraperapi";
 import * as SerperPackage from "@token-ring/serper";
@@ -202,6 +203,7 @@ async function runWriter({source, config: configFileInput, initialize}: RunOptio
     new SQLiteChatMessageStorage({db}),
     new SQLiteChatHistoryStorage({db}),
     new SQLiteChatCheckpointStorage({db}),
+    new ResearchService(config.research),
     new WorkQueueService(),
     new EphemeralMemoryService(),
   );

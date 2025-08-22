@@ -30,10 +30,17 @@ export default {
  scraperapi: {
   apiKey: process.env.SCRAPERAPI_API_KEY,
  },
+ research: {
+  researchModel: "gemini-2.5-flash",
+ },
  models: {
   google: {
    displayName: "Google",
    apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+  },
+  fal: {
+   displayName: "Fal",
+   apiKey: process.env.FAL_API_KEY,
   },
   openai: {
    displayName: "OpenAI",
