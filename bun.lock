@@ -10,6 +10,7 @@
         "@token-ring/chat": "0.1.0",
         "@token-ring/chrome": "0.1.0",
         "@token-ring/cli": "0.1.0",
+        "@token-ring/cloudquote": "0.1.0",
         "@token-ring/feedback": "0.1.0",
         "@token-ring/ghost-io": "0.1.0",
         "@token-ring/history": "0.1.0",
@@ -20,6 +21,7 @@
         "@token-ring/s3-cdn": "0.1.0",
         "@token-ring/sqlite-storage": "0.1.0",
         "@token-ring/template": "0.1.0",
+        "@token-ring/wikipedia": "0.1.0",
         "commander": "^14.0.0",
         "path-browserify": "^1.0.1",
       },
@@ -134,6 +136,15 @@
       "devDependencies": {
         "typescript": "^5.9.2",
         "vitest": "^3.2.4",
+      },
+    },
+    "pkg/cloudquote": {
+      "name": "@token-ring/cloudquote",
+      "version": "0.1.0",
+      "dependencies": {
+        "@token-ring/chat": "0.1.0",
+        "@token-ring/registry": "0.1.0",
+        "axios": "^1.6.0",
       },
     },
     "pkg/feedback": {
@@ -388,6 +399,20 @@
       "version": "0.1.0",
       "dependencies": {
         "@token-ring/registry": "0.1.0",
+      },
+    },
+    "pkg/wikipedia": {
+      "name": "@token-ring/wikipedia",
+      "version": "0.1.0",
+      "dependencies": {
+        "@token-ring/ai-client": "0.1.0",
+        "@token-ring/chat": "0.1.0",
+        "@token-ring/registry": "0.1.0",
+        "zod": "^4.0.17",
+      },
+      "devDependencies": {
+        "@vitest/coverage-v8": "^3.2.4",
+        "vitest": "^3.2.4",
       },
     },
   },
@@ -1012,6 +1037,8 @@
 
     "@token-ring/cli": ["@token-ring/cli@workspace:pkg/cli"],
 
+    "@token-ring/cloudquote": ["@token-ring/cloudquote@workspace:pkg/cloudquote"],
+
     "@token-ring/feedback": ["@token-ring/feedback@workspace:pkg/feedback"],
 
     "@token-ring/filesystem": ["@token-ring/filesystem@workspace:pkg/filesystem"],
@@ -1047,6 +1074,8 @@
     "@token-ring/template": ["@token-ring/template@workspace:pkg/template"],
 
     "@token-ring/utility": ["@token-ring/utility@workspace:pkg/utility"],
+
+    "@token-ring/wikipedia": ["@token-ring/wikipedia@workspace:pkg/wikipedia"],
 
     "@tootallnate/quickjs-emscripten": ["@tootallnate/quickjs-emscripten@0.23.0", "", {}, "sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA=="],
 

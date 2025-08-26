@@ -8,6 +8,8 @@ import * as ChatPackage from "@token-ring/chat";
 import {ChatService} from "@token-ring/chat";
 import * as ChromePackage from "@token-ring/chrome";
 import * as CLIPackage from "@token-ring/cli";
+import * as CloudQuotePackage from "@token-ring/cloudquote";
+import { CloudQuoteService} from "@token-ring/cloudquote";
 import {ReplHumanInterfaceService, REPLService} from "@token-ring/cli";
 import * as FeedbackPackage from "@token-ring/feedback";
 import * as FilesystemPackage from "@token-ring/filesystem";
@@ -46,6 +48,8 @@ import chalk from "chalk";
 import {Command} from "commander";
 import fs from "node:fs";
 import path from "node:path";
+import * as WikipediaPackage from "@token-ring/wikipedia";
+import {WikipediaService} from "@token-ring/wikipedia";
 import {WriterConfig} from "./config.types.ts";
 import defaultPersonas from "./defaults/personas.ts";
 import {initializeConfigDirectory} from "./initializeConfigDirectory.ts";
@@ -144,6 +148,7 @@ async function runWriter({source, config: configFileInput, initialize}: RunOptio
     ChatRouterPackage,
     ChromePackage,
     CLIPackage,
+    CloudQuotePackage,
     FilesystemPackage,
     FeedbackPackage,
     GhostPackage,
@@ -158,6 +163,7 @@ async function runWriter({source, config: configFileInput, initialize}: RunOptio
     SerperPackage,
     S3CDNPackage,
     NewsRPMPackage,
+    WikipediaPackage,
   );
 
   const db = initializeLocalDatabase(
@@ -175,6 +181,8 @@ async function runWriter({source, config: configFileInput, initialize}: RunOptio
     ...(config.serper ? Object.values(SerperPackage.tools).map(tool => tool.name) : []),
     ...(config.scraperapi ? Object.values(ScraperAPIPackage.tools).map(tool => tool.name) : []),
     ...(config.newsrpm ? Object.values(NewsRPMPackage.tools).map(tool => tool.name) : []),
+    ...(config.cloudquote ? Object.values(CloudQuotePackage.tools).map(tool => tool.name) : []),
+    ...Object.values(WikipediaPackage.tools).map(tool => tool.name),
   ];
 
   await registry.tools.enableTools(defaults?.tools ?? defaultTools);
@@ -235,6 +243,12 @@ async function runWriter({source, config: configFileInput, initialize}: RunOptio
   if (config.newsrpm) {
     await registry.services.addServices(new NewsRPMService(config.newsrpm));
   }
+
+  if (config.cloudquote) {
+    await registry.services.addServices(new CloudQuoteService(config.cloudquote));
+  }
+
+  await registry.services.addServices(new WikipediaService(config.wikipedia));
 }
 
 const banner = `

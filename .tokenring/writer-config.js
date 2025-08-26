@@ -16,11 +16,17 @@ export default {
  defaults: {
   persona: "writer",
  },
+ cloudquote: {
+  apiKey: process.env.CLOUDQUOTE_API_KEY,
+ },
  ghost: {
   adminApiKey: process.env.GHOST_ADMIN_API_KEY,
   contentApiKey: process.env.GHOST_CONTENT_API_KEY,
   url: process.env.GHOST_URL,
   cdn: 'ghost'
+ },
+ wikipedia: {
+  baseUrl: "https://en.wikipedia.org"
  },
  newsrpm: {
   apiKey: process.env.NEWSRPM_API_KEY,

@@ -71,3 +71,11 @@
 [submodule "pkg/s3-cdn"]
 	path = pkg/s3-cdn
 	url = git@github.com:tokenring-ai/s3-cdn.git
+[submodule "pkg/cloudquote"]
+	path = pkg/cloudquote
+	url = git@github.com:tokenring-ai/cloudquote.git
+	branch = main
+[submodule "pkg/wikipedia"]
+	path = pkg/wikipedia
+	url = git@github.com:tokenring-ai/wikipedia.git
+	branch = main

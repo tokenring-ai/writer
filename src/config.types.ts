@@ -3,6 +3,8 @@ import {PersonaConfig} from "@token-ring/chat/ChatService";
 import {GhostCDNResourceOptions} from "@token-ring/ghost-io/GhostCDNResource";
 import {GhostIOServiceOptions} from "@token-ring/ghost-io/GhostIOService";
 import {S3CDNResourceOptions} from "@token-ring/s3-cdn";
+import {CloudQuoteServiceOptions} from "../pkg/cloudquote/CloudQuoteService.js";
+import {WikipediaConfig} from "../pkg/wikipedia/WikipediaService.js";
 
 export interface WriterConfig {
   defaults: {
@@ -11,6 +13,7 @@ export interface WriterConfig {
   };
   personas: Record<string, PersonaConfig>
   ghost?: GhostIOServiceOptions;
+  cloudquote?: CloudQuoteServiceOptions;
   scraperapi?: {
     apiKey: string;
     countryCode?: string;
@@ -37,6 +40,7 @@ export interface WriterConfig {
   research: {
     researchModel: string;
   };
+  wikipedia?: WikipediaConfig;
   cdn?: {
     ghost?: GhostCDNResourceOptions,
     s3?: S3CDNResourceOptions

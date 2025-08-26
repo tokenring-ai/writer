@@ -12,6 +12,7 @@
   "@token-ring/chat": "0.1.0",
   "@token-ring/chrome": "0.1.0",
   "@token-ring/cli": "0.1.0",
+  "@token-ring/cloudquote": "0.1.0",
   "@token-ring/feedback": "0.1.0",
   "@token-ring/ghost-io": "0.1.0",
   "@token-ring/history": "0.1.0",
@@ -22,6 +23,7 @@
   "@token-ring/s3-cdn": "0.1.0",
   "@token-ring/sqlite-storage": "0.1.0",
   "@token-ring/template": "0.1.0",
+  "@token-ring/wikipedia": "0.1.0",
   "commander": "^14.0.0",
   "path-browserify": "^1.0.1"
  },
