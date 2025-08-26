@@ -19,6 +19,7 @@
   "@token-ring/memory": "0.1.0",
   "@token-ring/queue": "0.1.0",
   "@token-ring/registry": "0.1.0",
+  "@token-ring/s3-cdn": "0.1.0",
   "@token-ring/sqlite-storage": "0.1.0",
   "@token-ring/template": "0.1.0",
   "commander": "^14.0.0",

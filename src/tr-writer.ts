@@ -2,6 +2,8 @@
 import * as ChatRouterPackage from "@token-ring/ai-client";
 import ModelRegistry from "@token-ring/ai-client/ModelRegistry";
 import * as models from "@token-ring/ai-client/models";
+import {CDNService} from "@token-ring/cdn";
+import * as CDNPackage from "@token-ring/cdn";
 import * as ChatPackage from "@token-ring/chat";
 import {ChatService} from "@token-ring/chat";
 import * as ChromePackage from "@token-ring/chrome";
@@ -11,6 +13,7 @@ import * as FeedbackPackage from "@token-ring/feedback";
 import * as FilesystemPackage from "@token-ring/filesystem";
 import * as GhostPackage from "@token-ring/ghost-io";
 import {GhostIOService} from "@token-ring/ghost-io";
+import GhostCDNResource, {GhostCDNResourceOptions} from "@token-ring/ghost-io/GhostCDNResource";
 import * as HistoryPackage from "@token-ring/history";
 import * as LocalFilesystemPackage from "@token-ring/local-filesystem";
 import {LocalFileSystemService} from "@token-ring/local-filesystem";
@@ -23,6 +26,8 @@ import * as RegistryPackage from "@token-ring/registry";
 import {Registry} from "@token-ring/registry";
 import * as ResearchPackage from "@token-ring/research";
 import ResearchService from "@token-ring/research/ResearchService";
+import * as S3CDNPackage from "@token-ring/s3-cdn";
+import {S3CDNResource, S3CDNResourceOptions} from "@token-ring/s3-cdn";
 import * as ScraperAPIPackage from "@token-ring/scraperapi";
 import {ScraperAPIService} from "@token-ring/scraperapi";
 import * as SerperPackage from "@token-ring/serper";
@@ -134,6 +139,7 @@ async function runWriter({source, config: configFileInput, initialize}: RunOptio
   await registry.start();
 
   await registry.addPackages(
+    CDNPackage,
     ChatPackage,
     ChatRouterPackage,
     ChromePackage,
@@ -150,6 +156,7 @@ async function runWriter({source, config: configFileInput, initialize}: RunOptio
     ResearchPackage,
     ScraperAPIPackage,
     SerperPackage,
+    S3CDNPackage,
     NewsRPMPackage,
   );
 
@@ -161,7 +168,7 @@ async function runWriter({source, config: configFileInput, initialize}: RunOptio
 
 
   const defaultTools: string[] = [
-    ...Object.values(MemoryPackage.tools).map((tool) => tool.name),
+    ...Object.values(ChromePackage.tools).map((tool) => tool.name),
     ...Object.values(ResearchPackage.tools).map((tool) => tool.name),
     ...Object.values(TemplatePackage.tools).map((tool) => tool.name),
     ...(config.ghost ? Object.values(GhostPackage.tools).map(tool => tool.name) : []),
@@ -180,14 +187,14 @@ async function runWriter({source, config: configFileInput, initialize}: RunOptio
   });
 
   const modelRegistry = new ModelRegistry();
-  await modelRegistry.initializeModels(models as any, config.models);
+  await modelRegistry.initializeModels(models, config.models);
 
   const templateRegistry = new TemplateRegistry();
   if (config.templates) {
     templateRegistry.loadTemplates(config.templates);
   }
 
-  // Create CLI history storage with 200 command limit
+  // Create CLI history storage with 200 command limits
   const cliHistoryStorage = new SQLiteCLIHistoryStorage({
     db,
     config: {limit: 200}
@@ -206,34 +213,27 @@ async function runWriter({source, config: configFileInput, initialize}: RunOptio
     new ResearchService(config.research),
     new WorkQueueService(),
     new EphemeralMemoryService(),
+    new CDNService(),
   );
 
-  const ghostConfig = config.ghost;
-  if (ghostConfig && ghostConfig.url && ghostConfig.adminApiKey && ghostConfig.contentApiKey) {
-    await registry.services.addServices(new GhostIOService(ghostConfig));
-  } else if (ghostConfig) {
-    console.warn("Ghost configuration detected but incomplete. Skipping GhostIOService initialization. Required: url, adminApiKey, contentApiKey.");
+  const cdnConfig = config.cdn ?? {};
+  if (cdnConfig.ghost) {
+    registry.requireFirstServiceByType(CDNService).registerCDN("ghost", new GhostCDNResource(cdnConfig.ghost));
+  }
+  if (cdnConfig.s3) {
+    registry.requireFirstServiceByType(CDNService).registerCDN("s3", new S3CDNResource(cdnConfig.s3));
   }
 
-  const scraperConfig = config.scraperapi;
-  if (scraperConfig && scraperConfig.apiKey) {
-    await registry.services.addServices(new ScraperAPIService(scraperConfig));
-  } else if (scraperConfig) {
-    console.warn("ScraperAPI configuration detected but missing apiKey. Skipping ScraperAPIService initialization.");
+  if (config.ghost) {
+    await registry.services.addServices(new GhostIOService(config.ghost));
   }
 
-  const serperConfig = config.serper;
-  if (serperConfig && serperConfig.apiKey) {
-    await registry.services.addServices(new SerperService(serperConfig));
-  } else if (serperConfig) {
-    console.warn("Serper configuration detected but missing apiKey. Skipping SerperService initialization.");
+  if (config.scraperapi) {
+    await registry.services.addServices(new ScraperAPIService(config.scraperapi));
   }
 
-  const nrpmConfig = config.newsrpm;
-  if (nrpmConfig && nrpmConfig.apiKey) {
-    await registry.services.addServices(new NewsRPMService(nrpmConfig as any));
-  } else if (nrpmConfig) {
-    console.warn("NewsRPM configuration detected but missing apiKey. Skipping NewsRPMService initialization.");
+  if (config.newsrpm) {
+    await registry.services.addServices(new NewsRPMService(config.newsrpm));
   }
 }
 

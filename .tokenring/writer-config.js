@@ -20,6 +20,7 @@ export default {
   adminApiKey: process.env.GHOST_ADMIN_API_KEY,
   contentApiKey: process.env.GHOST_CONTENT_API_KEY,
   url: process.env.GHOST_URL,
+  cdn: 'ghost'
  },
  newsrpm: {
   apiKey: process.env.NEWSRPM_API_KEY,
@@ -54,6 +55,18 @@ export default {
    displayName: "xAi",
    apiKey: process.env.XAI_API_KEY,
   },
+ },
+ cdn: {
+  ghost: {
+   adminApiKey: process.env.GHOST_ADMIN_API_KEY,
+   url: process.env.GHOST_URL,
+  },
+  /*
+  s3: {
+   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+   region: process.env.AWS_REGION,
+  }*/
  },
  templates,
 };
