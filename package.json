@@ -1,7 +1,7 @@
 {
  "name": "@token-ring/writer",
  "description": "TokenRing Writer Application",
- "version": "0.1.1",
+ "version": "0.1.2",
  "bin": {
   "tr-writer": "dist/tr-writer.ts"
  },
