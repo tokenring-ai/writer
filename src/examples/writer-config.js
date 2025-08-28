@@ -16,11 +16,14 @@ export default {
 	defaults: {
 		persona: "writer",
 	},
-	ghost: {
-		adminApiKey: process.env.GHOST_ADMIN_API_KEY,
-		contentApiKey: process.env.GHOST_CONTENT_API_KEY,
-		url: process.env.GHOST_URL,
-		cdn: "ghost",
+	blog: {
+		ghost: {
+			type: "ghost",
+			adminApiKey: process.env.GHOST_ADMIN_API_KEY,
+			contentApiKey: process.env.GHOST_CONTENT_API_KEY,
+			url: process.env.GHOST_URL,
+			cdn: "ghost",
+		},
 	},
 	cloudquote: {
 		apiKey: process.env.CLOUDQUOTE_API_KEY,

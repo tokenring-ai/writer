@@ -79,3 +79,14 @@
 	path = pkg/wikipedia
 	url = git@github.com:tokenring-ai/wikipedia.git
 	branch = main
+[submodule "pkg/wordpress"]
+	path = pkg/wordpress
+	url = git@github.com:tokenring-ai/wordpress.git
+	branch = main
+[submodule "pkg/blog"]
+	path = pkg/blog
+	url = git@github.com:tokenring-ai/blog.git
+[submodule "pkg/websearch"]
+	path = pkg/websearch
+	url = git@github.com:tokenring-ai/websearch.git
+	branch = main

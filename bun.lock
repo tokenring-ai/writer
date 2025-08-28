@@ -7,6 +7,7 @@
         "@dotenvx/dotenvx": "^1.48.4",
         "@inquirer/prompts": "^7.8.1",
         "@token-ring/ai-client": "0.1.0",
+        "@token-ring/blog": "0.1.0",
         "@token-ring/chat": "0.1.0",
         "@token-ring/chrome": "0.1.0",
         "@token-ring/cli": "0.1.0",
@@ -72,6 +73,14 @@
         "vitest": "^3.2.4",
       },
     },
+    "pkg/blog": {
+      "name": "@token-ring/blog",
+      "version": "0.1.0",
+      "dependencies": {
+        "@token-ring/chat": "0.1.0",
+        "@token-ring/registry": "0.1.0",
+      },
+    },
     "pkg/cdn": {
       "name": "@token-ring/cdn",
       "version": "0.1.0",
@@ -100,6 +109,7 @@
       "dependencies": {
         "@token-ring/chat": "0.1.0",
         "@token-ring/registry": "0.1.0",
+        "@token-ring/websearch": "0.1.0",
         "puppeteer": "^24.16.2",
       },
       "devDependencies": {
@@ -190,6 +200,7 @@
         "@lexical/headless": "^0.33.1",
         "@lexical/markdown": "^0.33.1",
         "@token-ring/ai-client": "0.1.0",
+        "@token-ring/blog": "0.1.0",
         "@token-ring/cdn": "0.1.0",
         "@token-ring/chat": "0.1.0",
         "@token-ring/filesystem": "0.1.0",
@@ -356,6 +367,7 @@
         "@token-ring/ai-client": "0.1.0",
         "@token-ring/chat": "0.1.0",
         "@token-ring/registry": "0.1.0",
+        "@token-ring/websearch": "0.1.0",
       },
       "devDependencies": {
         "@vitest/coverage-v8": "^3.2.4",
@@ -369,6 +381,7 @@
         "@token-ring/ai-client": "0.1.0",
         "@token-ring/chat": "0.1.0",
         "@token-ring/registry": "0.1.0",
+        "@token-ring/websearch": "0.1.0",
         "zod": "^4.0.17",
       },
       "devDependencies": {
@@ -401,6 +414,15 @@
         "@token-ring/registry": "0.1.0",
       },
     },
+    "pkg/websearch": {
+      "name": "@token-ring/websearch",
+      "version": "0.1.0",
+      "dependencies": {
+        "@token-ring/chat": "0.1.0",
+        "@token-ring/registry": "0.1.0",
+        "zod": "^4.0.17",
+      },
+    },
     "pkg/wikipedia": {
       "name": "@token-ring/wikipedia",
       "version": "0.1.0",
@@ -409,6 +431,24 @@
         "@token-ring/chat": "0.1.0",
         "@token-ring/registry": "0.1.0",
         "zod": "^4.0.17",
+      },
+      "devDependencies": {
+        "@vitest/coverage-v8": "^3.2.4",
+        "vitest": "^3.2.4",
+      },
+    },
+    "pkg/wordpress": {
+      "name": "@token-ring/wordpress",
+      "version": "0.1.0",
+      "dependencies": {
+        "@token-ring/ai-client": "0.1.0",
+        "@token-ring/cdn": "0.1.0",
+        "@token-ring/chat": "0.1.0",
+        "@token-ring/filesystem": "0.1.0",
+        "@token-ring/registry": "0.1.0",
+        "marked": "^16.2.0",
+        "uuid": "^11.1.0",
+        "wordpress-api-client": "^0.4.9",
       },
       "devDependencies": {
         "@vitest/coverage-v8": "^3.2.4",
@@ -1029,6 +1069,8 @@
 
     "@token-ring/ai-client": ["@token-ring/ai-client@workspace:pkg/ai-client"],
 
+    "@token-ring/blog": ["@token-ring/blog@workspace:pkg/blog"],
+
     "@token-ring/cdn": ["@token-ring/cdn@workspace:pkg/cdn"],
 
     "@token-ring/chat": ["@token-ring/chat@workspace:pkg/chat"],
@@ -1075,7 +1117,13 @@
 
     "@token-ring/utility": ["@token-ring/utility@workspace:pkg/utility"],
 
+    "@token-ring/websearch": ["@token-ring/websearch@workspace:pkg/websearch"],
+
     "@token-ring/wikipedia": ["@token-ring/wikipedia@workspace:pkg/wikipedia"],
+
+    "@token-ring/wordpress": ["@token-ring/wordpress@workspace:pkg/wordpress"],
+
+    "@tool-belt/type-predicates": ["@tool-belt/type-predicates@1.2.2", "", {}, "sha512-IuUa3c0fOEJ6YnzMvfPA5BZ2gLafPgSU9YJmXV3hozlxbQGNPMVHrTiMoAERklhssxVQ5AtfEUI6r+6kS4npKw=="],
 
     "@tootallnate/quickjs-emscripten": ["@tootallnate/quickjs-emscripten@0.23.0", "", {}, "sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA=="],
 
@@ -1342,6 +1390,8 @@
     "cosmiconfig": ["cosmiconfig@9.0.0", "", { "dependencies": { "env-paths": "^2.2.1", "import-fresh": "^3.3.0", "js-yaml": "^4.1.0", "parse-json": "^5.2.0" }, "peerDependencies": { "typescript": ">=4.9.5" } }, "sha512-itvL5h8RETACmOTFc4UfIyB2RfEHi71Ax6E/PivVxq9NseKbOWpeyHEOIbmAw1rs8Ak0VursQNww7lf7YtUwzg=="],
 
     "cosmiconfig-typescript-loader": ["cosmiconfig-typescript-loader@6.1.0", "", { "dependencies": { "jiti": "^2.4.1" }, "peerDependencies": { "@types/node": "*", "cosmiconfig": ">=9", "typescript": ">=5" } }, "sha512-tJ1w35ZRUiM5FeTzT7DtYWAFFv37ZLqSRkGi2oeCK1gPhvaWjkAtfXvLmvE1pRfxxp9aQo6ba/Pvg1dKj05D4g=="],
+
+    "cross-fetch": ["cross-fetch@3.1.5", "", { "dependencies": { "node-fetch": "2.6.7" } }, "sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw=="],
 
     "cross-spawn": ["cross-spawn@7.0.6", "", { "dependencies": { "path-key": "^3.1.0", "shebang-command": "^2.0.0", "which": "^2.0.1" } }, "sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA=="],
 
@@ -2341,6 +2391,10 @@
 
     "word-wrap": ["word-wrap@1.2.5", "", {}, "sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA=="],
 
+    "wordpress-api-client": ["wordpress-api-client@0.4.9", "", { "dependencies": { "@tool-belt/type-predicates": "1.2.2", "cross-fetch": "3.1.5", "wp-types": "3.61.0" } }, "sha512-5YcLXjTykTjHKzBynbQ0IQ9KScY/hBhh46kH67A/+CgJW/U3NI1qK77YQogd+mR/cSci4RhiwgJ5PfcHiz5/yg=="],
+
+    "wp-types": ["wp-types@3.61.0", "", { "dependencies": { "typescript": ">=3" } }, "sha512-3u7g4n+c5QugHar1R/3PLTQLv4NTIi2Lmjh+IjrDZJNRpU40sQtGCc3jLjLYQlaLVUpPNwMAedIAryQfUbQFRw=="],
+
     "wrap-ansi": ["wrap-ansi@9.0.0", "", { "dependencies": { "ansi-styles": "^6.2.1", "string-width": "^7.0.0", "strip-ansi": "^7.1.0" } }, "sha512-G8ura3S+3Z2G+mkgNRq8dqaFZAuxfsxpBB8OCTGRTCtp+l/v9nbFNmCUP1BZMts3G1142MsZfn6eeUKrr4PD1Q=="],
 
     "wrap-ansi-cjs": ["wrap-ansi@7.0.0", "", { "dependencies": { "ansi-styles": "^4.0.0", "string-width": "^4.1.0", "strip-ansi": "^6.0.0" } }, "sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q=="],
@@ -2518,6 +2572,8 @@
     "conventional-commits-parser/meow": ["meow@12.1.1", "", {}, "sha512-BhXM0Au22RwUneMPwSCnyhTOizdWoIEPU9sp0Aqa1PnDMR5Wv2FGXYDjuzJEIX+Eo2Rb8xuYe5jrnm5QowQFkw=="],
 
     "cookies/depd": ["depd@2.0.0", "", {}, "sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw=="],
+
+    "cross-fetch/node-fetch": ["node-fetch@2.6.7", "", { "dependencies": { "whatwg-url": "^5.0.0" }, "peerDependencies": { "encoding": "^0.1.0" }, "optionalPeers": ["encoding"] }, "sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ=="],
 
     "cross-spawn/which": ["which@2.0.2", "", { "dependencies": { "isexe": "^2.0.0" }, "bin": { "node-which": "bin/node-which" } }, "sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA=="],
 
@@ -2839,6 +2895,8 @@
 
     "co-body/type-is/mime-types": ["mime-types@2.1.35", "", { "dependencies": { "mime-db": "1.52.0" } }, "sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw=="],
 
+    "cross-fetch/node-fetch/whatwg-url": ["whatwg-url@5.0.0", "", { "dependencies": { "tr46": "~0.0.3", "webidl-conversions": "^3.0.0" } }, "sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw=="],
+
     "cross-spawn/which/isexe": ["isexe@2.0.0", "", {}, "sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw=="],
 
     "eslint/chalk/ansi-styles": ["ansi-styles@4.3.0", "", { "dependencies": { "color-convert": "^2.0.1" } }, "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="],
@@ -2972,6 +3030,10 @@
     "clipboardy/execa/onetime/mimic-fn": ["mimic-fn@4.0.0", "", {}, "sha512-vqiC06CuhBTUdZH+RYl8sFrL096vA45Ok5ISO6sE/Mr1jRbGH4Csnhi8f3wKVl7x8mO4Au7Ir9D3Oyv1VYMFJw=="],
 
     "co-body/type-is/mime-types/mime-db": ["mime-db@1.52.0", "", {}, "sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg=="],
+
+    "cross-fetch/node-fetch/whatwg-url/tr46": ["tr46@0.0.3", "", {}, "sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw=="],
+
+    "cross-fetch/node-fetch/whatwg-url/webidl-conversions": ["webidl-conversions@3.0.1", "", {}, "sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ=="],
 
     "inquirer/@inquirer/prompts/@inquirer/editor/@inquirer/external-editor": ["@inquirer/external-editor@1.0.1", "", { "dependencies": { "chardet": "^2.1.0", "iconv-lite": "^0.6.3" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-Oau4yL24d2B5IL4ma4UpbQigkVhzPDXLoqy1ggK4gnHg/stmkffJE4oOXHXF3uz0UEpywG68KcyXsyYpA1Re/Q=="],
 

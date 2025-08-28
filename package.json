@@ -9,6 +9,7 @@
   "@dotenvx/dotenvx": "^1.48.4",
   "@inquirer/prompts": "^7.8.1",
   "@token-ring/ai-client": "0.1.0",
+  "@token-ring/blog": "0.1.0",
   "@token-ring/chat": "0.1.0",
   "@token-ring/chrome": "0.1.0",
   "@token-ring/cli": "0.1.0",
