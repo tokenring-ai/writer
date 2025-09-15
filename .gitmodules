@@ -2,7 +2,7 @@
 	path = pkg/ai-client
 	url = git@github.com:tokenring-ai/ai-client
 [submodule "pkg/chat"]
-	path = pkg/chat
+	path = pkg/agent
 	url = git@github.com:tokenring-ai/chat
 [submodule "pkg/chrome"]
 	path = pkg/chrome
@@ -68,9 +68,9 @@
 	path = pkg/cdn
 	url = git@github.com:tokenring-ai/cdn.git
 	branch = main
-[submodule "pkg/s3-cdn"]
-	path = pkg/s3-cdn
-	url = git@github.com:tokenring-ai/s3-cdn.git
+[submodule "pkg/s3"]
+	path = pkg/s3
+	url = git@github.com:tokenring-ai/s3.git
 [submodule "pkg/cloudquote"]
 	path = pkg/cloudquote
 	url = git@github.com:tokenring-ai/cloudquote.git

@@ -1,5 +1,4 @@
 import fs from "fs";
-/* eslint-disable turbo/no-undeclared-env-vars */
 import path from "path";
 
 const templateDirectory = path.join(import.meta.dirname, "../templates");
@@ -14,10 +13,26 @@ for (const file of templateFiles) {
 
 export default {
  defaults: {
-  persona: "writer",
+  agent: "writer",
+  model: "gemini-2.5-flash",
  },
- cloudquote: {
-  apiKey: process.env.CLOUDQUOTE_API_KEY,
+ websearch: {
+  serper: {
+   type: 'serper',
+   apiKey: process.env.SERPER_API_KEY,
+  },
+  scraperapi: {
+   type: 'scraperapi',
+   apiKey: process.env.SCRAPERAPI_API_KEY,
+  },
+ },
+ filesystem: {
+  providers: {
+   local: {
+    type: "local",
+    baseDirectory: path.resolve(import.meta.dirname,"../")
+   }
+  }
  },
  blog: {
   ghost: {
@@ -25,7 +40,6 @@ export default {
    adminApiKey: process.env.GHOST_ADMIN_API_KEY,
    contentApiKey: process.env.GHOST_CONTENT_API_KEY,
    url: process.env.GHOST_URL,
-   cdn: 'ghost'
   },
  },
  wikipedia: {
@@ -34,44 +48,35 @@ export default {
  newsrpm: {
   apiKey: process.env.NEWSRPM_API_KEY,
  },
- serper: {
-  apiKey: process.env.SERPER_API_KEY,
- },
- scraperapi: {
-  apiKey: process.env.SCRAPERAPI_API_KEY,
+ cloudquote: {
+  apiKey: process.env.CLOUDQUOTE_API_KEY,
  },
  research: {
   researchModel: "gemini-2.5-flash",
  },
  models: {
-  google: {
-   displayName: "Google",
+  Google: {
+   provider: "google",
    apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
   },
-  fal: {
-   displayName: "Fal",
-   apiKey: process.env.FAL_API_KEY,
-  },
-  openai: {
-   displayName: "OpenAI",
+  OpenAI: {
+   provider: "openai",
    apiKey: process.env.OPENAI_API_KEY,
   },
-  perplexity: {
-   displayName: "Perplexity",
-   apiKey: process.env.PERPLEXITY_API_KEY,
-  },
-  xai: {
-   displayName: "xAi",
+  xAi: {
+   provider: "xai",
    apiKey: process.env.XAI_API_KEY,
   },
  },
  cdn: {
   ghost: {
+   type: 'ghost',
    adminApiKey: process.env.GHOST_ADMIN_API_KEY,
    url: process.env.GHOST_URL,
   },
   /*
   s3: {
+   type: 's3',
    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
    region: process.env.AWS_REGION,

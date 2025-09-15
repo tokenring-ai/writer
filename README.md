@@ -8,15 +8,14 @@ formatting, and publishing workflows.
 
 ## Features
 
-- **Content creation and management**: Create, edit, and manage news articles and blog posts in one unified platform.
-- **Interactive chat interface**: Talk to the assistant in a conversational REPL for content creation assistance.
+- **Agent-based architecture**: Multiple specialized AI agents for different content creation tasks (writer, editor, researcher, publisher).
+- **Interactive chat interface**: Talk to agents in a conversational REPL for content creation assistance.
 - **Persistent content history**: Sessions and content drafts are saved in a SQLite database.
-- **Command system**: Issue commands prefixed with `/` to manage content, plugins, queues, checkpoints, commits, and
-  more.
+- **Command system**: Issue commands prefixed with `/` to manage agents, content, and workflows.
 - **Publishing integration**: Works directly with your content directory; can initialize with a TokenRing config.
-- **Plugin support**: Extend functionality with plugins for various publishing platforms.
-- **Multi-line input mode**: Supports multi-line text entry for complex content creation.
-- **Queue management**: Batch multiple content tasks to execute sequentially.
+- **Multi-model support**: Support for various AI models from different providers.
+- **Research capabilities**: Built-in web search and Wikipedia integration for content research.
+- **File system integration**: Direct integration with local and cloud file systems.
 
 ## Getting Started
 
@@ -90,26 +89,29 @@ This copies a default `.tokenring/writer-config.js` into your content directory.
 
 ### Chat and Commands
 
-Once started, you enter the chat REPL:
+Once started, you enter the agent chat REPL:
 
-- Type natural language queries about your content creation and management.
-- Use commands with `/` prefix, e.g., `/help`, `/commit`, `/checkpoint create`, `/reset`.
-- For multi-line input, type `:paste`, enter your text, then `:end` to submit.
-- Control commands: `/quit` to exit, `/history` to browse content history.
+- Type natural language queries to interact with AI agents for content creation.
+- Use commands with `/` prefix, e.g., `/help`, `/agent switch writer`, `/tools enable`.
+- Switch between different agents specialized for writing, editing, research, and publishing.
+- Control commands: `/quit` to exit, `/agent list` to see available agents.
 
 ### Commands
 
 Some example commands:
 
 - `/help`: Show available commands.
-- `/history`: Browse previous content sessions and drafts.
+- `/agent list`: List available agents.
+- `/agent switch <name>`: Switch to a specific agent.
+- `/tools list`: Show available tools.
+- `/tools enable <pattern>`: Enable specific tools.
 
 ## Architecture
 
-- **CLI**: Entry point with argument parsing and session management (`tr-writer.ts`).
-- **Engine**: Core logic for commands, content streaming, and persistent content management.
-- **Components**: React-based components for browsing content history.
-- **Utility**: Helper functions for logging, file management, and database initialization.
+- **CLI**: Entry point with argument parsing and agent team initialization (`tr-writer.ts`).
+- **Agents**: Specialized AI agents for different content creation tasks (writer, editor, researcher, publisher).
+- **Services**: Core services for file system, web search, models, and database management.
+- **Configuration**: Flexible configuration system supporting multiple models and services.
 
 ## Data Persistence
 
@@ -118,8 +120,11 @@ package.
 
 ## Extensibility
 
-The system supports plugins which can add tools callable by the AI assistant during content creation and management
-sessions.
+The system supports:
+- **Custom agents**: Define new agents with specific roles and capabilities.
+- **Multiple AI models**: Support for various providers (OpenAI, Anthropic, Google, etc.).
+- **Service providers**: Pluggable services for file systems, web search, and content publishing.
+- **Tool integration**: Extensible tool system for agent capabilities.
 
 ## Contributing
 

@@ -6,23 +6,23 @@
       "dependencies": {
         "@dotenvx/dotenvx": "^1.48.4",
         "@inquirer/prompts": "^7.8.1",
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/blog": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/chrome": "0.1.0",
-        "@token-ring/cli": "0.1.0",
-        "@token-ring/cloudquote": "0.1.0",
-        "@token-ring/feedback": "0.1.0",
-        "@token-ring/ghost-io": "0.1.0",
-        "@token-ring/history": "0.1.0",
-        "@token-ring/local-filesystem": "0.1.0",
-        "@token-ring/memory": "0.1.0",
-        "@token-ring/queue": "0.1.0",
-        "@token-ring/registry": "0.1.0",
-        "@token-ring/s3-cdn": "0.1.0",
-        "@token-ring/sqlite-storage": "0.1.0",
-        "@token-ring/template": "0.1.0",
-        "@token-ring/wikipedia": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
+        "@tokenring-ai/blog": "0.1.0",
+        "@tokenring-ai/chrome": "0.1.0",
+        "@tokenring-ai/cli": "0.1.0",
+        "@tokenring-ai/cloudquote": "0.1.0",
+        "@tokenring-ai/feedback": "0.1.0",
+        "@tokenring-ai/ghost-io": "0.1.0",
+        "@tokenring-ai/history": "0.1.0",
+        "@tokenring-ai/local-filesystem": "0.1.0",
+        "@tokenring-ai/memory": "0.1.0",
+        "@tokenring-ai/queue": "0.1.0",
+        "@tokenring-ai/registry": "0.1.0",
+        "@tokenring-ai/s3": "0.1.0",
+        "@tokenring-ai/sqlite-storage": "0.1.0",
+        "@tokenring-ai/template": "0.1.0",
+        "@tokenring-ai/wikipedia": "0.1.0",
         "commander": "^14.0.0",
         "path-browserify": "^1.0.1",
       },
@@ -36,8 +36,21 @@
         "vitest": "^3.2.4",
       },
     },
+    "pkg/agent": {
+      "name": "@tokenring-ai/agent",
+      "version": "0.1.0",
+      "dependencies": {
+        "@tokenring-ai/utility": "0.1.0",
+        "eventemitter3": "^5.0.1",
+        "glob-gitignore": "^1.0.15",
+        "uuid": "^11.1.0",
+      },
+      "devDependencies": {
+        "typescript": "^5.9.2",
+      },
+    },
     "pkg/ai-client": {
-      "name": "@token-ring/ai-client",
+      "name": "@tokenring-ai/ai-client",
       "version": "0.1.0",
       "dependencies": {
         "@ai-sdk/anthropic": "^2.0.4",
@@ -53,8 +66,7 @@
         "@ai-sdk/xai": "^2.0.7",
         "@kubernetes/client-node": "^1.3.0",
         "@openrouter/ai-sdk-provider": "^1.1.2",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
         "ai": "^5.0.15",
         "async": "^3.2.6",
         "axios": "^1.11.0",
@@ -74,42 +86,26 @@
       },
     },
     "pkg/blog": {
-      "name": "@token-ring/blog",
+      "name": "@tokenring-ai/blog",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/registry": "0.1.0",
       },
     },
     "pkg/cdn": {
-      "name": "@token-ring/cdn",
+      "name": "@tokenring-ai/cdn",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
-      },
-    },
-    "pkg/chat": {
-      "name": "@token-ring/chat",
-      "version": "0.1.0",
-      "dependencies": {
-        "@token-ring/registry": "0.1.0",
-        "@token-ring/utility": "0.1.0",
-        "eventemitter3": "^5.0.1",
-        "glob-gitignore": "^1.0.15",
-        "uuid": "^11.1.0",
-      },
-      "devDependencies": {
-        "typescript": "^5.9.2",
+        "@tokenring-ai/agent": "0.1.0",
       },
     },
     "pkg/chrome": {
-      "name": "@token-ring/chrome",
+      "name": "@tokenring-ai/chrome",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
-        "@token-ring/websearch": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/websearch": "0.1.0",
         "puppeteer": "^24.16.2",
       },
       "devDependencies": {
@@ -117,19 +113,18 @@
       },
     },
     "pkg/cli": {
-      "name": "@token-ring/cli",
+      "name": "@tokenring-ai/cli",
       "version": "0.1.0",
       "dependencies": {
         "@dotenvx/dotenvx": "^1.48.4",
         "@dqbd/tiktoken": "^1.0.22",
         "@inquirer/prompts": "^7.8.2",
         "@kubernetes/client-node": "^1.3.0",
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/inquirer-command-prompt": "2.0.0",
-        "@token-ring/inquirer-tree-selector": "2.0.0",
-        "@token-ring/registry": "0.1.0",
-        "@token-ring/utility": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
+        "@tokenring-ai/inquirer-command-prompt": "2.0.0",
+        "@tokenring-ai/inquirer-tree-selector": "2.0.0",
+        "@tokenring-ai/utility": "0.1.0",
         "boxen": "8.0.1",
         "chalk": "^5.5.0",
         "clipboardy": "^4.0.0",
@@ -149,21 +144,20 @@
       },
     },
     "pkg/cloudquote": {
-      "name": "@token-ring/cloudquote",
+      "name": "@tokenring-ai/cloudquote",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/registry": "0.1.0",
         "axios": "^1.6.0",
       },
     },
     "pkg/feedback": {
-      "name": "@token-ring/feedback",
+      "name": "@tokenring-ai/feedback",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/filesystem": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/filesystem": "0.1.0",
         "esbuild": "^0.25.9",
         "esbuild-plugin-external-global": "^1.0.1",
         "express": "^5.1.0",
@@ -179,12 +173,11 @@
       },
     },
     "pkg/filesystem": {
-      "name": "@token-ring/filesystem",
+      "name": "@tokenring-ai/filesystem",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
         "ignore": "^7.0.5",
         "path-browserify": "^1.0.1",
       },
@@ -194,17 +187,17 @@
       },
     },
     "pkg/ghost-io": {
-      "name": "@token-ring/ghost-io",
+      "name": "@tokenring-ai/ghost-io",
       "version": "0.1.0",
       "dependencies": {
         "@lexical/headless": "^0.33.1",
         "@lexical/markdown": "^0.33.1",
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/blog": "0.1.0",
-        "@token-ring/cdn": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/filesystem": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
+        "@tokenring-ai/blog": "0.1.0",
+        "@tokenring-ai/cdn": "0.1.0",
+        "@tokenring-ai/filesystem": "0.1.0",
+        "@tokenring-ai/registry": "0.1.0",
         "@tryghost/admin-api": "^1.14.0",
         "@tryghost/content-api": "^1.12.0",
         "form-data": "^4.0.4",
@@ -216,19 +209,18 @@
       },
     },
     "pkg/history": {
-      "name": "@token-ring/history",
+      "name": "@tokenring-ai/history",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
       },
       "devDependencies": {
         "typescript": "^5.9.2",
       },
     },
     "pkg/inquirer-command-prompt": {
-      "name": "@token-ring/inquirer-command-prompt",
+      "name": "@tokenring-ai/inquirer-command-prompt",
       "version": "2.0.0",
       "dependencies": {
         "@inquirer/core": "^10.1.15",
@@ -250,7 +242,7 @@
       },
     },
     "pkg/inquirer-tree-selector": {
-      "name": "@token-ring/inquirer-tree-selector",
+      "name": "@tokenring-ai/inquirer-tree-selector",
       "version": "2.0.0",
       "dependencies": {
         "@inquirer/core": "^10.1.15",
@@ -282,12 +274,11 @@
       ],
     },
     "pkg/local-filesystem": {
-      "name": "@token-ring/local-filesystem",
+      "name": "@tokenring-ai/local-filesystem",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/filesystem": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/filesystem": "0.1.0",
         "chokidar": "^4.0.3",
         "execa": "^9.6.0",
         "fs-extra": "^11.3.1",
@@ -300,21 +291,20 @@
       },
     },
     "pkg/memory": {
-      "name": "@token-ring/memory",
+      "name": "@tokenring-ai/memory",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
-        "@token-ring/utility": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/utility": "0.1.0",
       },
     },
     "pkg/newsrpm": {
-      "name": "@token-ring/newsrpm",
+      "name": "@tokenring-ai/newsrpm",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
+        "@tokenring-ai/registry": "0.1.0",
       },
       "devDependencies": {
         "@vitest/coverage-v8": "^3.2.4",
@@ -322,52 +312,51 @@
       },
     },
     "pkg/queue": {
-      "name": "@token-ring/queue",
+      "name": "@tokenring-ai/queue",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/history": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
       },
       "devDependencies": {
         "typescript": "^5.9.2",
       },
     },
     "pkg/registry": {
-      "name": "@token-ring/registry",
+      "name": "@tokenring-ai/registry",
       "version": "0.1.0",
       "devDependencies": {
         "vitest": "^3.2.4",
       },
     },
     "pkg/research": {
-      "name": "@token-ring/research",
+      "name": "@tokenring-ai/research",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
+        "@tokenring-ai/registry": "0.1.0",
       },
     },
-    "pkg/s3-cdn": {
-      "name": "@token-ring/s3-cdn",
+    "pkg/s3": {
+      "name": "@tokenring-ai/s3",
       "version": "0.1.0",
       "dependencies": {
         "@aws-sdk/client-s3": "^3.0.0",
-        "@token-ring/cdn": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+      },
+      "peerDependencies": {
+        "@tokenring-ai/cdn": "0.1.0",
+        "@tokenring-ai/filesystem": "0.1.0",
       },
     },
     "pkg/scraperapi": {
-      "name": "@token-ring/scraperapi",
+      "name": "@tokenring-ai/scraperapi",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
-        "@token-ring/websearch": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
+        "@tokenring-ai/websearch": "0.1.0",
       },
       "devDependencies": {
         "@vitest/coverage-v8": "^3.2.4",
@@ -375,13 +364,12 @@
       },
     },
     "pkg/serper": {
-      "name": "@token-ring/serper",
+      "name": "@tokenring-ai/serper",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
-        "@token-ring/websearch": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
+        "@tokenring-ai/websearch": "0.1.0",
         "zod": "^4.0.17",
       },
       "devDependencies": {
@@ -390,46 +378,42 @@
       },
     },
     "pkg/sqlite-storage": {
-      "name": "@token-ring/sqlite-storage",
+      "name": "@tokenring-ai/sqlite-storage",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/history": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
       },
     },
     "pkg/template": {
-      "name": "@token-ring/template",
+      "name": "@tokenring-ai/template",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/ai-client": "workspace:*",
-        "@token-ring/chat": "workspace:*",
-        "@token-ring/registry": "workspace:*",
+        "@tokenring-ai/agent": "workspace:*",
+        "@tokenring-ai/ai-client": "workspace:*",
+        "@tokenring-ai/registry": "workspace:*",
       },
     },
     "pkg/utility": {
-      "name": "@token-ring/utility",
+      "name": "@tokenring-ai/utility",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
       },
     },
     "pkg/websearch": {
-      "name": "@token-ring/websearch",
+      "name": "@tokenring-ai/websearch",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
         "zod": "^4.0.17",
       },
     },
     "pkg/wikipedia": {
-      "name": "@token-ring/wikipedia",
+      "name": "@tokenring-ai/wikipedia",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
         "zod": "^4.0.17",
       },
       "devDependencies": {
@@ -438,14 +422,14 @@
       },
     },
     "pkg/wordpress": {
-      "name": "@token-ring/wordpress",
+      "name": "@tokenring-ai/wordpress",
       "version": "0.1.0",
       "dependencies": {
-        "@token-ring/ai-client": "0.1.0",
-        "@token-ring/cdn": "0.1.0",
-        "@token-ring/chat": "0.1.0",
-        "@token-ring/filesystem": "0.1.0",
-        "@token-ring/registry": "0.1.0",
+        "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/ai-client": "0.1.0",
+        "@tokenring-ai/cdn": "0.1.0",
+        "@tokenring-ai/filesystem": "0.1.0",
+        "@tokenring-ai/registry": "0.1.0",
         "marked": "^16.2.0",
         "uuid": "^11.1.0",
         "wordpress-api-client": "^0.4.9",
@@ -1067,61 +1051,61 @@
 
     "@swc/helpers": ["@swc/helpers@0.5.15", "", { "dependencies": { "tslib": "^2.8.0" } }, "sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g=="],
 
-    "@token-ring/ai-client": ["@token-ring/ai-client@workspace:pkg/ai-client"],
+    "@tokenring-ai/agent": ["@tokenring-ai/agent@workspace:pkg/agent"],
 
-    "@token-ring/blog": ["@token-ring/blog@workspace:pkg/blog"],
+    "@tokenring-ai/ai-client": ["@tokenring-ai/ai-client@workspace:pkg/ai-client"],
 
-    "@token-ring/cdn": ["@token-ring/cdn@workspace:pkg/cdn"],
+    "@tokenring-ai/blog": ["@tokenring-ai/blog@workspace:pkg/blog"],
 
-    "@token-ring/chat": ["@token-ring/chat@workspace:pkg/chat"],
+    "@tokenring-ai/cdn": ["@tokenring-ai/cdn@workspace:pkg/cdn"],
 
-    "@token-ring/chrome": ["@token-ring/chrome@workspace:pkg/chrome"],
+    "@tokenring-ai/chrome": ["@tokenring-ai/chrome@workspace:pkg/chrome"],
 
-    "@token-ring/cli": ["@token-ring/cli@workspace:pkg/cli"],
+    "@tokenring-ai/cli": ["@tokenring-ai/cli@workspace:pkg/cli"],
 
-    "@token-ring/cloudquote": ["@token-ring/cloudquote@workspace:pkg/cloudquote"],
+    "@tokenring-ai/cloudquote": ["@tokenring-ai/cloudquote@workspace:pkg/cloudquote"],
 
-    "@token-ring/feedback": ["@token-ring/feedback@workspace:pkg/feedback"],
+    "@tokenring-ai/feedback": ["@tokenring-ai/feedback@workspace:pkg/feedback"],
 
-    "@token-ring/filesystem": ["@token-ring/filesystem@workspace:pkg/filesystem"],
+    "@tokenring-ai/filesystem": ["@tokenring-ai/filesystem@workspace:pkg/filesystem"],
 
-    "@token-ring/ghost-io": ["@token-ring/ghost-io@workspace:pkg/ghost-io"],
+    "@tokenring-ai/ghost-io": ["@tokenring-ai/ghost-io@workspace:pkg/ghost-io"],
 
-    "@token-ring/history": ["@token-ring/history@workspace:pkg/history"],
+    "@tokenring-ai/history": ["@tokenring-ai/history@workspace:pkg/history"],
 
-    "@token-ring/inquirer-command-prompt": ["@token-ring/inquirer-command-prompt@workspace:pkg/inquirer-command-prompt"],
+    "@tokenring-ai/inquirer-command-prompt": ["@tokenring-ai/inquirer-command-prompt@workspace:pkg/inquirer-command-prompt"],
 
-    "@token-ring/inquirer-tree-selector": ["@token-ring/inquirer-tree-selector@workspace:pkg/inquirer-tree-selector"],
+    "@tokenring-ai/inquirer-tree-selector": ["@tokenring-ai/inquirer-tree-selector@workspace:pkg/inquirer-tree-selector"],
 
-    "@token-ring/local-filesystem": ["@token-ring/local-filesystem@workspace:pkg/local-filesystem"],
+    "@tokenring-ai/local-filesystem": ["@tokenring-ai/local-filesystem@workspace:pkg/local-filesystem"],
 
-    "@token-ring/memory": ["@token-ring/memory@workspace:pkg/memory"],
+    "@tokenring-ai/memory": ["@tokenring-ai/memory@workspace:pkg/memory"],
 
-    "@token-ring/newsrpm": ["@token-ring/newsrpm@workspace:pkg/newsrpm"],
+    "@tokenring-ai/newsrpm": ["@tokenring-ai/newsrpm@workspace:pkg/newsrpm"],
 
-    "@token-ring/queue": ["@token-ring/queue@workspace:pkg/queue"],
+    "@tokenring-ai/queue": ["@tokenring-ai/queue@workspace:pkg/queue"],
 
-    "@token-ring/registry": ["@token-ring/registry@workspace:pkg/registry"],
+    "@tokenring-ai/registry": ["@tokenring-ai/registry@workspace:pkg/registry"],
 
-    "@token-ring/research": ["@token-ring/research@workspace:pkg/research"],
+    "@tokenring-ai/research": ["@tokenring-ai/research@workspace:pkg/research"],
 
-    "@token-ring/s3-cdn": ["@token-ring/s3-cdn@workspace:pkg/s3-cdn"],
+    "@tokenring-ai/s3": ["@tokenring-ai/s3@workspace:pkg/s3"],
 
-    "@token-ring/scraperapi": ["@token-ring/scraperapi@workspace:pkg/scraperapi"],
+    "@tokenring-ai/scraperapi": ["@tokenring-ai/scraperapi@workspace:pkg/scraperapi"],
 
-    "@token-ring/serper": ["@token-ring/serper@workspace:pkg/serper"],
+    "@tokenring-ai/serper": ["@tokenring-ai/serper@workspace:pkg/serper"],
 
-    "@token-ring/sqlite-storage": ["@token-ring/sqlite-storage@workspace:pkg/sqlite-storage"],
+    "@tokenring-ai/sqlite-storage": ["@tokenring-ai/sqlite-storage@workspace:pkg/sqlite-storage"],
 
-    "@token-ring/template": ["@token-ring/template@workspace:pkg/template"],
+    "@tokenring-ai/template": ["@tokenring-ai/template@workspace:pkg/template"],
 
-    "@token-ring/utility": ["@token-ring/utility@workspace:pkg/utility"],
+    "@tokenring-ai/utility": ["@tokenring-ai/utility@workspace:pkg/utility"],
 
-    "@token-ring/websearch": ["@token-ring/websearch@workspace:pkg/websearch"],
+    "@tokenring-ai/websearch": ["@tokenring-ai/websearch@workspace:pkg/websearch"],
 
-    "@token-ring/wikipedia": ["@token-ring/wikipedia@workspace:pkg/wikipedia"],
+    "@tokenring-ai/wikipedia": ["@tokenring-ai/wikipedia@workspace:pkg/wikipedia"],
 
-    "@token-ring/wordpress": ["@token-ring/wordpress@workspace:pkg/wordpress"],
+    "@tokenring-ai/wordpress": ["@tokenring-ai/wordpress@workspace:pkg/wordpress"],
 
     "@tool-belt/type-predicates": ["@tool-belt/type-predicates@1.2.2", "", {}, "sha512-IuUa3c0fOEJ6YnzMvfPA5BZ2gLafPgSU9YJmXV3hozlxbQGNPMVHrTiMoAERklhssxVQ5AtfEUI6r+6kS4npKw=="],
 
@@ -2513,7 +2497,7 @@
 
     "@smithy/middleware-retry/uuid": ["uuid@9.0.1", "", { "bin": { "uuid": "dist/bin/uuid" } }, "sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA=="],
 
-    "@token-ring/cli/@inquirer/prompts": ["@inquirer/prompts@7.8.3", "", { "dependencies": { "@inquirer/checkbox": "^4.2.1", "@inquirer/confirm": "^5.1.15", "@inquirer/editor": "^4.2.17", "@inquirer/expand": "^4.0.17", "@inquirer/input": "^4.2.1", "@inquirer/number": "^3.0.17", "@inquirer/password": "^4.0.17", "@inquirer/rawlist": "^4.1.5", "@inquirer/search": "^3.1.0", "@inquirer/select": "^4.3.1" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-iHYp+JCaCRktM/ESZdpHI51yqsDgXu+dMs4semzETftOaF8u5hwlqnbIsuIR/LrWZl8Pm1/gzteK9I7MAq5HTA=="],
+    "@tokenring-ai/cli/@inquirer/prompts": ["@inquirer/prompts@7.8.3", "", { "dependencies": { "@inquirer/checkbox": "^4.2.1", "@inquirer/confirm": "^5.1.15", "@inquirer/editor": "^4.2.17", "@inquirer/expand": "^4.0.17", "@inquirer/input": "^4.2.1", "@inquirer/number": "^3.0.17", "@inquirer/password": "^4.0.17", "@inquirer/rawlist": "^4.1.5", "@inquirer/search": "^3.1.0", "@inquirer/select": "^4.3.1" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-iHYp+JCaCRktM/ESZdpHI51yqsDgXu+dMs4semzETftOaF8u5hwlqnbIsuIR/LrWZl8Pm1/gzteK9I7MAq5HTA=="],
 
     "@tryghost/admin-api/axios": ["axios@1.10.0", "", { "dependencies": { "follow-redirects": "^1.15.6", "form-data": "^4.0.0", "proxy-from-env": "^1.1.0" } }, "sha512-/1xYAC4MP/HEG+3duIhFr4ZQXR4sQXOIe+o6sdqzeykGLx6Upp/1p8MHqhINOvGeP7xyNHe7tsiJByc4SSVUxw=="],
 
@@ -2827,11 +2811,11 @@
 
     "@kubernetes/client-node/@types/node/undici-types": ["undici-types@6.21.0", "", {}, "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="],
 
-    "@token-ring/cli/@inquirer/prompts/@inquirer/checkbox": ["@inquirer/checkbox@4.2.1", "", { "dependencies": { "@inquirer/core": "^10.1.15", "@inquirer/figures": "^1.0.13", "@inquirer/type": "^3.0.8", "ansi-escapes": "^4.3.2", "yoctocolors-cjs": "^2.1.2" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-bevKGO6kX1eM/N+pdh9leS5L7TBF4ICrzi9a+cbWkrxeAeIcwlo/7OfWGCDERdRCI2/Q6tjltX4bt07ALHDwFw=="],
+    "@tokenring-ai/cli/@inquirer/prompts/@inquirer/checkbox": ["@inquirer/checkbox@4.2.1", "", { "dependencies": { "@inquirer/core": "^10.1.15", "@inquirer/figures": "^1.0.13", "@inquirer/type": "^3.0.8", "ansi-escapes": "^4.3.2", "yoctocolors-cjs": "^2.1.2" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-bevKGO6kX1eM/N+pdh9leS5L7TBF4ICrzi9a+cbWkrxeAeIcwlo/7OfWGCDERdRCI2/Q6tjltX4bt07ALHDwFw=="],
 
-    "@token-ring/cli/@inquirer/prompts/@inquirer/confirm": ["@inquirer/confirm@5.1.15", "", { "dependencies": { "@inquirer/core": "^10.1.15", "@inquirer/type": "^3.0.8" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-SwHMGa8Z47LawQN0rog0sT+6JpiL0B7eW9p1Bb7iCeKDGTI5Ez25TSc2l8kw52VV7hA4sX/C78CGkMrKXfuspA=="],
+    "@tokenring-ai/cli/@inquirer/prompts/@inquirer/confirm": ["@inquirer/confirm@5.1.15", "", { "dependencies": { "@inquirer/core": "^10.1.15", "@inquirer/type": "^3.0.8" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-SwHMGa8Z47LawQN0rog0sT+6JpiL0B7eW9p1Bb7iCeKDGTI5Ez25TSc2l8kw52VV7hA4sX/C78CGkMrKXfuspA=="],
 
-    "@token-ring/cli/@inquirer/prompts/@inquirer/editor": ["@inquirer/editor@4.2.17", "", { "dependencies": { "@inquirer/core": "^10.1.15", "@inquirer/external-editor": "^1.0.1", "@inquirer/type": "^3.0.8" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-r6bQLsyPSzbWrZZ9ufoWL+CztkSatnJ6uSxqd6N+o41EZC51sQeWOzI6s5jLb+xxTWxl7PlUppqm8/sow241gg=="],
+    "@tokenring-ai/cli/@inquirer/prompts/@inquirer/editor": ["@inquirer/editor@4.2.17", "", { "dependencies": { "@inquirer/core": "^10.1.15", "@inquirer/external-editor": "^1.0.1", "@inquirer/type": "^3.0.8" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-r6bQLsyPSzbWrZZ9ufoWL+CztkSatnJ6uSxqd6N+o41EZC51sQeWOzI6s5jLb+xxTWxl7PlUppqm8/sow241gg=="],
 
     "@types/body-parser/@types/node/undici-types": ["undici-types@6.21.0", "", {}, "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="],
 
@@ -3017,9 +3001,9 @@
 
     "@inquirer/core/wrap-ansi/strip-ansi/ansi-regex": ["ansi-regex@5.0.1", "", {}, "sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ=="],
 
-    "@token-ring/cli/@inquirer/prompts/@inquirer/checkbox/ansi-escapes": ["ansi-escapes@4.3.2", "", { "dependencies": { "type-fest": "^0.21.3" } }, "sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ=="],
+    "@tokenring-ai/cli/@inquirer/prompts/@inquirer/checkbox/ansi-escapes": ["ansi-escapes@4.3.2", "", { "dependencies": { "type-fest": "^0.21.3" } }, "sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ=="],
 
-    "@token-ring/cli/@inquirer/prompts/@inquirer/editor/@inquirer/external-editor": ["@inquirer/external-editor@1.0.1", "", { "dependencies": { "chardet": "^2.1.0", "iconv-lite": "^0.6.3" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-Oau4yL24d2B5IL4ma4UpbQigkVhzPDXLoqy1ggK4gnHg/stmkffJE4oOXHXF3uz0UEpywG68KcyXsyYpA1Re/Q=="],
+    "@tokenring-ai/cli/@inquirer/prompts/@inquirer/editor/@inquirer/external-editor": ["@inquirer/external-editor@1.0.1", "", { "dependencies": { "chardet": "^2.1.0", "iconv-lite": "^0.6.3" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-Oau4yL24d2B5IL4ma4UpbQigkVhzPDXLoqy1ggK4gnHg/stmkffJE4oOXHXF3uz0UEpywG68KcyXsyYpA1Re/Q=="],
 
     "ansi-align/string-width/strip-ansi/ansi-regex": ["ansi-regex@5.0.1", "", {}, "sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ=="],
 
@@ -3259,9 +3243,9 @@
 
     "@commitlint/top-level/find-up/locate-path/p-locate/p-limit": ["p-limit@4.0.0", "", { "dependencies": { "yocto-queue": "^1.0.0" } }, "sha512-5b0R4txpzjPWVw/cXXUResoD4hb6U/x9BH08L7nw+GN1sezDzPdxeRvpc9c433fZhBan/wusjbCsqwqm4EIBIQ=="],
 
-    "@token-ring/cli/@inquirer/prompts/@inquirer/checkbox/ansi-escapes/type-fest": ["type-fest@0.21.3", "", {}, "sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w=="],
+    "@tokenring-ai/cli/@inquirer/prompts/@inquirer/checkbox/ansi-escapes/type-fest": ["type-fest@0.21.3", "", {}, "sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w=="],
 
-    "@token-ring/cli/@inquirer/prompts/@inquirer/editor/@inquirer/external-editor/chardet": ["chardet@2.1.0", "", {}, "sha512-bNFETTG/pM5ryzQ9Ad0lJOTa6HWD/YsScAR3EnCPZRPlQh77JocYktSHOUHelyhm8IARL+o4c4F1bP5KVOjiRA=="],
+    "@tokenring-ai/cli/@inquirer/prompts/@inquirer/editor/@inquirer/external-editor/chardet": ["chardet@2.1.0", "", {}, "sha512-bNFETTG/pM5ryzQ9Ad0lJOTa6HWD/YsScAR3EnCPZRPlQh77JocYktSHOUHelyhm8IARL+o4c4F1bP5KVOjiRA=="],
 
     "inquirer/@inquirer/prompts/@inquirer/editor/@inquirer/external-editor/chardet": ["chardet@2.1.0", "", {}, "sha512-bNFETTG/pM5ryzQ9Ad0lJOTa6HWD/YsScAR3EnCPZRPlQh77JocYktSHOUHelyhm8IARL+o4c4F1bP5KVOjiRA=="],
 

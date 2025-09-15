@@ -1,73 +1,57 @@
-import {ModelConfig} from "@token-ring/ai-client/ModelRegistry";
-import {PersonaConfig} from "@token-ring/chat/ChatService";
-import {ChromeWebSearchOptions} from "@token-ring/chrome/ChromeWebSearchResource";
-import {GhostCDNResourceOptions} from "@token-ring/ghost-io/GhostCDNResource";
-import {GhostIOServiceOptions} from "@token-ring/ghost-io/GhostBlogResource";
-import {S3CDNResourceOptions} from "@token-ring/s3-cdn";
-import {ScraperAPIConfig} from "@token-ring/scraperapi/ScraperAPIWebSearchResource";
-import {SerperConfig} from "@token-ring/serper/SerperWebSearchResource";
-import {WordPressResourceOptions} from "@token-ring/wordpress/WordPressBlogResource";
-import {WordPressCDNResourceOptions} from "@token-ring/wordpress/WordPressCDNResource";
-import {CloudQuoteServiceOptions} from "../pkg/cloudquote/CloudQuoteService.js";
-import {WikipediaConfig} from "../pkg/wikipedia/WikipediaService.js";
+import {AgentConfig} from "@tokenring-ai/agent/Agent";
+import {ModelProviderConfig} from "@tokenring-ai/ai-client/models";
+import {ChromeWebSearchOptions} from "@tokenring-ai/chrome/ChromeWebSearchResource";
+import {CloudQuoteServiceOptions} from "@tokenring-ai/cloudquote/CloudQuoteService.js";
+import {GhostIOServiceOptions} from "@tokenring-ai/ghost-io/GhostBlogResource";
+import {GhostCDNResourceOptions} from "@tokenring-ai/ghost-io/GhostCDNResource";
+import {NewsRPMConfig} from "@tokenring-ai/newsrpm/NewsRPMService";
+import {ResearchServiceConfig} from "@tokenring-ai/research/ResearchService";
+import {S3CDNResourceOptions} from "@tokenring-ai/s3";
+import {ScraperAPIWebSearchProviderOptions} from "@tokenring-ai/scraperapi/ScraperAPIWebSearchProvider";
+import {SerperWebSearchProviderOptions} from "@tokenring-ai/serper/SerperWebSearchProvider";
+import {LocalFileSystemProviderOptions} from "@tokenring-ai/local-filesystem/LocalFileSystemProvider";
+import {S3FileSystemProviderOptions} from "@tokenring-ai/s3/S3FileSystemProvider";
+import {WikipediaConfig} from "@tokenring-ai/wikipedia/WikipediaService";
+import {WordPressResourceOptions} from "@tokenring-ai/wordpress/WordPressBlogResource";
+
+export type WebSearchConfig =
+  | SerperWebSearchProviderOptions & { type: 'serper' }
+  | ScraperAPIWebSearchProviderOptions & { type: 'scraperapi' }
+  | ChromeWebSearchOptions & { type: 'chrome' };
+
+export type FileSystemProviderConfig =
+  | LocalFileSystemProviderOptions & { type: 'local' }
+  | S3FileSystemProviderOptions & { type: 's3' };
 
 export type BlogConfig =
   | GhostIOServiceOptions & { type: 'ghost' }
   | WordPressResourceOptions & { type: 'wordpress' };
 
 export type CDNConfig =
-  | GhostCDNResourceOptions & { type: 'ghost'}
-  | S3CDNResourceOptions & { type: 's3'}
-  | WordPressCDNResourceOptions & { type: 'wordpress'};
-
-export type WebSearchConfig =
-  | SerperConfig & { type: 'serper' }
-  | ScraperAPIConfig & { type: 'scraperapi' }
-  | ChromeWebSearchOptions & { type: 'chrome' };
+  | GhostCDNResourceOptions & { type: 'ghost' }
+  | WordPressResourceOptions & { type: 'wordpress' }
+  | S3CDNResourceOptions & { type: 's3' };
 
 export interface WriterConfig {
   defaults: {
-    persona: string;
+    agent: string;
     tools?: string[];
+    model: string;
   };
-  personas: Record<string, PersonaConfig>;
-  blog?: {
-    [key: string]: BlogConfig
+  agents: Record<string, AgentConfig>;
+  models: Record<string, ModelProviderConfig>;
+  websearch?: Record<string, WebSearchConfig>;
+  filesystem?: {
+    default?: {
+      provider?: string;
+    }
+    providers: Record<string, FileSystemProviderConfig>;
   };
-  websearch?: {
-    [key: string]: WebSearchConfig
-  };
-  cloudquote?: CloudQuoteServiceOptions;
-  scraperapi?: {
-    apiKey: string;
-    countryCode?: string;
-    tld?: string;
-    outputFormat?: 'json' | 'csv';
-    render?: boolean;
-    deviceType?: 'desktop' | 'mobile';
-  };
-  serper?: {
-    apiKey: string;
-    gl?: string;
-    hl?: string;
-    location?: string;
-    num?: number;
-    page?: number;
-  };
-  newsrpm?: {
-    apiKey: string;
-    authMode?: 'privateHeader' | 'publicHeader' | 'privateQuery' | 'publicQuery';
-    baseUrl?: string;
-    defaults?: { timeoutMs?: number };
-    retry?: { maxRetries?: number; baseDelayMs?: number; maxDelayMs?: number; jitter?: boolean };
-  };
-  research: {
-    researchModel: string;
-  };
+  blog?: Record<string, BlogConfig>;
+  cdn?: Record<string, CDNConfig>;
+  newsrpm?: NewsRPMConfig
+  cloudquote?: CloudQuoteServiceOptions
   wikipedia?: WikipediaConfig;
-  cdn?: {
-    [key: string]: CDNConfig
-  },
-  models: Record<string, ModelConfig>;
-  templates: Record<string, any>;
+  research?: ResearchServiceConfig;
+  templates?: Record<string, any>;
 }
