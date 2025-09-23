@@ -8,6 +8,7 @@ import {NewsRPMConfig} from "@tokenring-ai/newsrpm/NewsRPMService";
 import {ResearchServiceConfig} from "@tokenring-ai/research/ResearchService";
 import {S3CDNResourceOptions} from "@tokenring-ai/s3";
 import {ScraperAPIWebSearchProviderOptions} from "@tokenring-ai/scraperapi/ScraperAPIWebSearchProvider";
+import {Script} from "@tokenring-ai/scripting/ScriptingService.js";
 import {SerperWebSearchProviderOptions} from "@tokenring-ai/serper/SerperWebSearchProvider";
 import {LocalFileSystemProviderOptions} from "@tokenring-ai/local-filesystem/LocalFileSystemProvider";
 import {S3FileSystemProviderOptions} from "@tokenring-ai/s3/S3FileSystemProvider";
@@ -54,4 +55,5 @@ export interface WriterConfig {
   wikipedia?: WikipediaConfig;
   research?: ResearchServiceConfig;
   templates?: Record<string, any>;
+  scripts?: Record<string, Script>;
 }

@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
 import {AgentStateStorage, AgentTeam, packageInfo as AgentPackage} from "@tokenring-ai/agent";
+import AgentContextService from "@tokenring-ai/agent/AgentContextService";
 import {ModelRegistry, packageInfo as ChatRouterPackage} from "@tokenring-ai/ai-client";
 import AIService from "@tokenring-ai/ai-client/AIService";
 import {registerModels} from "@tokenring-ai/ai-client/models";
@@ -12,19 +13,22 @@ import {packageInfo as FeedbackPackage} from "@tokenring-ai/feedback";
 import {FileSystemService, packageInfo as FilesystemPackage} from "@tokenring-ai/filesystem";
 import {GhostBlogResource, GhostCDNResource, packageInfo as GhostIOPackage} from "@tokenring-ai/ghost-io";
 import {LocalFileSystemService, packageInfo as LocalFileSystemPackage} from "@tokenring-ai/local-filesystem";
-import {EphemeralMemoryService, packageInfo as MemoryPackage} from "@tokenring-ai/memory";
+import {packageInfo as MemoryPackage, ShortTermMemoryService} from "@tokenring-ai/memory";
 import {NewsRPMService, packageInfo as NewsRPMPackage} from "@tokenring-ai/newsrpm";
 import {packageInfo as QueuePackage, WorkQueueService} from "@tokenring-ai/queue";
-import {ResearchService, packageInfo as ResearchPackage } from "@tokenring-ai/research";
-import {S3CDNResource, packageInfo as S3Package} from "@tokenring-ai/s3";
-import {ScraperAPIWebSearchResource, packageInfo as ScraperAPIPackage} from "@tokenring-ai/scraperapi";
-import {SerperWebSearchResource, packageInfo as SerperPackage} from "@tokenring-ai/serper";
+import {packageInfo as ResearchPackage, ResearchService} from "@tokenring-ai/research";
+import {packageInfo as S3Package, S3CDNResource} from "@tokenring-ai/s3";
+import {packageInfo as ScraperAPIPackage, ScraperAPIWebSearchResource} from "@tokenring-ai/scraperapi";
+import {packageInfo as ScriptingPackage, ScriptingService} from "@tokenring-ai/scripting";
+import {packageInfo as SerperPackage, SerperWebSearchResource} from "@tokenring-ai/serper";
 import {packageInfo as SQLiteChatStoragePackage} from "@tokenring-ai/sqlite-storage";
 import initializeLocalDatabase from "@tokenring-ai/sqlite-storage/db/initializeLocalDatabase";
 import SQLiteAgentStateStorage from "@tokenring-ai/sqlite-storage/SQLiteAgentStateStorage";
-import {WebSearchService, packageInfo as WebSearchPackage} from "@tokenring-ai/websearch";
-import {WikipediaService, packageInfo as WikipediaPackage} from "@tokenring-ai/wikipedia";
-import {WordPressBlogResource, WordPressCDNResource, packageInfo as WordPressPackage} from "@tokenring-ai/wordpress";
+import {packageInfo as TasksPackage, TaskService} from "@tokenring-ai/tasks";
+import {packageInfo as TemplatePackage, TemplateService} from "@tokenring-ai/template";
+import {packageInfo as WebSearchPackage, WebSearchService} from "@tokenring-ai/websearch";
+import {packageInfo as WikipediaPackage, WikipediaService} from "@tokenring-ai/wikipedia";
+import {packageInfo as WordPressPackage, WordPressBlogResource, WordPressCDNResource} from "@tokenring-ai/wordpress";
 import chalk from "chalk";
 import {Command} from "commander";
 import fs from "node:fs";
@@ -137,7 +141,9 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     LocalFileSystemPackage,
     MemoryPackage,
     QueuePackage,
-    SQLiteChatStoragePackage
+    ScriptingPackage,
+    SQLiteChatStoragePackage,
+    TasksPackage
   ]);
 
   const modelRegistry = new ModelRegistry();
@@ -146,12 +152,14 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
   const filesystemService = new FileSystemService();
 
   agentTeam.services.register(
+    new AgentContextService(),
     modelRegistry,
     filesystemService,
     new AIService({ model: config.defaults.model}),
     new AgentStateStorage(new SQLiteAgentStateStorage({db})),
     new WorkQueueService(),
-    new EphemeralMemoryService(),
+    new ShortTermMemoryService(),
+    new TaskService(),
   );
 
   config.filesystem ??= {
@@ -262,6 +270,16 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
   if (config.research) {
     agentTeam.services.register(new ResearchService(config.research));
     await agentTeam.addPackages([ResearchPackage]);
+  }
+
+  if (config.templates) {
+    agentTeam.services.register(new TemplateService(config.templates))
+    await agentTeam.addPackages([TemplatePackage]);
+  }
+
+  if (config.scripts) {
+    agentTeam.services.register(new ScriptingService(config.scripts));
+    await agentTeam.addPackages([ScriptingPackage]);
   }
 
   console.log(chalk.yellow(banner));

@@ -1,5 +1,7 @@
+/* eslint-disable turbo/no-undeclared-env-vars */
 import fs from "fs";
 import path from "path";
+
 function getSubdirectories(srcPath) {
  if (!fs.existsSync(srcPath)) return [];
  return fs
@@ -170,6 +172,33 @@ export default {
     return {type, capabilities};
    },
   },
+  LocalLLama: {
+   provider: "openaiCompatible",
+   baseURL: "http://192.168.15.25:11434",
+   apiKey: "sk-ABCD1234567890",
+   generateModelSpec(modelInfo) {
+    let {id: model} = modelInfo;
+    model = model.replace(/:latest$/, "");
+    model = model.replace(/^hf.co\/([^\/]*)\//, "");
+    let type = "chat";
+    let capabilities = {};
+    if (model.match(/embed/i)) {
+     type = "embedding";
+     capabilities.alwaysHot = 1;
+    } else if (model.match(/qwen[23]/i)) {
+     Object.assign(capabilities, {
+      reasoning: 2,
+      tools: 2,
+      intelligence: 2,
+      speed: 2,
+      contextLength: 128000,
+      costPerMillionInputTokens: 0,
+      costPerMillionOutputTokens: 0,
+     });
+    }
+    return {type, capabilities};
+   },
+  },
   OpenRouter: {
    provider: "openrouter",
    apiKey: process.env.OPENROUTER_API_KEY,
@@ -196,6 +225,7 @@ export default {
    apiKey: process.env.XAI_API_KEY,
   },
  },
+ /*
  websearch: {
   serper: {
    type: "serper",
@@ -205,7 +235,7 @@ export default {
    type: "scraperapi",
    apiKey: process.env.SCRAPERAPI_API_KEY,
   },
- },
+ },*/
  filesystem: {
   default: {
    selectedFiles: ["AGENTS.md"],

@@ -90,3 +90,10 @@
 	path = pkg/websearch
 	url = git@github.com:tokenring-ai/websearch.git
 	branch = main
+[submodule "pkg/tasks"]
+	path = pkg/tasks
+	url = git@github.com:tokenring-ai/tasks.git
+[submodule "pkg/scripting"]
+	path = pkg/scripting
+	url = git@github.com:tokenring-ai/scripting.git
+	branch = main

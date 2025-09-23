@@ -1,4 +1,4 @@
-import {AgentConfig} from "@tokenring-ai/agent/Agent";
+import Agent, {AgentConfig} from "@tokenring-ai/agent/Agent";
 
 export default {
   name: "Content Writer",
@@ -15,7 +15,13 @@ export default {
     temperature: 0.7,
     topP: 0.9,
   },
+  async workHandler(prompt: string, agent: Agent) {
+    await agent.runCommand("/chat hello");
+    await agent.runCommand("/chat what did I just ask you?");
+  },
   initialCommands: [
-    "/tools enable @tokenring-ai/research/* @tokenring-ai/websearch/* @tokenring-ai/filesystem/*",
-  ]
+    "/tools enable @tokenring-ai/research/*",
+    "/tools enable @tokenring-ai/blog/*",
+  ],
+  type: "interactive"
 } as AgentConfig;
