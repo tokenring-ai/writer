@@ -34,23 +34,23 @@ export default {
    }
   }
  },
- blog: {
+ /*blog: {
   ghost: {
    type: 'ghost',
    adminApiKey: process.env.GHOST_ADMIN_API_KEY,
    contentApiKey: process.env.GHOST_CONTENT_API_KEY,
    url: process.env.GHOST_URL,
   },
- },
+ },*/
  wikipedia: {
   baseUrl: "https://en.wikipedia.org"
  },
- newsrpm: {
+ /*newsrpm: {
   apiKey: process.env.NEWSRPM_API_KEY,
  },
  cloudquote: {
   apiKey: process.env.CLOUDQUOTE_API_KEY,
- },
+ },*/
  research: {
   researchModel: "gemini-2.5-flash",
  },
@@ -68,19 +68,19 @@ export default {
    apiKey: process.env.XAI_API_KEY,
   },
  },
- cdn: {
+ /*cdn: {
   ghost: {
    type: 'ghost',
    adminApiKey: process.env.GHOST_ADMIN_API_KEY,
    url: process.env.GHOST_URL,
   },
-  /*
+
   s3: {
    type: 's3',
    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
    region: process.env.AWS_REGION,
-  }*/
- },
+  }
+ },*/
  templates,
 };

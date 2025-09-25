@@ -6,21 +6,21 @@ import AIService from "@tokenring-ai/ai-client/AIService";
 import {registerModels} from "@tokenring-ai/ai-client/models";
 import {BlogService, packageInfo as BlogPackage} from "@tokenring-ai/blog";
 import {CDNService, packageInfo as CDNPackage} from "@tokenring-ai/cdn";
-import {ChromeWebSearchResource, packageInfo as ChromePackage} from "@tokenring-ai/chrome";
+import {ChromeWebSearchProvider, packageInfo as ChromePackage} from "@tokenring-ai/chrome";
 import {packageInfo as CLIPackage, REPLService} from "@tokenring-ai/cli";
 import {CloudQuoteService, packageInfo as CloudQuotePackage} from "@tokenring-ai/cloudquote";
 import {packageInfo as FeedbackPackage} from "@tokenring-ai/feedback";
 import {FileSystemService, packageInfo as FilesystemPackage} from "@tokenring-ai/filesystem";
-import {GhostBlogResource, GhostCDNResource, packageInfo as GhostIOPackage} from "@tokenring-ai/ghost-io";
+import {GhostBlogProvider, GhostCDNProvider, packageInfo as GhostIOPackage} from "@tokenring-ai/ghost-io";
 import {LocalFileSystemService, packageInfo as LocalFileSystemPackage} from "@tokenring-ai/local-filesystem";
 import {packageInfo as MemoryPackage, ShortTermMemoryService} from "@tokenring-ai/memory";
 import {NewsRPMService, packageInfo as NewsRPMPackage} from "@tokenring-ai/newsrpm";
 import {packageInfo as QueuePackage, WorkQueueService} from "@tokenring-ai/queue";
 import {packageInfo as ResearchPackage, ResearchService} from "@tokenring-ai/research";
-import {packageInfo as S3Package, S3CDNResource} from "@tokenring-ai/s3";
-import {packageInfo as ScraperAPIPackage, ScraperAPIWebSearchResource} from "@tokenring-ai/scraperapi";
+import {packageInfo as S3Package, S3CDNProvider} from "@tokenring-ai/s3";
+import {packageInfo as ScraperAPIPackage, ScraperAPIWebSearchProvider} from "@tokenring-ai/scraperapi";
 import {packageInfo as ScriptingPackage, ScriptingService} from "@tokenring-ai/scripting";
-import {packageInfo as SerperPackage, SerperWebSearchResource} from "@tokenring-ai/serper";
+import {packageInfo as SerperPackage, SerperWebSearchProvider} from "@tokenring-ai/serper";
 import {packageInfo as SQLiteChatStoragePackage} from "@tokenring-ai/sqlite-storage";
 import initializeLocalDatabase from "@tokenring-ai/sqlite-storage/db/initializeLocalDatabase";
 import SQLiteAgentStateStorage from "@tokenring-ai/sqlite-storage/SQLiteAgentStateStorage";
@@ -28,7 +28,7 @@ import {packageInfo as TasksPackage, TaskService} from "@tokenring-ai/tasks";
 import {packageInfo as TemplatePackage, TemplateService} from "@tokenring-ai/template";
 import {packageInfo as WebSearchPackage, WebSearchService} from "@tokenring-ai/websearch";
 import {packageInfo as WikipediaPackage, WikipediaService} from "@tokenring-ai/wikipedia";
-import {packageInfo as WordPressPackage, WordPressBlogResource, WordPressCDNResource} from "@tokenring-ai/wordpress";
+import {packageInfo as WordPressPackage, WordPressBlogProvider, WordPressCDNProvider} from "@tokenring-ai/wordpress";
 import chalk from "chalk";
 import {Command} from "commander";
 import fs from "node:fs";
@@ -191,21 +191,24 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     agentTeam.services.register(websearchService);
     await agentTeam.addPackages([WebSearchPackage, ChromePackage, SerperPackage, ScraperAPIPackage]);
 
-    for (const name in config.websearch) {
-      const websearchConfig = config.websearch[name];
+    for (const name in config.websearch.providers) {
+      const websearchConfig = config.websearch.providers[name];
       switch (websearchConfig.type) {
         case "chrome":
-          websearchService.registerResource(name, new ChromeWebSearchResource(websearchConfig));
+          websearchService.registerProvider(name, new ChromeWebSearchProvider(websearchConfig));
           break;
         case "serper":
-          websearchService.registerResource(name, new SerperWebSearchResource(websearchConfig));
+          websearchService.registerProvider(name, new SerperWebSearchProvider(websearchConfig));
           break;
         case "scraperapi":
-          websearchService.registerResource(name, new ScraperAPIWebSearchResource(websearchConfig));
+          websearchService.registerProvider(name, new ScraperAPIWebSearchProvider(websearchConfig));
           break;
         default:
           throw new Error(`Invalid websearch type for websearch ${name}`);
       }
+    }
+    if (config.websearch.default?.provider) {
+      websearchService.setActiveProvider(config.websearch.default.provider);
     }
   }
 
@@ -218,13 +221,13 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
       const cdnConfig = config.cdn[name];
       switch (cdnConfig.type) {
         case "ghost":
-          cdnService.registerCDN(name, new GhostCDNResource(cdnConfig));
+          cdnService.registerProvider(name, new GhostCDNProvider(cdnConfig));
           break;
         case "s3":
-          cdnService.registerCDN(name, new S3CDNResource(cdnConfig));
+          cdnService.registerProvider(name, new S3CDNProvider(cdnConfig));
           break;
         case "wordpress":
-          cdnService.registerCDN(name, new WordPressCDNResource(cdnConfig));
+          cdnService.registerProvider(name, new WordPressCDNProvider(cdnConfig));
           break;
         default:
           throw new Error(`Invalid CDN type for CDN ${name}`);
@@ -241,10 +244,10 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
       const blogConfig = config.blog[name];
       switch (blogConfig.type) {
         case "ghost":
-          blogService.registerBlog(name, new GhostBlogResource(blogConfig));
+          blogService.registerBlog(name, new GhostBlogProvider(blogConfig));
           break;
         case "wordpress":
-          blogService.registerBlog(name, new WordPressBlogResource(blogConfig));
+          blogService.registerBlog(name, new WordPressBlogProvider(blogConfig));
           break;
         default:
           throw new Error(`Invalid blog type for blog ${name}`);

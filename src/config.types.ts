@@ -1,19 +1,19 @@
 import {AgentConfig} from "@tokenring-ai/agent/Agent";
 import {ModelProviderConfig} from "@tokenring-ai/ai-client/models";
-import {ChromeWebSearchOptions} from "@tokenring-ai/chrome/ChromeWebSearchResource";
+import {ChromeWebSearchOptions} from "@tokenring-ai/chrome/ChromeWebSearchProvider";
 import {CloudQuoteServiceOptions} from "@tokenring-ai/cloudquote/CloudQuoteService.js";
-import {GhostIOServiceOptions} from "@tokenring-ai/ghost-io/GhostBlogResource";
-import {GhostCDNResourceOptions} from "@tokenring-ai/ghost-io/GhostCDNResource";
+import {GhostIOServiceOptions} from "@tokenring-ai/ghost-io/GhostBlogProvider";
+import {GhostCDNProviderOptions} from "@tokenring-ai/ghost-io/GhostCDNProvider";
 import {NewsRPMConfig} from "@tokenring-ai/newsrpm/NewsRPMService";
 import {ResearchServiceConfig} from "@tokenring-ai/research/ResearchService";
-import {S3CDNResourceOptions} from "@tokenring-ai/s3";
+import {S3CDNProviderOptions} from "@tokenring-ai/s3";
 import {ScraperAPIWebSearchProviderOptions} from "@tokenring-ai/scraperapi/ScraperAPIWebSearchProvider";
 import {Script} from "@tokenring-ai/scripting/ScriptingService.js";
 import {SerperWebSearchProviderOptions} from "@tokenring-ai/serper/SerperWebSearchProvider";
 import {LocalFileSystemProviderOptions} from "@tokenring-ai/local-filesystem/LocalFileSystemProvider";
 import {S3FileSystemProviderOptions} from "@tokenring-ai/s3/S3FileSystemProvider";
 import {WikipediaConfig} from "@tokenring-ai/wikipedia/WikipediaService";
-import {WordPressResourceOptions} from "@tokenring-ai/wordpress/WordPressBlogResource";
+import {WordPressProviderOptions} from "@tokenring-ai/wordpress/WordPressBlogProvider";
 
 export type WebSearchConfig =
   | SerperWebSearchProviderOptions & { type: 'serper' }
@@ -26,12 +26,12 @@ export type FileSystemProviderConfig =
 
 export type BlogConfig =
   | GhostIOServiceOptions & { type: 'ghost' }
-  | WordPressResourceOptions & { type: 'wordpress' };
+  | WordPressProviderOptions & { type: 'wordpress' };
 
 export type CDNConfig =
-  | GhostCDNResourceOptions & { type: 'ghost' }
-  | WordPressResourceOptions & { type: 'wordpress' }
-  | S3CDNResourceOptions & { type: 's3' };
+  | GhostCDNProviderOptions & { type: 'ghost' }
+  | WordPressProviderOptions & { type: 'wordpress' }
+  | S3CDNProviderOptions & { type: 's3' };
 
 export interface WriterConfig {
   defaults: {
@@ -41,7 +41,12 @@ export interface WriterConfig {
   };
   agents: Record<string, AgentConfig>;
   models: Record<string, ModelProviderConfig>;
-  websearch?: Record<string, WebSearchConfig>;
+  websearch?: {
+    default?: {
+      provider?: string;
+    }
+    providers: Record<string, WebSearchConfig>
+  };
   filesystem?: {
     default?: {
       provider?: string;

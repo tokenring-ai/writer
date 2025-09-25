@@ -41,3 +41,4 @@ yarn-error.log*
 /.idea/
 /.claude/
 /.tokenring/writer-database.sqlite
+/brainstorm/
