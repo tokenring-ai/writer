@@ -21,7 +21,7 @@ export default {
     maxSteps: 75,
   },
   initialCommands: [
-    "/tools enable @tokenring-ai/web/search @tokenring-ai/agent/*",
+    "/tools enable @tokenring-ai/websearch/* @tokenring-ai/research/* @tokenring-ai/agent/* ",
   ],
   type: "interactive"
 } as AgentConfig;

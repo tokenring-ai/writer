@@ -4,6 +4,7 @@ import {ChromeWebSearchOptions} from "@tokenring-ai/chrome/ChromeWebSearchProvid
 import {CloudQuoteServiceOptions} from "@tokenring-ai/cloudquote/CloudQuoteService.js";
 import {GhostIOServiceOptions} from "@tokenring-ai/ghost-io/GhostBlogProvider";
 import {GhostCDNProviderOptions} from "@tokenring-ai/ghost-io/GhostCDNProvider";
+import {MCPTransportConfig} from "@tokenring-ai/mcp/MCPService";
 import {NewsRPMConfig} from "@tokenring-ai/newsrpm/NewsRPMService";
 import {ResearchServiceConfig} from "@tokenring-ai/research/ResearchService";
 import {S3CDNProviderOptions} from "@tokenring-ai/s3";
@@ -61,4 +62,7 @@ export interface WriterConfig {
   research?: ResearchServiceConfig;
   templates?: Record<string, any>;
   scripts?: Record<string, Script>;
+  mcp?: {
+    transports: Record<string, MCPTransportConfig>;
+  };
 }

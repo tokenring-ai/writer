@@ -16,6 +16,7 @@ import {LocalFileSystemService, packageInfo as LocalFileSystemPackage} from "@to
 import {packageInfo as MemoryPackage, ShortTermMemoryService} from "@tokenring-ai/memory";
 import {NewsRPMService, packageInfo as NewsRPMPackage} from "@tokenring-ai/newsrpm";
 import {packageInfo as QueuePackage, WorkQueueService} from "@tokenring-ai/queue";
+import {packageInfo as RedditPackage, RedditService} from "@tokenring-ai/reddit";
 import {packageInfo as ResearchPackage, ResearchService} from "@tokenring-ai/research";
 import {packageInfo as S3Package, S3CDNProvider} from "@tokenring-ai/s3";
 import {packageInfo as ScraperAPIPackage, ScraperAPIWebSearchProvider} from "@tokenring-ai/scraperapi";
@@ -29,6 +30,7 @@ import {packageInfo as TemplatePackage, TemplateService} from "@tokenring-ai/tem
 import {packageInfo as WebSearchPackage, WebSearchService} from "@tokenring-ai/websearch";
 import {packageInfo as WikipediaPackage, WikipediaService} from "@tokenring-ai/wikipedia";
 import {packageInfo as WordPressPackage, WordPressBlogProvider, WordPressCDNProvider} from "@tokenring-ai/wordpress";
+import {packageInfo as MCPPackage, MCPService} from "@tokenring-ai/mcp";
 import chalk from "chalk";
 import {Command} from "commander";
 import fs from "node:fs";
@@ -139,8 +141,10 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     FeedbackPackage,
     FilesystemPackage,
     LocalFileSystemPackage,
+    MCPPackage,
     MemoryPackage,
     QueuePackage,
+    RedditPackage,
     ScriptingPackage,
     SQLiteChatStoragePackage,
     TasksPackage
@@ -160,6 +164,7 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     new WorkQueueService(),
     new ShortTermMemoryService(),
     new TaskService(),
+    new RedditService()
   );
 
   config.filesystem ??= {
@@ -209,6 +214,15 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     }
     if (config.websearch.default?.provider) {
       websearchService.setActiveProvider(config.websearch.default.provider);
+    }
+  }
+
+  if (config.mcp) {
+    const mcpService = new MCPService();
+    agentTeam.services.register(mcpService);
+
+    for (const name in config.mcp.transports) {
+      await mcpService.register(name,config.mcp.transports[name], agentTeam);
     }
   }
 

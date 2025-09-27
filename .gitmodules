@@ -97,3 +97,14 @@
 	path = pkg/scripting
 	url = git@github.com:tokenring-ai/scripting.git
 	branch = main
+[submodule "pkg/reddit"]
+	path = pkg/reddit
+	url = git@github.com:tokenring-ai/reddit.git
+	branch = main
+[submodule "pkg/mcp"]
+	path = pkg/mcp
+	url = git@github.com:tokenring-ai/mcp.git
+	branch = main
+[submodule "pkg/vault"]
+	path = pkg/vault
+	url = git@github.com:tokenring-ai/vault.git
