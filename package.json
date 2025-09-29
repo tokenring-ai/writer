@@ -1,7 +1,7 @@
 {
  "name": "@tokenring-ai/writer",
  "description": "TokenRing Writer Application",
- "version": "0.1.3",
+ "version": "0.1.4",
  "bin": {
   "tr-writer": "dist/tr-writer.ts"
  },
@@ -45,8 +45,8 @@
   "build-container": "docker build -t tokenring-ai/coder:latest -f docker/Dockerfile .",
   "coder-container": "docker run -ti --net host -v ./:/repo:rw tokenring-ai/coder:latest",
   "build": "tsc",
-  "code-debug": "bun --inspect src/tr-coder.js --source ./",
-  "coder": "bun src/tr-coder.js --source ./",
+  "coder-debug": "bun --inspect ../tokenring-coder/src/tr-coder.js --source ./",
+  "coder": "bun ../tokenring-coder/src/tr-coder.js --source ./",
   "typecheck": "tsc -p tsconfig.tson --noEmit",
   "build:ts": "tsc -p tsconfig.tson",
   "test": "vitest run",

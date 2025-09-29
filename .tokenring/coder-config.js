@@ -2,6 +2,17 @@
 import fs from "fs";
 import path from "path";
 
+import AutomatedBrainstormingSession from "./coding-agents/AutomatedBrainstormingSession.js";
+import AutomatedDocumentationGeneration from "./coding-agents/AutomatedDocumentationGeneration.js";
+import AutomatedRefactoringSession from "./coding-agents/AutomatedRefactoringSession.js";
+
+const agents = {
+ AutomatedBrainstormingSession,
+ AutomatedDocumentationGeneration,
+ AutomatedRefactoringSession
+};
+
+
 function getSubdirectories(srcPath) {
  if (!fs.existsSync(srcPath)) return [];
  return fs
@@ -108,8 +119,9 @@ for (const pkgRoot of packageRoots) {
 export default {
  defaults: {
   persona: "code",
-  model: "openrouter/sonoma-sky-alpha"
+  model: "LocalLLama:openai/gpt-oss-120b"
  },
+ agents,
  models: {
   Anthropic: {
    provider: "anthropic",
@@ -174,7 +186,7 @@ export default {
   },
   LocalLLama: {
    provider: "openaiCompatible",
-   baseURL: "http://192.168.15.25:11434",
+   baseURL: "http://192.168.15.25:11434/v1",
    apiKey: "sk-ABCD1234567890",
    generateModelSpec(modelInfo) {
     let {id: model} = modelInfo;
@@ -288,29 +300,5 @@ export default {
     workingDirectory: "./",
    },
   },
- },
- agents: {
-  codeThink: {
-   name: "Code Deep Think Agent",
-   description: "A deep thinking code assistant that helps with development tasks",
-   visual: {
-    color: "green",
-   },
-   ai: {
-    systemPrompt:
-     "You are a deep thinking developer assistant in an interactive chat, with access to a variety of tools to safely update the users " +
-     "codebase and execute tasks the user has requested. \n" +
-     "You will see a variety of message, showing the requests the users has made over time, and a final prompt from the user, with a task " +
-     "they would like you to complete or continue. Review the users prompt and prior information, and think deeply about it. " +
-     "Then output the tag <think>, and output all of your thought about what the user is telling you to do, and what information you might need to " +
-     "complete the task, ending your thoughts with the text </think>" +
-     "Then call any tools you need to complete the task, and tell the user whether the task is complete, or whether their are items remaining to complete",
-    temperature: 0.2,
-    topP: 0.1,
-   },
-   initialCommands: [
-    "/tools enable @tokenring-ai/filesystem/*",
-   ]
-  }
  }
 };

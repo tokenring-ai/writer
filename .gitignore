@@ -42,3 +42,4 @@ yarn-error.log*
 /.claude/
 /.tokenring/writer-database.sqlite
 /brainstorm/
+/refactoring/
