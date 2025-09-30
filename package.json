@@ -3,7 +3,7 @@
  "description": "TokenRing Writer Application",
  "version": "0.1.4",
  "bin": {
-  "tr-writer": "dist/tr-writer.ts"
+  "tr-writer": "bin/tr-writer"
  },
  "dependencies": {
   "@dotenvx/dotenvx": "^1.48.4",
@@ -41,14 +41,13 @@
  },
  "license": "MIT",
  "scripts": {
-  "xpreinstall": "test -f pkg/ai-client/package.json || echo 'Updating git submodules...' && git submodule update --init --recursive",
+  "preinstall": "test -f pkg/ai-client/package.json || echo 'Updating git submodules...' && git submodule update --init --recursive",
   "build-container": "docker build -t tokenring-ai/coder:latest -f docker/Dockerfile .",
   "coder-container": "docker run -ti --net host -v ./:/repo:rw tokenring-ai/coder:latest",
-  "build": "tsc",
+  "build": "bun build --compile --outfile=bin/tr-writer src/tr-writer.ts",
   "coder-debug": "bun --inspect ../tokenring-coder/src/tr-coder.js --source ./",
   "coder": "bun ../tokenring-coder/src/tr-coder.js --source ./",
   "typecheck": "tsc -p tsconfig.tson --noEmit",
-  "build:ts": "tsc -p tsconfig.tson",
   "test": "vitest run",
   "prepare": "husky",
   "biome": "biome format --fix",
