@@ -1,7 +1,7 @@
 {
  "name": "@tokenring-ai/writer",
  "description": "TokenRing Writer Application",
- "version": "0.1.4",
+ "version": "0.1.5",
  "bin": {
   "tr-writer": "bin/tr-writer"
  },
