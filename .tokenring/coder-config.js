@@ -6,10 +6,18 @@ import AutomatedBrainstormingSession from "./coding-agents/AutomatedBrainstormin
 import AutomatedDocumentationGeneration from "./coding-agents/AutomatedDocumentationGeneration.js";
 import AutomatedRefactoringSession from "./coding-agents/AutomatedRefactoringSession.js";
 
+
+import brainstormingAgent from "./coding-agents/brainstorming-agent.js";
+//import documentationAgent from "./coding-agents/documentation-agent.js";
+import refactoringAgent from "./coding-agents/refactoring-agent.js";
+
 const agents = {
  AutomatedBrainstormingSession,
  AutomatedDocumentationGeneration,
- AutomatedRefactoringSession
+ AutomatedRefactoringSession,
+ brainstormingAgent,
+ //documentationAgent,
+ refactoringAgent,
 };
 
 

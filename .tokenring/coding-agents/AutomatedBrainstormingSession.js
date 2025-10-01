@@ -20,7 +20,7 @@ The user is going to give you a large task. You are to run the task until comple
   "/tools enable @tokenring-ai/filesystem/*",
   "/tools enable @tokenring-ai/agent/runAgent",
   "/foreach pkg/*/README.md start up a brainstorm agent, and instruct it to review all the code in the pkg/... directory where the README file resides, and to retrieve any @tokenring-ai/ dependencies it imports, and brainstorm new ideas for the product"
-  // `For each directory in pkg/, start up a brainstorm agent, passing it the path to the package. and instruct it to read and review the code in the package directory, and to deeply brainstorm ideas for how to improve the package.`,
+  //`For each directory in pkg/, start up a brainstorm agent, passing it the path to the package. and instruct it to read and review the code in the package directory, and to deeply brainstorm ideas for how to improve the package.`,
  ],
  type: "interactive"
 };
