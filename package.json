@@ -41,7 +41,7 @@
  },
  "license": "MIT",
  "scripts": {
-  "preinstall": "test -f pkg/ai-client/package.json || echo 'Updating git submodules...' && git submodule update --init --recursive",
+  "xpreinstall": "test -f pkg/ai-client/package.json || echo 'Updating git submodules...' && git submodule foreach git pull origin main && echo 'Done.'",
   "build-container": "docker build -t tokenring-ai/coder:latest -f docker/Dockerfile .",
   "coder-container": "docker run -ti --net host -v ./:/repo:rw tokenring-ai/coder:latest",
   "build": "bun build --compile --outfile=bin/tr-writer src/tr-writer.ts",

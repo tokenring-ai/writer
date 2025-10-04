@@ -108,3 +108,7 @@
 [submodule "pkg/vault"]
 	path = pkg/vault
 	url = git@github.com:tokenring-ai/vault.git
+[submodule "pkg/iterables"]
+	path = pkg/iterables
+	url = git@github.com:tokenring-ai/iterables.git
+	branch = main

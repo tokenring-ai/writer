@@ -5,58 +5,63 @@
  */
 
 export default {
-	defaults: {
-		agent: "writer",
-		model: "gpt-4o",
-	},
-	agents: {},
-	models: {
-		anthropic: {
-			displayName: "Anthropic",
-			apiKey: process.env.ANTHROPIC_API_KEY,
-		},
-		cerebras: {
-			displayName: "Cerebras",
-			apiKey: process.env.CEREBRAS_API_KEY,
-		},
-		deepseek: {
-			displayName: "DeepSeek",
-			apiKey: process.env.DEEPSEEK_API_KEY,
-		},
-		google: {
-			displayName: "Google",
-			apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
-		},
-		groq: {
-			displayName: "Groq",
-			apiKey: process.env.GROQ_API_KEY,
-		},
-		openai: {
-			displayName: "OpenAI",
-			apiKey: process.env.OPENAI_API_KEY,
-		},
-		perplexity: {
-			displayName: "Perplexity",
-			apiKey: process.env.PERPLEXITY_API_KEY,
-		},
-		xai: {
-			displayName: "xAi",
-			apiKey: process.env.XAI_API_KEY,
+	websearch: {
+		providers: {
+			serper: {
+				type: "serper",
+				apiKey: process.env.SERPER_API_KEY,
+			},
 		},
 	},
 	filesystem: {
+		defaultProvider: "local",
 		providers: {
 			local: {
 				type: "local",
 			},
 		},
 	},
-	websearch: {
-		serper: {
-			type: "serper",
-			apiKey: process.env.SERPER_API_KEY,
+	wikipedia: {
+		baseUrl: "https://en.wikipedia.org",
+	},
+	research: {
+		researchModel: "Google:gemini-2.5-flash",
+	},
+	ai: {
+		defaultModel: "Google:gemini-2.5-flash",
+		models: {
+			Anthropic: {
+				provider: "anthropic",
+				apiKey: process.env.ANTHROPIC_API_KEY,
+			},
+			Cerebras: {
+				provider: "cerebras",
+				apiKey: process.env.CEREBRAS_API_KEY,
+			},
+			DeepSeek: {
+				provider: "deepseek",
+				apiKey: process.env.DEEPSEEK_API_KEY,
+			},
+			Google: {
+				provider: "google",
+				apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+			},
+			Groq: {
+				provider: "groq",
+				apiKey: process.env.GROQ_API_KEY,
+			},
+			OpenAI: {
+				provider: "openai",
+				apiKey: process.env.OPENAI_API_KEY,
+			},
+			Perplexity: {
+				provider: "perplexity",
+				apiKey: process.env.PERPLEXITY_API_KEY,
+			},
+			xAi: {
+				provider: "xai",
+				apiKey: process.env.XAI_API_KEY,
+			},
 		},
 	},
-	research: {},
-	wikipedia: {},
 };
