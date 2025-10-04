@@ -12,6 +12,7 @@
   "@tokenring-ai/blog": "0.1.0",
   "@tokenring-ai/agent": "0.1.0",
   "@tokenring-ai/chrome": "0.1.0",
+  "@tokenring-ai/checkpoint": "0.1.0",
   "@tokenring-ai/cli": "0.1.0",
   "@tokenring-ai/cloudquote": "0.1.0",
   "@tokenring-ai/feedback": "0.1.0",

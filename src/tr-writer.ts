@@ -1,8 +1,9 @@
 #!/usr/bin/env bun
-import {AgentStateStorage, AgentTeam, packageInfo as AgentPackage} from "@tokenring-ai/agent";
+import {AgentTeam, packageInfo as AgentPackage} from "@tokenring-ai/agent";
 import {packageInfo as ChatRouterPackage} from "@tokenring-ai/ai-client";
 import {packageInfo as BlogPackage} from "@tokenring-ai/blog";
 import {packageInfo as CDNPackage} from "@tokenring-ai/cdn";
+import {packageInfo as CheckpointPackage} from "@tokenring-ai/checkpoint";
 import {packageInfo as ChromePackage} from "@tokenring-ai/chrome";
 import {packageInfo as CLIPackage, REPLService} from "@tokenring-ai/cli";
 import {packageInfo as CloudQuotePackage} from "@tokenring-ai/cloudquote";
@@ -20,9 +21,7 @@ import {packageInfo as S3Package} from "@tokenring-ai/s3";
 import {packageInfo as ScraperAPIPackage} from "@tokenring-ai/scraperapi";
 import {packageInfo as ScriptingPackage} from "@tokenring-ai/scripting";
 import {packageInfo as SerperPackage} from "@tokenring-ai/serper";
-import {packageInfo as SQLiteChatStoragePackage} from "@tokenring-ai/sqlite-storage";
-import initializeLocalDatabase from "@tokenring-ai/sqlite-storage/db/initializeLocalDatabase";
-import SQLiteAgentStateStorage from "@tokenring-ai/sqlite-storage/SQLiteAgentStateStorage";
+import {packageInfo as SQLiteStoragePackage} from "@tokenring-ai/sqlite-storage";
 import {packageInfo as TasksPackage} from "@tokenring-ai/tasks";
 import {packageInfo as TemplatePackage} from "@tokenring-ai/template";
 import {packageInfo as WebSearchPackage} from "@tokenring-ai/websearch";
@@ -118,9 +117,6 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
   const config = z.record(z.string(), z.any()).parse(configImport.default)
 
   const baseDirectory = resolvedSource;
-  const db = initializeLocalDatabase(
-    path.resolve(configDirectory, "./writer-database.sqlite"),
-  );
 
   config.filesystem ??= {
     defaultProvider: "local",
@@ -132,6 +128,16 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     }
   }
 
+  config.checkpoint ??= {
+    defaultProvider: "sqlite",
+    providers: {
+      sqlite: {
+        type: "sqlite",
+        databasePath: path.resolve(configDirectory, "./writer-database.sqlite"),
+      }
+    }
+  };
+
   const agentTeam = new AgentTeam(config);
   agentTeam.events.on("serviceOutput", message => {
     console.log(chalk.yellow(`🔧 ${message}`));
@@ -140,15 +146,12 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     console.log(chalk.red(`🔧 ❌ ${message}`));
   });
 
-  agentTeam.services.register(
-    new AgentStateStorage(new SQLiteAgentStateStorage({db}))
-  );
-
   await agentTeam.addPackages([
     AgentPackage,
     BlogPackage,
     CDNPackage,
     ChatRouterPackage,
+    CheckpointPackage,
     ChromePackage,
     CLIPackage,
     CloudQuotePackage,
@@ -165,7 +168,7 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     S3Package,
     ScraperAPIPackage,
     SerperPackage,
-    SQLiteChatStoragePackage,
+    SQLiteStoragePackage,
     TasksPackage,
     TemplatePackage,
     IterablesPackage,
@@ -173,10 +176,6 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     WikipediaPackage,
     WordPressPackage
   ]);
-
-  agentTeam.services.register(
-    new AgentStateStorage(new SQLiteAgentStateStorage({db}))
-  );
 
   agentTeam.addAgentConfigs(
     agents

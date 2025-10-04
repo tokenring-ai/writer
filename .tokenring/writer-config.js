@@ -13,6 +13,7 @@ for (const file of templateFiles) {
 
 export default {
  websearch: {
+  defaultProvider: "serper",
   providers: {
    serper: {
     type: 'serper',

@@ -112,3 +112,7 @@
 	path = pkg/iterables
 	url = git@github.com:tokenring-ai/iterables.git
 	branch = main
+[submodule "pkg/checkpoint"]
+	path = pkg/checkpoint
+	url = git@github.com:tokenring-ai/checkpoint.git
+	branch = main

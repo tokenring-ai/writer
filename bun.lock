@@ -9,6 +9,7 @@
         "@tokenring-ai/agent": "0.1.0",
         "@tokenring-ai/ai-client": "0.1.0",
         "@tokenring-ai/blog": "0.1.0",
+        "@tokenring-ai/checkpoint": "0.1.0",
         "@tokenring-ai/chrome": "0.1.0",
         "@tokenring-ai/cli": "0.1.0",
         "@tokenring-ai/cloudquote": "0.1.0",
@@ -95,6 +96,16 @@
       "version": "0.1.0",
       "dependencies": {
         "@tokenring-ai/agent": "0.1.0",
+      },
+    },
+    "pkg/checkpoint": {
+      "name": "@tokenring-ai/checkpoint",
+      "version": "0.1.0",
+      "dependencies": {
+        "@tokenring-ai/agent": "0.1.0",
+      },
+      "devDependencies": {
+        "typescript": "^5.9.3",
       },
     },
     "pkg/chrome": {
@@ -1013,6 +1024,8 @@
     "@tokenring-ai/blog": ["@tokenring-ai/blog@workspace:pkg/blog"],
 
     "@tokenring-ai/cdn": ["@tokenring-ai/cdn@workspace:pkg/cdn"],
+
+    "@tokenring-ai/checkpoint": ["@tokenring-ai/checkpoint@workspace:pkg/checkpoint"],
 
     "@tokenring-ai/chrome": ["@tokenring-ai/chrome@workspace:pkg/chrome"],
 
