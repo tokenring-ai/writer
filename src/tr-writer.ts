@@ -10,7 +10,6 @@ import {packageInfo as CloudQuotePackage} from "@tokenring-ai/cloudquote";
 import {packageInfo as FeedbackPackage} from "@tokenring-ai/feedback";
 import {packageInfo as FilesystemPackage} from "@tokenring-ai/filesystem";
 import {packageInfo as GhostIOPackage} from "@tokenring-ai/ghost-io";
-import {packageInfo as IterablesPackage} from "@tokenring-ai/iterables";
 import {packageInfo as LocalFileSystemPackage} from "@tokenring-ai/local-filesystem";
 import {packageInfo as MCPPackage} from "@tokenring-ai/mcp";
 import {packageInfo as MemoryPackage} from "@tokenring-ai/memory";
@@ -171,7 +170,6 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     SQLiteStoragePackage,
     TasksPackage,
     TemplatePackage,
-    IterablesPackage,
     WebSearchPackage,
     WikipediaPackage,
     WordPressPackage

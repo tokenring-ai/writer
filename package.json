@@ -42,17 +42,14 @@
  },
  "license": "MIT",
  "scripts": {
-  "xpreinstall": "test -f pkg/ai-client/package.json || echo 'Updating git submodules...' && git submodule foreach git pull origin main && echo 'Done.'",
   "build-container": "docker build -t tokenring-ai/coder:latest -f docker/Dockerfile .",
-  "coder-container": "docker run -ti --net host -v ./:/repo:rw tokenring-ai/coder:latest",
   "build": "bun build --compile --outfile=bin/tr-writer src/tr-writer.ts",
-  "coder-debug": "bun --inspect ../tokenring-coder/src/tr-coder.js --source ./",
   "coder": "bun ../tokenring-coder/src/tr-coder.js --source ./",
-  "typecheck": "tsc -p tsconfig.tson --noEmit",
   "test": "vitest run",
   "prepare": "husky",
   "biome": "biome format --fix",
-  "update-all-dependencies-latest": "git submodule foreach npx npm-check-updates -u"
+  "update-all-dependencies-latest": "git submodule foreach npx npm-check-updates -u",
+  "release:patch": "NEWVERSION=`bun pm version patch` && git add package.json && git commit -m \"Bump version to ${NEWVERSION}\" && git tag ${NEWVERSION} && git submodule foreach git push && git push && git push --tags"
  },
  "type": "module",
  "workspaces": [

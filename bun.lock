@@ -173,7 +173,6 @@
       "dependencies": {
         "@tokenring-ai/agent": "0.1.0",
         "@tokenring-ai/ai-client": "0.1.0",
-        "@tokenring-ai/iterables": "0.1.0",
         "ignore": "^7.0.5",
         "path-browserify": "^1.0.1",
       },
@@ -256,14 +255,6 @@
       "optionalPeers": [
         "@types/node",
       ],
-    },
-    "pkg/iterables": {
-      "name": "@tokenring-ai/iterables",
-      "version": "0.1.0",
-      "dependencies": {
-        "@tokenring-ai/agent": "0.1.0",
-        "@tokenring-ai/ai-client": "0.1.0",
-      },
     },
     "pkg/local-filesystem": {
       "name": "@tokenring-ai/local-filesystem",
@@ -422,8 +413,14 @@
     "pkg/vault": {
       "name": "@tokenring-ai/vault",
       "version": "0.1.0",
+      "bin": {
+        "vault": "./dist/vault",
+      },
       "dependencies": {
-        "@tokenring-ai/agent": "0.1.0",
+        "commander": "^14.0.1",
+      },
+      "devDependencies": {
+        "@tokenring-ai/agent": "^0.1.0",
       },
     },
     "pkg/websearch": {
@@ -1042,8 +1039,6 @@
     "@tokenring-ai/inquirer-command-prompt": ["@tokenring-ai/inquirer-command-prompt@workspace:pkg/inquirer-command-prompt"],
 
     "@tokenring-ai/inquirer-tree-selector": ["@tokenring-ai/inquirer-tree-selector@workspace:pkg/inquirer-tree-selector"],
-
-    "@tokenring-ai/iterables": ["@tokenring-ai/iterables@workspace:pkg/iterables"],
 
     "@tokenring-ai/local-filesystem": ["@tokenring-ai/local-filesystem@workspace:pkg/local-filesystem"],
 
@@ -2374,6 +2369,8 @@
     "@tokenring-ai/inquirer-tree-selector/typescript": ["typescript@5.9.2", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A=="],
 
     "@tokenring-ai/mcp/ai": ["ai@5.0.59", "", { "dependencies": { "@ai-sdk/gateway": "1.0.32", "@ai-sdk/provider": "2.0.0", "@ai-sdk/provider-utils": "3.0.10", "@opentelemetry/api": "1.9.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-SuAFxKXt2Ha9FiXB3gaOITkOg9ek/3QNVatGVExvTT4gNXc+hJpuNe1dmuwf6Z5Op4fzc8wdbsrYP27ZCXBzlw=="],
+
+    "@tokenring-ai/vault/commander": ["commander@14.0.1", "", {}, "sha512-2JkV3gUZUVrbNA+1sjBOYLsMZ5cEEl8GTFP2a4AVz5hvasAMCQ1D2l2le/cX+pV4N6ZU17zjUahLpIXRrnWL8A=="],
 
     "@tryghost/admin-api/axios": ["axios@1.10.0", "", { "dependencies": { "follow-redirects": "^1.15.6", "form-data": "^4.0.0", "proxy-from-env": "^1.1.0" } }, "sha512-/1xYAC4MP/HEG+3duIhFr4ZQXR4sQXOIe+o6sdqzeykGLx6Upp/1p8MHqhINOvGeP7xyNHe7tsiJByc4SSVUxw=="],
 
