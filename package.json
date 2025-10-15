@@ -47,7 +47,7 @@
  "scripts": {
   "build": "bun build --compile --outfile=dist/tr-writer src/tr-writer.ts",
   "prepublishOnly": "bun run build",
-  "build-container": "docker build -t tokenring-ai/coder:latest -f docker/Dockerfile .",
+  "build-container": "docker build -t tokenring-ai/writer:latest -f docker/Dockerfile .",
   "coder": "bun ../tokenring-coder/src/tr-coder.js --source ./",
   "test": "vitest run",
   "prepare": "husky",
