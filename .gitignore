@@ -34,14 +34,13 @@ yarn-error.log*
 
 # turbo
 .turbo
-/.tokenring/coder-database.sqlite
 /awscliv2.sig
 /app/coder/dist/
 /.zencoder/
 /.idea/
 /.claude/
-/.tokenring/writer-database.sqlite
 /brainstorm/
 /refactoring/
 /wip/
 /dist/
+/.tokenring/*.sqlite*
