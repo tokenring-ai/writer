@@ -1,4 +1,4 @@
-import {AgentConfig} from "@tokenring-ai/agent/Agent";
+import type { AgentConfig } from "@tokenring-ai/agent/types";
 import manager from "./agents/manager.js";
 import writer from "./agents/writer.ts";
 

@@ -116,3 +116,7 @@
 	path = pkg/checkpoint
 	url = git@github.com:tokenring-ai/checkpoint.git
 	branch = main
+[submodule "pkg/drizzle-storage"]
+	path = pkg/drizzle-storage
+	url = git@github.com:tokenring-ai/drizzle-storage.git
+	branch = main

@@ -1,31 +1,31 @@
 #!/usr/bin/env bun
-import {AgentTeam, packageInfo as AgentPackage} from "@tokenring-ai/agent";
-import {packageInfo as ChatRouterPackage} from "@tokenring-ai/ai-client";
-import {packageInfo as BlogPackage} from "@tokenring-ai/blog";
-import {packageInfo as CDNPackage} from "@tokenring-ai/cdn";
-import {packageInfo as CheckpointPackage} from "@tokenring-ai/checkpoint";
-import {packageInfo as ChromePackage} from "@tokenring-ai/chrome";
-import {packageInfo as CLIPackage, REPLService} from "@tokenring-ai/cli";
-import {packageInfo as CloudQuotePackage} from "@tokenring-ai/cloudquote";
-import {packageInfo as FeedbackPackage} from "@tokenring-ai/feedback";
-import {packageInfo as FilesystemPackage} from "@tokenring-ai/filesystem";
-import {packageInfo as GhostIOPackage} from "@tokenring-ai/ghost-io";
-import {packageInfo as LocalFileSystemPackage} from "@tokenring-ai/local-filesystem";
-import {packageInfo as MCPPackage} from "@tokenring-ai/mcp";
-import {packageInfo as MemoryPackage} from "@tokenring-ai/memory";
-import {packageInfo as QueuePackage} from "@tokenring-ai/queue";
-import {packageInfo as RedditPackage} from "@tokenring-ai/reddit";
-import {packageInfo as ResearchPackage} from "@tokenring-ai/research";
-import {packageInfo as S3Package} from "@tokenring-ai/s3";
-import {packageInfo as ScraperAPIPackage} from "@tokenring-ai/scraperapi";
-import {packageInfo as ScriptingPackage} from "@tokenring-ai/scripting";
-import {packageInfo as SerperPackage} from "@tokenring-ai/serper";
-import {packageInfo as SQLiteStoragePackage} from "@tokenring-ai/sqlite-storage";
-import {packageInfo as TasksPackage} from "@tokenring-ai/tasks";
-import {packageInfo as TemplatePackage} from "@tokenring-ai/template";
-import {packageInfo as WebSearchPackage} from "@tokenring-ai/websearch";
-import {packageInfo as WikipediaPackage} from "@tokenring-ai/wikipedia";
-import {packageInfo as WordPressPackage} from "@tokenring-ai/wordpress";
+import AgentPackage, {AgentTeam} from "@tokenring-ai/agent";
+import ChatRouterPackage from "@tokenring-ai/ai-client";
+import BlogPackage from "@tokenring-ai/blog";
+import CDNPackage from "@tokenring-ai/cdn";
+import CheckpointPackage from "@tokenring-ai/checkpoint";
+import ChromePackage from "@tokenring-ai/chrome";
+import CLIPackage, {REPLService} from "@tokenring-ai/cli";
+import CloudQuotePackage from "@tokenring-ai/cloudquote";
+import DrizzleStoragePackage from "@tokenring-ai/drizzle-storage";
+import FeedbackPackage from "@tokenring-ai/feedback";
+import FilesystemPackage from "@tokenring-ai/filesystem";
+import GhostIOPackage from "@tokenring-ai/ghost-io";
+import LocalFileSystemPackage from "@tokenring-ai/local-filesystem";
+import MCPPackage from "@tokenring-ai/mcp";
+import MemoryPackage from "@tokenring-ai/memory";
+import QueuePackage from "@tokenring-ai/queue";
+import RedditPackage from "@tokenring-ai/reddit";
+import ResearchPackage from "@tokenring-ai/research";
+import S3Package from "@tokenring-ai/s3";
+import ScraperAPIPackage from "@tokenring-ai/scraperapi";
+import ScriptingPackage from "@tokenring-ai/scripting";
+import SerperPackage from "@tokenring-ai/serper";
+import TasksPackage from "@tokenring-ai/tasks";
+import TemplatePackage from "@tokenring-ai/template";
+import WebSearchPackage from "@tokenring-ai/websearch";
+import WikipediaPackage from "@tokenring-ai/wikipedia";
+import WordPressPackage from "@tokenring-ai/wordpress";
 import chalk from "chalk";
 import {Command} from "commander";
 import fs from "node:fs";
@@ -154,6 +154,7 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     ChromePackage,
     CLIPackage,
     CloudQuotePackage,
+    DrizzleStoragePackage,
     FeedbackPackage,
     FilesystemPackage,
     GhostIOPackage,
@@ -167,7 +168,6 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     S3Package,
     ScraperAPIPackage,
     SerperPackage,
-    SQLiteStoragePackage,
     TasksPackage,
     TemplatePackage,
     WebSearchPackage,
