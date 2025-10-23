@@ -3,6 +3,9 @@
   "workspaces": {
     "": {
       "name": "@token-ring/coder",
+      "dependencies": {
+        "chalk": "^5.6.2",
+      },
       "devDependencies": {
         "@biomejs/biome": "^2.2.0",
         "@dotenvx/dotenvx": "^1.48.4",
@@ -399,13 +402,6 @@
       "devDependencies": {
         "@vitest/coverage-v8": "^3.2.4",
         "vitest": "^3.2.4",
-      },
-    },
-    "pkg/sqlite-storage": {
-      "name": "@tokenring-ai/sqlite-storage",
-      "version": "0.1.0",
-      "dependencies": {
-        "@tokenring-ai/ai-client": "0.1.0",
       },
     },
     "pkg/tasks": {
@@ -1118,8 +1114,6 @@
     "@tokenring-ai/scripting": ["@tokenring-ai/scripting@workspace:pkg/scripting"],
 
     "@tokenring-ai/serper": ["@tokenring-ai/serper@workspace:pkg/serper"],
-
-    "@tokenring-ai/sqlite-storage": ["@tokenring-ai/sqlite-storage@workspace:pkg/sqlite-storage"],
 
     "@tokenring-ai/tasks": ["@tokenring-ai/tasks@workspace:pkg/tasks"],
 
