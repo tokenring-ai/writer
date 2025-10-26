@@ -57,6 +57,10 @@ export default {
  ai: {
   defaultModel: "Google:gemini-2.5-flash",
   models: {
+   LocalLLama: {
+    provider: "openaiCompatible",
+    baseURL: "http://192.168.15.25:11434/v1",
+   },
    Google: {
     provider: "google",
     apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,

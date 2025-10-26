@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-import AgentPackage, {AgentTeam} from "@tokenring-ai/agent";
+import AgentPackage, {AgentConfigService, AgentPackageManager, AgentTeam} from "@tokenring-ai/agent";
 import ChatRouterPackage from "@tokenring-ai/ai-client";
 import BlogPackage from "@tokenring-ai/blog";
 import CDNPackage from "@tokenring-ai/cdn";
@@ -145,7 +145,10 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     console.log(chalk.red(`🔧 ❌ ${message}`));
   });
 
-  await agentTeam.addPackages([
+  const packageManager = new AgentPackageManager()
+  agentTeam.addServices(packageManager);
+
+  await packageManager.installPackages([
     AgentPackage,
     BlogPackage,
     CDNPackage,
@@ -173,11 +176,12 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     WebSearchPackage,
     WikipediaPackage,
     WordPressPackage
-  ]);
+  ], agentTeam);
 
-  agentTeam.addAgentConfigs(
-    agents
-  )
+  const agentConfigService = agentTeam.requireService(AgentConfigService);
+
+  agentConfigService.addAgentConfigs(agents);
+  agentConfigService.addAgentConfigs(config.agents ?? {});
 
   console.log(chalk.yellow(banner));
 

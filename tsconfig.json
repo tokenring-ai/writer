@@ -15,7 +15,7 @@
    "bun",
    "vitest"
   ],
-  "outDir": "dist-ts",
+  "outDir": "dist",
   "rootDir": "."
  },
  "include": [
