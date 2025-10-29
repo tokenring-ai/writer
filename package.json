@@ -1,7 +1,7 @@
 {
  "name": "@tokenring-ai/writer",
  "description": "TokenRing Writer Application",
- "version": "0.1.8",
+ "version": "0.1.9",
  "devDependencies": {
   "@biomejs/biome": "^2.3.1",
   "@inquirer/prompts": "^7.9.0",
