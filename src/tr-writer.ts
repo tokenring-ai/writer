@@ -1,8 +1,9 @@
 #!/usr/bin/env bun
 import AgentPackage, {AgentConfigService, AgentPackageManager, AgentTeam} from "@tokenring-ai/agent";
-import ChatRouterPackage from "@tokenring-ai/ai-client";
+import AIClientPackage from "@tokenring-ai/ai-client";
 import BlogPackage from "@tokenring-ai/blog";
 import CDNPackage from "@tokenring-ai/cdn";
+import ChatPackage from "@tokenring-ai/chat";
 import CheckpointPackage from "@tokenring-ai/checkpoint";
 import ChromePackage from "@tokenring-ai/chrome";
 import CLIPackage, {REPLService} from "@tokenring-ai/cli";
@@ -152,7 +153,8 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     AgentPackage,
     BlogPackage,
     CDNPackage,
-    ChatRouterPackage,
+    AIClientPackage,
+    ChatPackage,
     CheckpointPackage,
     ChromePackage,
     CLIPackage,

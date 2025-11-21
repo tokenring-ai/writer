@@ -54,8 +54,10 @@ export default {
  research: {
   researchModel: "gemini-2.5-flash",
  },
- ai: {
+ chat: {
   defaultModel: "Google:gemini-2.5-flash",
+ },
+ ai: {
   models: {
    LocalLLama: {
     provider: "openaiCompatible",
