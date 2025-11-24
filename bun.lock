@@ -11,6 +11,7 @@
         "@inquirer/prompts": "^8.0.1",
         "@tokenring-ai/agent": "workspace:*",
         "@tokenring-ai/ai-client": "workspace:*",
+        "@tokenring-ai/app": "workspace:*",
         "@tokenring-ai/blog": "workspace:*",
         "@tokenring-ai/cdn": "workspace:*",
         "@tokenring-ai/chat": "workspace:*",
@@ -55,6 +56,7 @@
       "name": "@tokenring-ai/agent",
       "version": "0.1.0",
       "dependencies": {
+        "@tokenring-ai/app": "0.1.0",
         "@tokenring-ai/utility": "0.1.0",
         "eventemitter3": "^5.0.1",
         "glob-gitignore": "^1.0.15",
@@ -94,11 +96,19 @@
         "vitest": "^4.0.12",
       },
     },
+    "pkg/app": {
+      "name": "@tokenring-ai/app",
+      "version": "0.1.0",
+      "dependencies": {
+        "@tokenring-ai/utility": "0.1.0",
+      },
+    },
     "pkg/blog": {
       "name": "@tokenring-ai/blog",
       "version": "0.1.0",
       "dependencies": {
         "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/chat": "0.1.0",
         "@tokenring-ai/utility": "0.1.0",
         "marked": "^17.0.1",
         "uuid": "^13.0.0",
@@ -177,6 +187,7 @@
       "version": "0.1.0",
       "dependencies": {
         "@tokenring-ai/agent": "0.1.0",
+        "@tokenring-ai/chat": "0.1.0",
         "@tokenring-ai/utility": "0.1.0",
         "date-fns-tz": "^3.2.0",
       },
@@ -371,7 +382,7 @@
       "version": "0.1.0",
       "dependencies": {
         "@tokenring-ai/agent": "0.1.0",
-        "@tokenring-ai/ai-client": "0.1.0",
+        "@tokenring-ai/chat": "0.1.0",
         "@tokenring-ai/utility": "0.1.0",
         "zod": "^4.1.12",
       },
@@ -385,7 +396,7 @@
       "version": "0.1.0",
       "dependencies": {
         "@tokenring-ai/agent": "0.1.0",
-        "@tokenring-ai/ai-client": "0.1.0",
+        "@tokenring-ai/chat": "0.1.0",
       },
     },
     "pkg/s3": {
@@ -449,7 +460,7 @@
       "version": "0.1.0",
       "dependencies": {
         "@tokenring-ai/agent": "^0.1.0",
-        "@tokenring-ai/ai-client": "^0.1.0",
+        "@tokenring-ai/chat": "^0.1.0",
         "@tokenring-ai/utility": "0.1.0",
       },
     },
@@ -1101,6 +1112,8 @@
     "@tokenring-ai/agent": ["@tokenring-ai/agent@workspace:pkg/agent"],
 
     "@tokenring-ai/ai-client": ["@tokenring-ai/ai-client@workspace:pkg/ai-client"],
+
+    "@tokenring-ai/app": ["@tokenring-ai/app@workspace:pkg/app"],
 
     "@tokenring-ai/blog": ["@tokenring-ai/blog@workspace:pkg/blog"],
 

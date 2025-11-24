@@ -7,7 +7,7 @@ export default {
   visual: {
     color: "blue",
   },
-  ai: {
+  chat: {
     systemPrompt:
       "You are an expert content writer specializing in creating engaging, well-structured articles and blog posts. " +
       "You excel at research, storytelling, and adapting your writing style to different audiences and formats. " +

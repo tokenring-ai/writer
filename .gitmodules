@@ -1,6 +1,7 @@
 [submodule "pkg/ai-client"]
 	path = pkg/ai-client
 	url = git@github.com:tokenring-ai/ai-client
+	branch = main
 [submodule "pkg/chat"]
 	path = pkg/chat
 	url = git@github.com:tokenring-ai/chat.git
@@ -8,63 +9,70 @@
 [submodule "pkg/chrome"]
 	path = pkg/chrome
 	url = git@github.com:tokenring-ai/chrome
+	branch = main
 [submodule "pkg/cli"]
 	path = pkg/cli
 	url = git@github.com:tokenring-ai/cli
-[submodule "pkg/eslint-config"]
-	path = pkg/eslint-config
-	url = git@github.com:tokenring-ai/eslint-config
+	branch = main
 [submodule "pkg/feedback"]
 	path = pkg/feedback
 	url = git@github.com:tokenring-ai/feedback
+	branch = main
 [submodule "pkg/filesystem"]
 	path = pkg/filesystem
 	url = git@github.com:tokenring-ai/filesystem
-[submodule "pkg/history"]
-	path = pkg/history
-	url = git@github.com:tokenring-ai/history
+	branch = main
 [submodule "pkg/local-filesystem"]
 	path = pkg/local-filesystem
 	url = git@github.com:tokenring-ai/local-filesystem
+	branch = main
 [submodule "pkg/memory"]
 	path = pkg/memory
 	url = git@github.com:tokenring-ai/memory
+	branch = main
 [submodule "pkg/queue"]
 	path = pkg/queue
 	url = git@github.com:tokenring-ai/queue
+	branch = main
 [submodule "pkg/registry"]
 	path = pkg/registry
 	url = git@github.com:tokenring-ai/registry
-[submodule "pkg/sqlite-storage"]
-	path = pkg/sqlite-storage
-	url = git@github.com:tokenring-ai/sqlite-storage
 [submodule "pkg/utility"]
 	path = pkg/utility
 	url = git@github.com:tokenring-ai/utility.git
+	branch = main
 [submodule "pkg/ghost-io"]
 	path = pkg/ghost-io
 	url = git@github.com:tokenring-ai/ghost-io.git
+	branch = main
 [submodule "pkg/research"]
 	path = pkg/research
 	url = git@github.com:tokenring-ai/research.git
+	branch = main
 [submodule "pkg/template"]
 	path = pkg/template
 	url = git@github.com:tokenring-ai/template.git
+	branch = main
 [submodule "pkg/inquirer-command-prompt"]
 	path = pkg/inquirer-command-prompt
 	url = git@github.com:tokenring-ai/inquirer-command-prompt.git
+	branch = main
 [submodule "pkg/inquirer-tree-selector"]
 	path = pkg/inquirer-tree-selector
 	url = git@github.com:tokenring-ai/inquirer-tree-selector.git
+	branch = main
 [submodule "pkg/scraperapi"]
 	path = pkg/scraperapi
 	url = git@github.com:tokenring-ai/scraperapi.git
+	branch = main
 [submodule "pkg/serper"]
 	path = pkg/serper
 	url = git@github.com:tokenring-ai/serper.git
+	branch = main
 [submodule "pkg/newsrpm"]
 	path = pkg/newsrpm
 	url = git@github.com:tokenring-ai/newsrpm.git
+	branch = main
 [submodule "pkg/cdn"]
 	path = pkg/cdn
 	url = git@github.com:tokenring-ai/cdn.git
@@ -72,6 +80,7 @@
 [submodule "pkg/s3"]
 	path = pkg/s3
 	url = git@github.com:tokenring-ai/s3.git
+	branch = main
 [submodule "pkg/cloudquote"]
 	path = pkg/cloudquote
 	url = git@github.com:tokenring-ai/cloudquote.git
@@ -87,6 +96,7 @@
 [submodule "pkg/blog"]
 	path = pkg/blog
 	url = git@github.com:tokenring-ai/blog.git
+	branch = main
 [submodule "pkg/websearch"]
 	path = pkg/websearch
 	url = git@github.com:tokenring-ai/websearch.git
@@ -94,6 +104,7 @@
 [submodule "pkg/tasks"]
 	path = pkg/tasks
 	url = git@github.com:tokenring-ai/tasks.git
+	branch = main
 [submodule "pkg/scripting"]
 	path = pkg/scripting
 	url = git@github.com:tokenring-ai/scripting.git
@@ -109,9 +120,6 @@
 [submodule "pkg/vault"]
 	path = pkg/vault
 	url = git@github.com:tokenring-ai/vault.git
-[submodule "pkg/iterables"]
-	path = pkg/iterables
-	url = git@github.com:tokenring-ai/iterables.git
 	branch = main
 [submodule "pkg/checkpoint"]
 	path = pkg/checkpoint
@@ -124,4 +132,8 @@
 [submodule "pkg/agent"]
 	path = pkg/agent
 	url = git@github.com:tokenring-ai/agent
+	branch = main
+[submodule "pkg/app"]
+	path = pkg/app
+	url = git@github.com:tokenring-ai/app.git
 	branch = main

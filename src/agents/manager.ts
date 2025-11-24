@@ -6,7 +6,7 @@ export default {
   visual: {
     color: "blue",
   },
-  ai: {
+  chat: {
     systemPrompt:
       "You are a managing editor for a news publication. Your responsibilities include:\n" +
       "1. Searching for trending news topics and current events.\n" +

@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
-import AgentPackage, {AgentConfigService, AgentPackageManager, AgentTeam} from "@tokenring-ai/agent";
+import AgentPackage, {AgentManager} from "@tokenring-ai/agent";
+import TokenRingApp, {PluginManager} from "@tokenring-ai/app";
 import AIClientPackage from "@tokenring-ai/ai-client";
 import BlogPackage from "@tokenring-ai/blog";
 import CDNPackage from "@tokenring-ai/cdn";
@@ -138,18 +139,12 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     }
   };
 
-  const agentTeam = new AgentTeam(config);
-  agentTeam.events.on("serviceOutput", message => {
-    console.log(chalk.yellow(`🔧 ${message}`));
-  })
-  agentTeam.events.on("serviceError", message => {
-    console.log(chalk.red(`🔧 ❌ ${message}`));
-  });
+  const app = new TokenRingApp(config);
 
-  const packageManager = new AgentPackageManager()
-  agentTeam.addServices(packageManager);
+  const pluginManager = new PluginManager();
+  app.addServices(pluginManager);
 
-  await packageManager.installPackages([
+  await pluginManager.installPlugins([
     AgentPackage,
     BlogPackage,
     CDNPackage,
@@ -178,16 +173,22 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     WebSearchPackage,
     WikipediaPackage,
     WordPressPackage
-  ], agentTeam);
+  ], app);
 
-  const agentConfigService = agentTeam.requireService(AgentConfigService);
 
-  agentConfigService.addAgentConfigs(agents);
-  agentConfigService.addAgentConfigs(config.agents ?? {});
+  const agentManager = app.requireService(AgentManager);
+
+  agentManager.addAgentConfigs(agents);
 
   console.log(chalk.yellow(banner));
 
-  const repl = new REPLService(agentTeam);
+  for (const name in config.agents) {
+    agentManager.addAgentConfig(name, config.agents[name])
+  }
+
+  console.log(chalk.yellow(banner));
+
+  const repl = new REPLService(app);
 
   await repl.run();
 }
