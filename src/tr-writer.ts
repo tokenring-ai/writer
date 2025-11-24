@@ -186,8 +186,6 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     agentManager.addAgentConfig(name, config.agents[name])
   }
 
-  console.log(chalk.yellow(banner));
-
   const repl = new REPLService(app);
 
   await repl.run();
