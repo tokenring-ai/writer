@@ -1,17 +1,20 @@
-#!/usr/bin/env bun
-import AgentPackage, {AgentManager} from "@tokenring-ai/agent";
-import TokenRingApp, {PluginManager} from "@tokenring-ai/app";
+#!/usr/bin/env node
+
+import AgentPackage from "@tokenring-ai/agent";
 import AIClientPackage from "@tokenring-ai/ai-client";
+import TokenRingApp, {PluginManager} from "@tokenring-ai/app";
+import {TokenRingAppConfigSchema} from "@tokenring-ai/app/TokenRingApp";
 import BlogPackage from "@tokenring-ai/blog";
 import CDNPackage from "@tokenring-ai/cdn";
 import ChatPackage from "@tokenring-ai/chat";
-import CheckpointPackage from "@tokenring-ai/checkpoint";
+import CheckpointPackage, {CheckpointPackageConfigSchema} from "@tokenring-ai/checkpoint";
 import ChromePackage from "@tokenring-ai/chrome";
-import CLIPackage, {REPLService} from "@tokenring-ai/cli";
+import CLIPackage, {CLIConfigSchema} from "@tokenring-ai/cli";
+import InkCLIPackage, {InkCLIConfigSchema} from "@tokenring-ai/cli-ink";
 import CloudQuotePackage from "@tokenring-ai/cloudquote";
 import DrizzleStoragePackage from "@tokenring-ai/drizzle-storage";
 import FeedbackPackage from "@tokenring-ai/feedback";
-import FilesystemPackage from "@tokenring-ai/filesystem";
+import FilesystemPackage, {FileSystemConfigSchema} from "@tokenring-ai/filesystem";
 import GhostIOPackage from "@tokenring-ai/ghost-io";
 import LocalFileSystemPackage from "@tokenring-ai/local-filesystem";
 import MCPPackage from "@tokenring-ai/mcp";
@@ -25,6 +28,7 @@ import ScriptingPackage from "@tokenring-ai/scripting";
 import SerperPackage from "@tokenring-ai/serper";
 import TasksPackage from "@tokenring-ai/tasks";
 import TemplatePackage from "@tokenring-ai/template";
+import formatLogMessages from "@tokenring-ai/utility/string/formatLogMessage";
 import WebSearchPackage from "@tokenring-ai/websearch";
 import WikipediaPackage from "@tokenring-ai/wikipedia";
 import WordPressPackage from "@tokenring-ai/wordpress";
@@ -33,28 +37,29 @@ import {Command} from "commander";
 import fs from "node:fs";
 import path from "node:path";
 import {z} from "zod";
-import agents from "./agents.js";
+import packageInfo from '../package.json' with {type: 'json'};
+import agents from "./agents/index.ts";
+import bannerNarrow from "./banner.narrow.txt" with {type: "text"};
+import bannerWide from "./banner.wide.txt" with {type: "text"};
 import {initializeConfigDirectory} from "./initializeConfigDirectory.ts";
-import {error} from "./prettyString.ts";
 
-// Create a new Commander program
-const program = new Command();
-
+// Interface definitions
 interface CommandOptions {
   source: string;
   config?: string;
   initialize?: boolean;
+  ui: "ink" | "inquirer";
 }
+
+// Create a new Commander program
+const program = new Command();
 
 program
   .name("tr-writer")
   .description("TokenRing Writer - AI-powered writing assistant")
-  .version("1.0.0")
-  .requiredOption(
-    "-s, --source <path>",
-    "Path to the working directory to store the config and scratch files in",
-  )
-  .option("-c, --config <path>", "Path to the configuration file")
+  .version(packageInfo.version)
+  .option("--ui <inquirer|ink>", "Select the UI to use for the application", "inquirer")
+  .option("-s, --source <path>", "Path to the working directory to work with")
   .option(
     "-i, --initialize",
     "Initialize the source directory with a new config directory",
@@ -65,21 +70,13 @@ program
 Examples:
   tr-writer --source ./my-app
   tr-writer --source ./my-app --initialize
-  tr-writer --source ./my-app --config ./custom-config.ts
 `,
   )
-  .action(async (options: CommandOptions) => {
-    try {
-      await runWriter(options);
-    } catch (err) {
-      console.error(error(`Caught Error:`), err);
-      process.exit(1);
-    }
-  });
+  .action(runApp)
+  .parse();
 
-program.parse();
-
-async function runWriter({source, config: configFile, initialize}: CommandOptions): Promise<void> {
+async function runApp({source, config: configFile, initialize, ui}: CommandOptions): Promise<void> {
+  try {
   // noinspection JSCheckFunctionSignatures
   const resolvedSource = path.resolve(source);
 
@@ -91,7 +88,7 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
 
   if (!configFile) {
     // Try each extension in order
-    const possibleExtensions = ["mjs", "cjs", "js"];
+    const possibleExtensions = ["ts", "mjs", "cjs", "js"];
     for (const ext of possibleExtensions) {
       const potentialConfig = path.join(configDirectory, `writer-config.${ext}`);
       if (fs.existsSync(potentialConfig)) {
@@ -113,33 +110,45 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     );
   }
 
-
-  const configImport = await import(configFile);
-  const config = z.record(z.string(), z.any()).parse(configImport.default)
-
   const baseDirectory = resolvedSource;
 
-  config.filesystem ??= {
-    defaultProvider: "local",
-    providers: {
-      local: {
-        type: "local",
-        baseDirectory,
-      }
-    }
-  }
-
-  config.checkpoint ??= {
-    defaultProvider: "sqlite",
-    providers: {
-      sqlite: {
-        type: "sqlite",
-        databasePath: path.resolve(configDirectory, "./writer-database.sqlite"),
-      }
-    }
+    const defaultConfig = {
+      filesystem: {
+        defaultProvider: "local",
+        providers: {
+          local: {
+            type: "local",
+            baseDirectory,
+          }
+        }
+      } as z.infer<typeof FileSystemConfigSchema>,
+      checkpoint: {
+        defaultProvider: "sqlite",
+        providers: {
+          sqlite: {
+            type: "sqlite",
+            databasePath: path.resolve(configDirectory, "./writer-database.sqlite"),
+          }
+        }
+      } as z.infer<typeof CheckpointPackageConfigSchema>,
+      cli: {
+        banner: bannerNarrow,
+        bannerColor: "cyan"
+      } as z.infer<typeof CLIConfigSchema>,
+      inkCLI: {
+        bannerNarrow,
+        bannerWide,
+        bannerCompact: `🤖 TokenRing Writer ${packageInfo.version} - https://tokenring.ai`
+      } as z.infer<typeof InkCLIConfigSchema>,
+      agents
   };
 
-  const app = new TokenRingApp(config);
+    const configImport = await import(configFile);
+    const config = TokenRingAppConfigSchema.parse(configImport.default);
+
+    config.agents = {...agents, ...config.agents};
+
+    const app = new TokenRingApp(config, defaultConfig);
 
   const pluginManager = new PluginManager();
   app.addServices(pluginManager);
@@ -152,7 +161,6 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     ChatPackage,
     CheckpointPackage,
     ChromePackage,
-    CLIPackage,
     CloudQuotePackage,
     DrizzleStoragePackage,
     FeedbackPackage,
@@ -175,34 +183,18 @@ async function runWriter({source, config: configFile, initialize}: CommandOption
     WordPressPackage
   ], app);
 
+    if (ui === "ink") {
+      await pluginManager.installPlugins([
+        InkCLIPackage,
+      ], app);
+    } else {
+      await pluginManager.installPlugins([
+        CLIPackage,
+      ], app);
+    }
 
-  const agentManager = app.requireService(AgentManager);
-
-  agentManager.addAgentConfigs(agents);
-
-  console.log(chalk.yellow(banner));
-
-  for (const name in config.agents) {
-    agentManager.addAgentConfig(name, config.agents[name])
+  } catch (err) {
+    console.error(chalk.red(formatLogMessages(['Caught Error: ', err as Error])));
+    process.exit(1);
   }
-
-  const repl = new REPLService(app);
-
-  await repl.run();
 }
-
-const banner = `
-████████╗ ██████╗ ██╗  ██╗███████╗███╗   ██╗██████╗ ██╗███╗   ██╗ ██████╗ 
-╚══██╔══╝██╔═══██╗██║ ██╔╝██╔════╝████╗  ██║██╔══██╗██║████╗  ██║██╔════╝ 
-   ██║   ██║   ██║█████╔╝ █████╗  ██╔██╗ ██║██████╔╝██║██╔██╗ ██║██║  ███╗
-   ██║   ██║   ██║██╔═██╗ ██╔══╝  ██║╚██╗██║██╔══██╗██║██║╚██╗██║██║   ██║
-   ██║   ╚██████╔╝██║  ██╗███████╗██║ ╚████║██║  ██║██║██║ ╚████║╚██████╔╝
-   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
-                                                                          
-██╗    ██╗██████╗ ██╗████████╗███████╗██████╗                             
-██║    ██║██╔══██╗██║╚══██╔══╝██╔════╝██╔══██╗                            
-██║ █╗ ██║██████╔╝██║   ██║   █████╗  ██████╔╝                            
-██║███╗██║██╔══██╗██║   ██║   ██╔══╝  ██╔══██╗                            
-╚███╔███╔╝██║  ██║██║   ██║   ███████╗██║  ██║                            
- ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝                            
-`;
