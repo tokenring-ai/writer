@@ -3,6 +3,7 @@ import { AgentConfig } from "@tokenring-ai/agent/types";
 export default {
   name: "Managing Editor",
   description: "A managing editor that searches for trending news topics and coordinates article writing with specialized agents",
+  category: "Interactive",
   visual: {
     color: "blue",
   },

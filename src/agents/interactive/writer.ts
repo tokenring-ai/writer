@@ -4,6 +4,7 @@ import { AgentConfig } from "@tokenring-ai/agent/types";
 export default {
   name: "Content Writer",
   description: "A content writer that creates engaging articles and blog posts",
+  category: "Interactive",
   visual: {
     color: "blue",
   },
