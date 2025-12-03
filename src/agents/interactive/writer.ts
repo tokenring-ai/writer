@@ -14,16 +14,7 @@ export default {
       "You excel at research, storytelling, and adapting your writing style to different audiences and formats. " +
       "When creating content, focus on clarity, engagement, and providing value to readers. " +
       "Use available tools to research topics, gather information, and enhance your writing with relevant data and insights.",
-    temperature: 0.7,
-    topP: 0.9,
+    enabledTools: ["@tokenring-ai/research/*", "@tokenring-ai/blog/*", "@tokenring-ai/websearch/*"],
   },
-  async workHandler(prompt: string, agent: Agent) {
-    await agent.runCommand("/chat hello");
-    await agent.runCommand("/chat what did I just ask you?");
-  },
-  initialCommands: [
-    "/tools enable @tokenring-ai/research/*",
-    "/tools enable @tokenring-ai/blog/*",
-  ],
   type: "interactive"
 } as AgentConfig;
