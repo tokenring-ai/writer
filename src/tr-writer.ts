@@ -150,8 +150,7 @@ async function runApp({source, config: configFile, initialize, ui}: CommandOptio
 
     const app = new TokenRingApp(config, defaultConfig);
 
-  const pluginManager = new PluginManager();
-  app.addServices(pluginManager);
+  const pluginManager = new PluginManager(app);
 
   await pluginManager.installPlugins([
     AgentPackage,
@@ -181,16 +180,16 @@ async function runApp({source, config: configFile, initialize, ui}: CommandOptio
     WebSearchPackage,
     WikipediaPackage,
     WordPressPackage
-  ], app);
+  ]);
 
     if (ui === "ink") {
       await pluginManager.installPlugins([
         InkCLIPackage,
-      ], app);
+      ]);
     } else {
       await pluginManager.installPlugins([
         CLIPackage,
-      ], app);
+      ]);
     }
 
   } catch (err) {
