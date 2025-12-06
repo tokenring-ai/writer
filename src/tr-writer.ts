@@ -29,6 +29,7 @@ import SerperPackage from "@tokenring-ai/serper";
 import TasksPackage from "@tokenring-ai/tasks";
 import TemplatePackage from "@tokenring-ai/template";
 import formatLogMessages from "@tokenring-ai/utility/string/formatLogMessage";
+import WebHostPackage, {WebHostConfigSchema} from "@tokenring-ai/web-host";
 import WebSearchPackage from "@tokenring-ai/websearch";
 import WikipediaPackage from "@tokenring-ai/wikipedia";
 import WordPressPackage from "@tokenring-ai/wordpress";
@@ -140,6 +141,18 @@ async function runApp({source, config: configFile, initialize, ui}: CommandOptio
         bannerWide,
         bannerCompact: `🤖 TokenRing Writer ${packageInfo.version} - https://tokenring.ai`
       } as z.input<typeof InkCLIConfigSchema>,
+      webHost: {
+        resources: {
+          "Chat Frontend": {
+            description: "Chat frontend for the Writer application",
+            type: "static",
+            root: path.resolve(import.meta.dirname, "../../../frontend/chat/dist"),
+            indexFile: "index.html",
+            notFoundFile: "index.html",
+            prefix: "/chat"
+          }
+        }
+      } as z.input<typeof WebHostConfigSchema>,
       agents
   };
 
@@ -179,6 +192,7 @@ async function runApp({source, config: configFile, initialize, ui}: CommandOptio
     TemplatePackage,
     WebSearchPackage,
     WikipediaPackage,
+    WebHostPackage,
     WordPressPackage
   ]);
 
