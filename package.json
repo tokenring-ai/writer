@@ -52,7 +52,7 @@
  },
  "license": "MIT",
  "bin": {
-  "tr-writer": "./dist/tr-writer"
+  "tr-writer": "dist/tr-writer"
  },
  "files": [
   "dist",
