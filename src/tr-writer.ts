@@ -23,6 +23,7 @@ import QueuePackage from "@tokenring-ai/queue";
 import RedditPackage from "@tokenring-ai/reddit";
 import ResearchPackage from "@tokenring-ai/research";
 import S3Package from "@tokenring-ai/s3";
+import SchedulerPackage from "@tokenring-ai/scheduler";
 import ScraperAPIPackage from "@tokenring-ai/scraperapi";
 import ScriptingPackage from "@tokenring-ai/scripting";
 import SerperPackage from "@tokenring-ai/serper";
@@ -33,6 +34,7 @@ import WebHostPackage, {WebHostConfigSchema} from "@tokenring-ai/web-host";
 import WebSearchPackage from "@tokenring-ai/websearch";
 import WikipediaPackage from "@tokenring-ai/wikipedia";
 import WordPressPackage from "@tokenring-ai/wordpress";
+import WorkflowPackage from "@tokenring-ai/workflow";
 import chalk from "chalk";
 import {Command} from "commander";
 import fs from "node:fs";
@@ -186,6 +188,7 @@ async function runApp({source, config: configFile, initialize, ui}: CommandOptio
     QueuePackage,
     RedditPackage,
     ResearchPackage,
+    SchedulerPackage,
     ScriptingPackage,
     S3Package,
     ScraperAPIPackage,
@@ -195,7 +198,8 @@ async function runApp({source, config: configFile, initialize, ui}: CommandOptio
     WebSearchPackage,
     WikipediaPackage,
     WebHostPackage,
-    WordPressPackage
+    WordPressPackage,
+    WorkflowPackage
   ]);
 
     if (ui === "ink") {
