@@ -60,7 +60,7 @@ program
   .description("TokenRing Writer - AI-powered writing assistant")
   .version(packageInfo.version)
   .option("--ui <inquirer|ink>", "Select the UI to use for the application", "inquirer")
-  .option("-s, --source <path>", "Path to the working directory to work with")
+  .option("-s, --source <path>", "Path to the working directory to work with (default: cwd)", ".")
   .option(
     "-i, --initialize",
     "Initialize the source directory with a new config directory",
@@ -111,57 +111,59 @@ async function runApp({source, config: configFile, initialize, ui}: CommandOptio
     );
   }
 
+  console.log("Loading configuration from: ", configFile);
+
   const baseDirectory = resolvedSource;
 
-    const defaultConfig = {
-      filesystem: {
-        defaultProvider: "local",
-        providers: {
-          local: {
-            type: "local",
-            baseDirectory,
-          }
+  const defaultConfig = {
+    filesystem: {
+      defaultProvider: "local",
+      providers: {
+        local: {
+          type: "local",
+          baseDirectory,
         }
-      } satisfies z.input<typeof FileSystemConfigSchema>,
-      checkpoint: {
-        defaultProvider: "sqlite",
-        providers: {
-          sqlite: {
-            type: "sqlite",
-            databasePath: path.resolve(configDirectory, "./writer-database.sqlite"),
-          }
+      }
+    } satisfies z.input<typeof FileSystemConfigSchema>,
+    checkpoint: {
+      defaultProvider: "sqlite",
+      providers: {
+        sqlite: {
+          type: "sqlite",
+          databasePath: path.resolve(configDirectory, "./writer-database.sqlite"),
         }
-      } satisfies z.input<typeof CheckpointPackageConfigSchema>,
-      cli: {
-        banner: bannerNarrow,
-        bannerColor: "cyan"
-      } satisfies z.input<typeof CLIConfigSchema>,
-      inkCLI: {
-        bannerNarrow,
-        bannerWide,
-        bannerCompact: `🤖 TokenRing Writer ${packageInfo.version} - https://tokenring.ai`
-      } satisfies z.input<typeof InkCLIConfigSchema>,
-      webHost: {
-        resources: {
-          "Chat Frontend": {
-            description: "Chat frontend for the Writer application",
-            type: "static",
-            root: path.resolve(import.meta.dirname, "../../../frontend/chat/dist"),
-            indexFile: "index.html",
-            notFoundFile: "index.html",
-            prefix: "/chat"
-          }
+      }
+    } satisfies z.input<typeof CheckpointPackageConfigSchema>,
+    cli: {
+      banner: bannerNarrow,
+      bannerColor: "cyan"
+    } satisfies z.input<typeof CLIConfigSchema>,
+    inkCLI: {
+      bannerNarrow,
+      bannerWide,
+      bannerCompact: `🤖 TokenRing Writer ${packageInfo.version} - https://tokenring.ai`
+    } satisfies z.input<typeof InkCLIConfigSchema>,
+    webHost: {
+      resources: {
+        "Chat Frontend": {
+          description: "Chat frontend for the Writer application",
+          type: "static",
+          root: path.resolve(import.meta.dirname, "../../../frontend/chat/dist"),
+          indexFile: "index.html",
+          notFoundFile: "index.html",
+          prefix: "/chat"
         }
-      } satisfies z.input<typeof WebHostConfigSchema>,
-      agents
+      }
+    } satisfies z.input<typeof WebHostConfigSchema>,
+    agents
   };
 
-    const configImport = await import(configFile);
-    const config = TokenRingAppConfigSchema.parse(configImport.default);
+  const configImport = await import(configFile);
+  const config = TokenRingAppConfigSchema.parse(configImport.default);
 
-    config.agents = {...agents, ...config.agents};
+  config.agents = {...agents, ...config.agents};
 
-    const app = new TokenRingApp(config, defaultConfig);
+  const app = new TokenRingApp(config, defaultConfig);
 
   const pluginManager = new PluginManager(app);
 
