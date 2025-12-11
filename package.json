@@ -65,11 +65,10 @@
   ],
   "scripts": {
     "build": "bun build --compile --outfile=dist/tr-writer src/tr-writer.ts",
-    "prepublishOnly": "bun run build",
+    "prepare": "bun run build && cp -Lr frontend dist",
     "writer": "bun src/tr-writer.js --source ./",
-    "test": "vitest run",
-    "prepare": "husky",
-    "release:patch": "NEWVERSION=`bun pm version patch` && git add package.json && git commit -m \"Bump version to ${NEWVERSION}\" && git tag ${NEWVERSION} && git submodule foreach git push && git push && git push --tags"
+    "build-container": "docker build -t tr-writer:latest -f docker/Dockerfile .",
+    "test": "vitest run"
   },
   "type": "module"
 }

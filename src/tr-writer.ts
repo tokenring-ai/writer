@@ -7,6 +7,7 @@ import {TokenRingAppConfigSchema} from "@tokenring-ai/app/TokenRingApp";
 import BlogPackage from "@tokenring-ai/blog";
 import CDNPackage from "@tokenring-ai/cdn";
 import ChatPackage from "@tokenring-ai/chat";
+import ChatFrontendPackage from "@tokenring-ai/chat-frontend";
 import CheckpointPackage, {CheckpointPackageConfigSchema} from "@tokenring-ai/checkpoint";
 import ChromePackage from "@tokenring-ai/chrome";
 import CLIPackage, {CLIConfigSchema} from "@tokenring-ai/cli";
@@ -51,6 +52,9 @@ interface CommandOptions {
   source: string;
   config?: string;
   initialize?: boolean;
+  http?: string;
+  httpPassword?: string;
+  httpBearer?: string;
   ui: "ink" | "inquirer";
 }
 
@@ -63,6 +67,9 @@ program
   .version(packageInfo.version)
   .option("--ui <inquirer|ink>", "Select the UI to use for the application", "inquirer")
   .option("-s, --source <path>", "Path to the working directory to work with (default: cwd)", ".")
+  .option("--http [host:port]", "Starts an HTTP server for interacting with the application, by default listening on 127.0.0.1 and a random port, unless host and port are specified")
+  .option("--httpPassword <user:password>", "Username and password for authentication with the webui (default: No auth required)")
+  .option("--httpBearer <user:bearer>", "Username and bearer token for authentication with the webui (default: No auth required)")
   .option(
     "-i, --initialize",
     "Initialize the source directory with a new config directory",
@@ -78,7 +85,7 @@ Examples:
   .action(runApp)
   .parse();
 
-async function runApp({source, config: configFile, initialize, ui}: CommandOptions): Promise<void> {
+async function runApp({source, config: configFile, initialize, ui, http, httpPassword, httpBearer}: CommandOptions): Promise<void> {
   try {
   // noinspection JSCheckFunctionSignatures
   const resolvedSource = path.resolve(source);
@@ -106,16 +113,34 @@ async function runApp({source, config: configFile, initialize, ui}: CommandOptio
   }
 
   if (!configFile) {
-    throw new Error(
+    console.error(
       `Source directory ${resolvedSource} does not contain a .tokenring/writer-config.{mjs,cjs,js} file.\n` +
       `You can create one by adding --initialize:\n` +
       `./tr-writer --source ${resolvedSource} --initialize`,
     );
+    process.exit(1);
   }
 
-  console.log("Loading configuration from: ", configFile);
+  //console.log("Loading configuration from: ", configFile);
 
   const baseDirectory = resolvedSource;
+
+  let auth: z.infer<typeof WebHostConfigSchema>["auth"] = undefined;
+  if (httpPassword) {
+    const [username, password] = httpPassword.split(":");
+    ((auth ??= { users: {}}).users[username] ??= {}).password = password;
+  }
+  if (httpBearer) {
+    const [username, bearerToken] = httpBearer.split(":");
+    ((auth ??= { users: {}}).users[username] ??= {}).bearerToken = bearerToken;
+  }
+
+  const [listenHost, listenPortStr] = http?.split?.(":") ?? ['127.0.0.1', ''];
+  let listenPort = listenPortStr ? parseInt(listenPortStr) : undefined;
+  if (listenPort && isNaN(listenPort)) {
+    console.error(`Invalid port number: ${listenPort}`);
+    process.exit(1);
+  }
 
   const defaultConfig = {
     filesystem: {
@@ -145,27 +170,28 @@ async function runApp({source, config: configFile, initialize, ui}: CommandOptio
       bannerWide,
       bannerCompact: `🤖 TokenRing Writer ${packageInfo.version} - https://tokenring.ai`
     } satisfies z.input<typeof InkCLIConfigSchema>,
-    webHost: {
-      resources: {
-        "Chat Frontend": {
-          description: "Chat frontend for the Writer application",
-          type: "static",
-          root: path.resolve(import.meta.dirname, "../../../frontend/chat/dist"),
-          indexFile: "index.html",
-          notFoundFile: "index.html",
-          prefix: "/chat"
-        }
-      }
-    } satisfies z.input<typeof WebHostConfigSchema>,
+    ...(http && {
+      webHost: {
+        host: listenHost,
+        ...(listenPort && {port: listenPort}),
+        auth,
+      } satisfies z.input<typeof WebHostConfigSchema>
+    }),
     agents
   };
 
   const configImport = await import(configFile);
   const config = TokenRingAppConfigSchema.parse(configImport.default);
 
-  config.agents = {...agents, ...config.agents};
+  config.agents = {...agents, ...(config.agents ?? {})};
 
-  const app = new TokenRingApp(config, defaultConfig);
+  // TODO: Figure out a more elegant way to bundle SPA apps into a Single Executable
+  let packageDirectory = path.resolve(import.meta.dirname, "../");
+  if (packageDirectory.startsWith("/$bunfs")) {
+    packageDirectory = path.resolve(process.execPath, "../");
+  }
+
+  const app = new TokenRingApp(packageDirectory, config, defaultConfig);
 
   const pluginManager = new PluginManager(app);
 
@@ -175,6 +201,7 @@ async function runApp({source, config: configFile, initialize, ui}: CommandOptio
     CDNPackage,
     AIClientPackage,
     ChatPackage,
+    ChatFrontendPackage,
     CheckpointPackage,
     ChromePackage,
     CloudQuotePackage,

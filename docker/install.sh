@@ -2,13 +2,7 @@
 
 set -e
 
-
-apt update
-apt install -y git
+chmod 755 /dist/tr-writer
 
 rm -rf /var/cache/apt
 rm -rf /var/lib/apt/lists/*
-
-cd /repo
-rm -rf /repo/node_modules
-bun install
