@@ -65,7 +65,7 @@
   ],
   "scripts": {
     "build": "bun build --compile --outfile=dist/tr-writer src/tr-writer.ts",
-    "prepare": "bun run build && cp -Lr frontend dist",
+    "prepack": "bun run build && cp -Lr frontend dist",
     "writer": "bun src/tr-writer.js --source ./",
     "build-container": "docker build -t tr-writer:latest -f docker/Dockerfile .",
     "test": "vitest run"
