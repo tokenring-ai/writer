@@ -239,7 +239,7 @@ async function runApp({source, config: configFile, initialize, ui, http, httpPas
       ]);
     }
 
-    await app.startServices();
+    await app.run();
   } catch (err) {
     console.error(chalk.red(formatLogMessages(['Caught Error: ', err as Error])));
     process.exit(1);
