@@ -32,6 +32,7 @@
     "@tokenring-ai/serper": "workspace:*",
     "@tokenring-ai/tasks": "workspace:*",
     "@tokenring-ai/template": "workspace:*",
+    "@tokenring-ai/thinking": "workspace:*",
     "@tokenring-ai/utility": "workspace:*",
     "@tokenring-ai/web-host": "workspace:*",
     "@tokenring-ai/websearch": "workspace:*",

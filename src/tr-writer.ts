@@ -30,6 +30,7 @@ import ScriptingPackage from "@tokenring-ai/scripting";
 import SerperPackage from "@tokenring-ai/serper";
 import TasksPackage from "@tokenring-ai/tasks";
 import TemplatePackage from "@tokenring-ai/template";
+import ThinkingPackage from "@tokenring-ai/thinking";
 import formatLogMessages from "@tokenring-ai/utility/string/formatLogMessage";
 import WebHostPackage, {WebHostConfigSchema} from "@tokenring-ai/web-host";
 import WebSearchPackage from "@tokenring-ai/websearch";
@@ -55,7 +56,7 @@ interface CommandOptions {
   http?: string;
   httpPassword?: string;
   httpBearer?: string;
-  ui: "ink" | "inquirer";
+  ui: "ink" | "inquirer" | "none";
 }
 
 // Create a new Commander program
@@ -65,7 +66,7 @@ program
   .name("tr-writer")
   .description("TokenRing Writer - AI-powered writing assistant")
   .version(packageInfo.version)
-  .option("--ui <inquirer|ink>", "Select the UI to use for the application", "inquirer")
+  .option("--ui <inquirer|ink|none>", "Select the UI to use for the application", "inquirer")
   .option("-s, --source <path>", "Path to the working directory to work with (default: cwd)", ".")
   .option("--http [host:port]", "Starts an HTTP server for interacting with the application, by default listening on 127.0.0.1 and a random port, unless host and port are specified")
   .option("--httpPassword <user:password>", "Username and password for authentication with the webui (default: No auth required)")
@@ -222,6 +223,7 @@ async function runApp({source, config: configFile, initialize, ui, http, httpPas
     SerperPackage,
     TasksPackage,
     TemplatePackage,
+    ThinkingPackage,
     WebSearchPackage,
     WikipediaPackage,
     WebHostPackage,
@@ -233,10 +235,12 @@ async function runApp({source, config: configFile, initialize, ui, http, httpPas
       await pluginManager.installPlugins([
         InkCLIPackage,
       ]);
-    } else {
+    } else if (ui === "inquirer") {
       await pluginManager.installPlugins([
         CLIPackage,
       ]);
+    } else {
+      console.log("App running in headless mode")
     }
 
     await app.run();
