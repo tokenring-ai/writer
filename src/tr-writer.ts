@@ -35,6 +35,7 @@ import SerperPlugin from "@tokenring-ai/serper/plugin";
 import TasksPlugin from "@tokenring-ai/tasks/plugin";
 import TemplatePlugin from "@tokenring-ai/template/plugin";
 import ThinkingPlugin from "@tokenring-ai/thinking/plugin";
+import VaultPlugin from "@tokenring-ai/vault/plugin";
 import WebHostPlugin from "@tokenring-ai/web-host/plugin";
 import {WebHostConfigSchema} from "@tokenring-ai/web-host";
 import WebSearchPlugin from "@tokenring-ai/websearch/plugin";
@@ -234,7 +235,8 @@ async function runApp({source, config: configFile, initialize, ui, http, httpPas
     WikipediaPlugin,
     WebHostPlugin,
     WordPressPlugin,
-    WorkflowPlugin
+    WorkflowPlugin,
+    VaultPlugin,
   ]);
 
     if (ui === "ink") {
