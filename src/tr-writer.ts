@@ -166,7 +166,6 @@ async function runApp({source, config: configFile, initialize, ui, http, httpPas
       bannerNarrow,
       bannerWide,
       bannerCompact: `🤖 TokenRing Writer ${packageInfo.version} - https://tokenring.ai`,
-      bannerColor: "cyan"
     } satisfies z.input<typeof CLIConfigSchema>,
     inkCLI: {
       bannerNarrow,
