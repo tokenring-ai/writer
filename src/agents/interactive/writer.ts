@@ -1,4 +1,3 @@
-import Agent from "@tokenring-ai/agent/Agent";
 import { AgentConfig } from "@tokenring-ai/agent/types";
 
 export default {

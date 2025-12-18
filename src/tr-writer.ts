@@ -1,42 +1,46 @@
 #!/usr/bin/env node
 
-import AgentPackage from "@tokenring-ai/agent";
-import AIClientPackage from "@tokenring-ai/ai-client";
+import AgentPlugin from "@tokenring-ai/agent/plugin";
+import AIClientPlugin from "@tokenring-ai/ai-client/plugin";
 import TokenRingApp, {PluginManager} from "@tokenring-ai/app";
 import {TokenRingAppConfigSchema} from "@tokenring-ai/app/TokenRingApp";
-import BlogPackage from "@tokenring-ai/blog";
-import CDNPackage from "@tokenring-ai/cdn";
-import ChatPackage from "@tokenring-ai/chat";
-import ChatFrontendPackage from "@tokenring-ai/chat-frontend";
-import CheckpointPackage, {CheckpointPackageConfigSchema} from "@tokenring-ai/checkpoint";
-import ChromePackage from "@tokenring-ai/chrome";
-import CLIPackage, {CLIConfigSchema} from "@tokenring-ai/cli";
-import InkCLIPackage, {InkCLIConfigSchema} from "@tokenring-ai/cli-ink";
-import CloudQuotePackage from "@tokenring-ai/cloudquote";
-import DrizzleStoragePackage from "@tokenring-ai/drizzle-storage";
-import FeedbackPackage from "@tokenring-ai/feedback";
-import FilesystemPackage, {FileSystemConfigSchema} from "@tokenring-ai/filesystem";
-import GhostIOPackage from "@tokenring-ai/ghost-io";
-import LocalFileSystemPackage from "@tokenring-ai/local-filesystem";
-import MCPPackage from "@tokenring-ai/mcp";
-import MemoryPackage from "@tokenring-ai/memory";
-import QueuePackage from "@tokenring-ai/queue";
-import RedditPackage from "@tokenring-ai/reddit";
-import ResearchPackage from "@tokenring-ai/research";
-import S3Package from "@tokenring-ai/s3";
-import SchedulerPackage from "@tokenring-ai/scheduler";
-import ScraperAPIPackage from "@tokenring-ai/scraperapi";
-import ScriptingPackage from "@tokenring-ai/scripting";
-import SerperPackage from "@tokenring-ai/serper";
-import TasksPackage from "@tokenring-ai/tasks";
-import TemplatePackage from "@tokenring-ai/template";
-import ThinkingPackage from "@tokenring-ai/thinking";
-import formatLogMessages from "@tokenring-ai/utility/string/formatLogMessage";
-import WebHostPackage, {WebHostConfigSchema} from "@tokenring-ai/web-host";
-import WebSearchPackage from "@tokenring-ai/websearch";
-import WikipediaPackage from "@tokenring-ai/wikipedia";
-import WordPressPackage from "@tokenring-ai/wordpress";
-import WorkflowPackage from "@tokenring-ai/workflow";
+import BlogPlugin from "@tokenring-ai/blog/plugin";
+import CDNPlugin from "@tokenring-ai/cdn/plugin";
+import ChatPlugin from "@tokenring-ai/chat/plugin";
+import ChatFrontendPlugin from "@tokenring-ai/chat-frontend/plugin";
+import CheckpointPlugin from "@tokenring-ai/checkpoint/plugin";
+import {CheckpointPluginConfigSchema} from "@tokenring-ai/checkpoint";
+import ChromePlugin from "@tokenring-ai/chrome/plugin";
+import CLIPlugin from "@tokenring-ai/cli/plugin";
+import {CLIConfigSchema} from "@tokenring-ai/cli";
+import InkCLIPlugin from "@tokenring-ai/cli-ink/plugin";
+import {InkCLIConfigSchema} from "@tokenring-ai/cli-ink";
+import CloudQuotePlugin from "@tokenring-ai/cloudquote/plugin";
+import DrizzleStoragePlugin from "@tokenring-ai/drizzle-storage/plugin";
+import FeedbackPlugin from "@tokenring-ai/feedback/plugin";
+import FilesystemPlugin from "@tokenring-ai/filesystem/plugin";
+import {FileSystemConfigSchema} from "@tokenring-ai/filesystem";
+import GhostIOPlugin from "@tokenring-ai/ghost-io/plugin";
+import LocalFileSystemPlugin from "@tokenring-ai/local-filesystem/plugin";
+import MCPPlugin from "@tokenring-ai/mcp/plugin";
+import MemoryPlugin from "@tokenring-ai/memory/plugin";
+import QueuePlugin from "@tokenring-ai/queue/plugin";
+import RedditPlugin from "@tokenring-ai/reddit/plugin";
+import ResearchPlugin from "@tokenring-ai/research/plugin";
+import S3Plugin from "@tokenring-ai/s3/plugin";
+import SchedulerPlugin from "@tokenring-ai/scheduler/plugin";
+import ScraperAPIPlugin from "@tokenring-ai/scraperapi/plugin";
+import ScriptingPlugin from "@tokenring-ai/scripting/plugin";
+import SerperPlugin from "@tokenring-ai/serper/plugin";
+import TasksPlugin from "@tokenring-ai/tasks/plugin";
+import TemplatePlugin from "@tokenring-ai/template/plugin";
+import ThinkingPlugin from "@tokenring-ai/thinking/plugin";
+import WebHostPlugin from "@tokenring-ai/web-host/plugin";
+import {WebHostConfigSchema} from "@tokenring-ai/web-host";
+import WebSearchPlugin from "@tokenring-ai/websearch/plugin";
+import WikipediaPlugin from "@tokenring-ai/wikipedia/plugin";
+import WordPressPlugin from "@tokenring-ai/wordpress/plugin";
+import WorkflowPlugin from "@tokenring-ai/workflow/plugin";
 import chalk from "chalk";
 import {Command} from "commander";
 import fs from "node:fs";
@@ -47,6 +51,7 @@ import agents from "./agents/index.ts";
 import bannerNarrow from "./banner.narrow.txt" with {type: "text"};
 import bannerWide from "./banner.wide.txt" with {type: "text"};
 import {initializeConfigDirectory} from "./initializeConfigDirectory.ts";
+import formatLogMessages from "@tokenring-ai/utility/string/formatLogMessage";
 
 // Interface definitions
 interface CommandOptions {
@@ -161,7 +166,7 @@ async function runApp({source, config: configFile, initialize, ui, http, httpPas
           databasePath: path.resolve(configDirectory, "./writer-database.sqlite"),
         }
       }
-    } satisfies z.input<typeof CheckpointPackageConfigSchema>,
+    } satisfies z.input<typeof CheckpointPluginConfigSchema>,
     cli: {
       bannerNarrow,
       bannerWide,
@@ -198,44 +203,44 @@ async function runApp({source, config: configFile, initialize, ui, http, httpPas
   const pluginManager = new PluginManager(app);
 
   await pluginManager.installPlugins([
-    AgentPackage,
-    BlogPackage,
-    CDNPackage,
-    AIClientPackage,
-    ChatPackage,
-    ChatFrontendPackage,
-    CheckpointPackage,
-    ChromePackage,
-    CloudQuotePackage,
-    DrizzleStoragePackage,
-    FeedbackPackage,
-    FilesystemPackage,
-    GhostIOPackage,
-    LocalFileSystemPackage,
-    MCPPackage,
-    MemoryPackage,
-    QueuePackage,
-    RedditPackage,
-    ResearchPackage,
-    SchedulerPackage,
-    ScriptingPackage,
-    S3Package,
-    ScraperAPIPackage,
-    SerperPackage,
-    TasksPackage,
-    TemplatePackage,
-    ThinkingPackage,
-    WebSearchPackage,
-    WikipediaPackage,
-    WebHostPackage,
-    WordPressPackage,
-    WorkflowPackage
+    AgentPlugin,
+    BlogPlugin,
+    CDNPlugin,
+    AIClientPlugin,
+    ChatPlugin,
+    ChatFrontendPlugin,
+    CheckpointPlugin,
+    ChromePlugin,
+    CloudQuotePlugin,
+    DrizzleStoragePlugin,
+    FeedbackPlugin,
+    FilesystemPlugin,
+    GhostIOPlugin,
+    LocalFileSystemPlugin,
+    MCPPlugin,
+    MemoryPlugin,
+    QueuePlugin,
+    RedditPlugin,
+    ResearchPlugin,
+    SchedulerPlugin,
+    ScriptingPlugin,
+    S3Plugin,
+    ScraperAPIPlugin,
+    SerperPlugin,
+    TasksPlugin,
+    TemplatePlugin,
+    ThinkingPlugin,
+    WebSearchPlugin,
+    WikipediaPlugin,
+    WebHostPlugin,
+    WordPressPlugin,
+    WorkflowPlugin
   ]);
 
     if (ui === "ink") {
-      await pluginManager.installPlugins([InkCLIPackage]);
+      await pluginManager.installPlugins([InkCLIPlugin]);
     } else if (ui === "inquirer") {
-      await pluginManager.installPlugins([CLIPackage]);
+      await pluginManager.installPlugins([CLIPlugin]);
     } else {
       console.log("App running in headless mode")
     }
