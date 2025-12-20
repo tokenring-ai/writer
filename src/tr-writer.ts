@@ -205,11 +205,11 @@ async function runApp({source, config: configFile, initialize, ui, http, httpPas
 
   await pluginManager.installPlugins([
     AgentPlugin,
+    AIClientPlugin,
     BlogPlugin,
     CDNPlugin,
-    AIClientPlugin,
-    ChatPlugin,
     ChatFrontendPlugin,
+    ChatPlugin,
     CheckpointPlugin,
     ChromePlugin,
     CloudQuotePlugin,
@@ -223,20 +223,20 @@ async function runApp({source, config: configFile, initialize, ui, http, httpPas
     QueuePlugin,
     RedditPlugin,
     ResearchPlugin,
-    SchedulerPlugin,
-    ScriptingPlugin,
     S3Plugin,
+    SchedulerPlugin,
     ScraperAPIPlugin,
+    ScriptingPlugin,
     SerperPlugin,
     TasksPlugin,
     TemplatePlugin,
     ThinkingPlugin,
+    VaultPlugin,
+    WebHostPlugin,
     WebSearchPlugin,
     WikipediaPlugin,
-    WebHostPlugin,
     WordPressPlugin,
     WorkflowPlugin,
-    VaultPlugin,
   ]);
 
     if (ui === "ink") {
