@@ -19,6 +19,7 @@
     "@tokenring-ai/feedback": "workspace:*",
     "@tokenring-ai/filesystem": "workspace:*",
     "@tokenring-ai/ghost-io": "workspace:*",
+    "@tokenring-ai/image-generation": "workspace:*",
     "@tokenring-ai/local-filesystem": "workspace:*",
     "@tokenring-ai/mcp": "workspace:*",
     "@tokenring-ai/memory": "workspace:*",
@@ -48,7 +49,7 @@
     "jsdom": "^27.3.0",
     "node-gyp": "^12.1.0",
     "typescript": "catalog:",
-    "vitest": "^4.0.15",
+    "vitest": "catalog:",
     "zod": "catalog:"
   },
   "repository": {
@@ -70,7 +71,9 @@
     "prepack": "bun run build && cp -Lr frontend dist",
     "writer": "bun src/tr-writer.js --source ./",
     "build-container": "docker build -t tr-writer:latest -f docker/Dockerfile .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "type": "module"
 }
