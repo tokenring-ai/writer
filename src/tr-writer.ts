@@ -54,6 +54,42 @@ import bannerWide from "./banner.wide.txt" with {type: "text"};
 import {initializeConfigDirectory} from "./initializeConfigDirectory.ts";
 import formatLogMessages from "@tokenring-ai/utility/string/formatLogMessage";
 
+const plugins = [
+  AgentPlugin,
+  AIClientPlugin,
+  BlogPlugin,
+  CDNPlugin,
+  ChatFrontendPlugin,
+  ChatPlugin,
+  CheckpointPlugin,
+  ChromePlugin,
+  CloudQuotePlugin,
+  DrizzleStoragePlugin,
+  FeedbackPlugin,
+  FilesystemPlugin,
+  GhostIOPlugin,
+  LocalFileSystemPlugin,
+  MCPPlugin,
+  MemoryPlugin,
+  QueuePlugin,
+  RedditPlugin,
+  ResearchPlugin,
+  S3Plugin,
+  SchedulerPlugin,
+  ScraperAPIPlugin,
+  ScriptingPlugin,
+  SerperPlugin,
+  TasksPlugin,
+  TemplatePlugin,
+  ThinkingPlugin,
+  VaultPlugin,
+  WebHostPlugin,
+  WebSearchPlugin,
+  WikipediaPlugin,
+  WordPressPlugin,
+  WorkflowPlugin,
+];
+
 // Interface definitions
 interface CommandOptions {
   source: string;
@@ -94,158 +130,120 @@ Examples:
 
 async function runApp({source, config: configFile, initialize, ui, http, httpPassword, httpBearer}: CommandOptions): Promise<void> {
   try {
-  // noinspection JSCheckFunctionSignatures
-  const resolvedSource = path.resolve(source);
+    // noinspection JSCheckFunctionSignatures
+    const resolvedSource = path.resolve(source);
 
-  if (!fs.existsSync(resolvedSource)) {
-    throw new Error(`Source directory not found: ${resolvedSource}`);
-  }
-
-  const configDirectory = path.join(resolvedSource, "/.tokenring");
-
-  if (!configFile) {
-    // Try each extension in order
-    const possibleExtensions = ["ts", "mjs", "cjs", "js"];
-    for (const ext of possibleExtensions) {
-      const potentialConfig = path.join(configDirectory, `writer-config.${ext}`);
-      if (fs.existsSync(potentialConfig)) {
-        configFile = potentialConfig;
-        break;
-      }
+    if (!fs.existsSync(resolvedSource)) {
+      throw new Error(`Source directory not found: ${resolvedSource}`);
     }
-  }
 
-  if (!configFile && initialize) {
-    configFile = initializeConfigDirectory(configDirectory);
-  }
+    const configDirectory = path.join(resolvedSource, "/.tokenring");
 
-  if (!configFile) {
-    console.error(
-      `Source directory ${resolvedSource} does not contain a .tokenring/writer-config.{mjs,cjs,js} file.\n` +
-      `You can create one by adding --initialize:\n` +
-      `./tr-writer --source ${resolvedSource} --initialize`,
-    );
-    process.exit(1);
-  }
-
-  //console.log("Loading configuration from: ", configFile);
-
-  const baseDirectory = resolvedSource;
-
-  let auth: z.infer<typeof WebHostConfigSchema>["auth"] = undefined;
-  if (httpPassword) {
-    const [username, password] = httpPassword.split(":");
-    ((auth ??= { users: {}}).users[username] ??= {}).password = password;
-  }
-  if (httpBearer) {
-    const [username, bearerToken] = httpBearer.split(":");
-    ((auth ??= { users: {}}).users[username] ??= {}).bearerToken = bearerToken;
-  }
-
-  const [listenHost, listenPortStr] = http?.split?.(":") ?? ['127.0.0.1', ''];
-  let listenPort = listenPortStr ? parseInt(listenPortStr) : undefined;
-  if (listenPort && isNaN(listenPort)) {
-    console.error(`Invalid port number: ${listenPort}`);
-    process.exit(1);
-  }
-
-  const defaultConfig = {
-    filesystem: {
-      defaultProvider: "local",
-      providers: {
-        local: {
-          type: "local",
-          baseDirectory,
+    if (!configFile) {
+      // Try each extension in order
+      const possibleExtensions = ["ts", "mjs", "cjs", "js"];
+      for (const ext of possibleExtensions) {
+        const potentialConfig = path.join(configDirectory, `writer-config.${ext}`);
+        if (fs.existsSync(potentialConfig)) {
+          configFile = potentialConfig;
+          break;
         }
       }
-    } satisfies z.input<typeof FileSystemConfigSchema>,
-    checkpoint: {
-      defaultProvider: "sqlite",
-      providers: {
-        sqlite: {
-          type: "sqlite",
-          databasePath: path.resolve(configDirectory, "./writer-database.sqlite"),
-        }
-      }
-    } satisfies z.input<typeof CheckpointPluginConfigSchema>,
-    cli: {
-      bannerNarrow,
-      bannerWide,
-      bannerCompact: `🤖 TokenRing Writer ${packageInfo.version} - https://tokenring.ai`,
-    } satisfies z.input<typeof CLIConfigSchema>,
-    inkCLI: {
-      bannerNarrow,
-      bannerWide,
-      bannerCompact: `🤖 TokenRing Writer ${packageInfo.version} - https://tokenring.ai`
-    } satisfies z.input<typeof InkCLIConfigSchema>,
-    ...(http && {
-      webHost: {
-        host: listenHost,
-        ...(listenPort && {port: listenPort}),
-        auth,
-      } satisfies z.input<typeof WebHostConfigSchema>
-    }),
-    agents
-  };
-
-  const configImport = await import(configFile);
-  const config = TokenRingAppConfigSchema.parse(configImport.default);
-
-  config.agents = {...agents, ...(config.agents ?? {})};
-
-  // TODO: Figure out a more elegant way to bundle SPA apps into a Single Executable
-  let packageDirectory = path.resolve(import.meta.dirname, "../");
-  if (packageDirectory.startsWith("/$bunfs")) {
-    packageDirectory = path.resolve(process.execPath, "../");
-  }
-
-  const app = new TokenRingApp(packageDirectory, config, defaultConfig);
-
-  const pluginManager = new PluginManager(app);
-
-  await pluginManager.installPlugins([
-    AgentPlugin,
-    AIClientPlugin,
-    BlogPlugin,
-    CDNPlugin,
-    ChatFrontendPlugin,
-    ChatPlugin,
-    CheckpointPlugin,
-    ChromePlugin,
-    CloudQuotePlugin,
-    DrizzleStoragePlugin,
-    FeedbackPlugin,
-    FilesystemPlugin,
-    GhostIOPlugin,
-    LocalFileSystemPlugin,
-    MCPPlugin,
-    MemoryPlugin,
-    QueuePlugin,
-    RedditPlugin,
-    ResearchPlugin,
-    S3Plugin,
-    SchedulerPlugin,
-    ScraperAPIPlugin,
-    ScriptingPlugin,
-    SerperPlugin,
-    TasksPlugin,
-    TemplatePlugin,
-    ThinkingPlugin,
-    VaultPlugin,
-    WebHostPlugin,
-    WebSearchPlugin,
-    WikipediaPlugin,
-    WordPressPlugin,
-    WorkflowPlugin,
-  ]);
-
-    if (ui === "ink") {
-      await pluginManager.installPlugins([InkCLIPlugin]);
-    } else if (ui === "inquirer") {
-      await pluginManager.installPlugins([CLIPlugin]);
-    } else {
-      console.log("App running in headless mode")
     }
+
+    if (!configFile && initialize) {
+      configFile = initializeConfigDirectory(configDirectory);
+    }
+
+    if (!configFile) {
+      console.error(
+        `Source directory ${resolvedSource} does not contain a .tokenring/writer-config.{mjs,cjs,js} file.\n` +
+        `You can create one by adding --initialize:\n` +
+        `./tr-writer --source ${resolvedSource} --initialize`,
+      );
+      process.exit(1);
+    }
+
+    //console.log("Loading configuration from: ", configFile);
+
+    const baseDirectory = resolvedSource;
+
+    let auth: z.infer<typeof WebHostConfigSchema>["auth"] = undefined;
+    if (httpPassword) {
+      const [username, password] = httpPassword.split(":");
+      ((auth ??= { users: {}}).users[username] ??= {}).password = password;
+    }
+    if (httpBearer) {
+      const [username, bearerToken] = httpBearer.split(":");
+      ((auth ??= { users: {}}).users[username] ??= {}).bearerToken = bearerToken;
+    }
+
+    const [listenHost, listenPortStr] = http?.split?.(":") ?? ['127.0.0.1', ''];
+    let listenPort = listenPortStr ? parseInt(listenPortStr) : undefined;
+    if (listenPort && isNaN(listenPort)) {
+      console.error(`Invalid port number: ${listenPort}`);
+      process.exit(1);
+    }
+
+    const defaultConfig = {
+      filesystem: {
+        defaultProvider: "local",
+        providers: {
+          local: {
+            type: "local",
+            baseDirectory,
+          }
+        }
+      } satisfies z.input<typeof FileSystemConfigSchema>,
+      checkpoint: {
+        defaultProvider: "sqlite",
+        providers: {
+          sqlite: {
+            type: "sqlite",
+            databasePath: path.resolve(configDirectory, "./writer-database.sqlite"),
+          }
+        }
+      } satisfies z.input<typeof CheckpointPluginConfigSchema>,
+      ...(ui === 'inquirer' && {
+        cli: {
+          bannerNarrow,
+          bannerWide,
+          bannerCompact: `🤖 TokenRing Coder ${packageInfo.version} - https://tokenring.ai`
+        } satisfies z.input<typeof CLIConfigSchema>
+      }),
+      ...(ui === 'ink' && {
+        inkCLI: {
+          bannerNarrow,
+          bannerWide,
+          bannerCompact: `🤖 TokenRing Coder ${packageInfo.version} - https://tokenring.ai`
+        } satisfies z.input<typeof InkCLIConfigSchema>
+      }),
+      ...(http && {
+        webHost: {
+          host: listenHost,
+          ...(listenPort && {port: listenPort}),
+          auth,
+        } satisfies z.input<typeof WebHostConfigSchema>
+      }),
+      agents
+    };
+
+    const configImport = await import(configFile);
+    const config = TokenRingAppConfigSchema.parse(configImport.default);
+
+    config.agents = {...agents, ...(config.agents ?? {})};
+
+    // TODO: Figure out a more elegant way to bundle SPA apps into a Single Executable
+    let packageDirectory = path.resolve(import.meta.dirname, "../");
+    if (packageDirectory.startsWith("/$bunfs")) {
+      packageDirectory = path.resolve(process.execPath, "../");
+    }
+
+    const app = new TokenRingApp(packageDirectory, config, defaultConfig);
+
+    const pluginManager = new PluginManager(app);
+
+    await pluginManager.installPlugins(plugins)
 
     await app.run();
   } catch (err) {
