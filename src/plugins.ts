@@ -39,8 +39,8 @@ import {z} from "zod";
 
 export const plugins = [
   AgentPlugin,
-  AudioPlugin,
   AIClientPlugin,
+  AudioPlugin,
   BlogPlugin,
   CDNPlugin,
   ChatFrontendPlugin,
