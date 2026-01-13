@@ -14,10 +14,12 @@ import DrizzleStoragePlugin from "@tokenring-ai/drizzle-storage/plugin";
 import FeedbackPlugin from "@tokenring-ai/feedback/plugin";
 import FilesystemPlugin from "@tokenring-ai/filesystem/plugin";
 import GhostIOPlugin from "@tokenring-ai/ghost-io/plugin";
+import KalshiPlugin from "@tokenring-ai/kalshi/plugin";
 import LinuxAudioPlugin from "@tokenring-ai/linux-audio/plugin";
 import LocalFileSystemPlugin from "@tokenring-ai/local-filesystem/plugin";
 import MCPPlugin from "@tokenring-ai/mcp/plugin";
 import MemoryPlugin from "@tokenring-ai/memory/plugin";
+import PolymarketPlugin from "@tokenring-ai/polymarket/plugin";
 import QueuePlugin from "@tokenring-ai/queue/plugin";
 import RedditPlugin from "@tokenring-ai/reddit/plugin";
 import ResearchPlugin from "@tokenring-ai/research/plugin";
@@ -54,10 +56,12 @@ export const plugins = [
   FilesystemPlugin,
   GhostIOPlugin,
   InkCLIPlugin,
+  KalshiPlugin,
   LinuxAudioPlugin,
   LocalFileSystemPlugin,
   MCPPlugin,
   MemoryPlugin,
+  PolymarketPlugin,
   QueuePlugin,
   RedditPlugin,
   ResearchPlugin,
@@ -95,8 +99,10 @@ export const configSchema = z.object({
   ...FilesystemPlugin.config.shape,
   ...GhostIOPlugin.config.shape,
   ...InkCLIPlugin.config.shape,
+  ...KalshiPlugin.config.shape,
   ...LinuxAudioPlugin.config.shape,
   ...LocalFileSystemPlugin.config.shape,
+  ...PolymarketPlugin.config.shape,
   ...MCPPlugin.config.shape,
   ...MemoryPlugin.config.shape,
   ...QueuePlugin.config.shape,

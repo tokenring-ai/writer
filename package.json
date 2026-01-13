@@ -1,7 +1,7 @@
 {
   "name": "@tokenring-ai/writer",
   "description": "TokenRing Writer Application",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "devDependencies": {
     "@inquirer/prompts": "^8.1.0",
     "@tokenring-ai/agent": "workspace:*",
@@ -20,7 +20,9 @@
     "@tokenring-ai/filesystem": "workspace:*",
     "@tokenring-ai/ghost-io": "workspace:*",
     "@tokenring-ai/image-generation": "workspace:*",
+    "@tokenring-ai/kalshi": "workspace:*",
     "@tokenring-ai/local-filesystem": "workspace:*",
+    "@tokenring-ai/polymarket": "workspace:*",
     "@tokenring-ai/mcp": "workspace:*",
     "@tokenring-ai/memory": "workspace:*",
     "@tokenring-ai/queue": "workspace:*",
