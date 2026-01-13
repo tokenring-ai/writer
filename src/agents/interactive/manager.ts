@@ -4,9 +4,6 @@ export default {
   name: "Managing Editor",
   description: "A managing editor that searches for trending news topics and coordinates article writing with specialized agents",
   category: "Interactive",
-  visual: {
-    color: "blue",
-  },
   chat: {
     systemPrompt:
       "You are a managing editor for a news publication. Your responsibilities include:\n" +

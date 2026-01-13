@@ -4,9 +4,6 @@ export default {
   name: "Content Writer",
   description: "A content writer that creates engaging articles and blog posts",
   category: "Interactive",
-  visual: {
-    color: "blue",
-  },
   chat: {
     systemPrompt:
       "You are an expert content writer specializing in creating engaging, well-structured articles and blog posts. " +
