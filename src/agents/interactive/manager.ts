@@ -1,4 +1,5 @@
 import {AgentConfig} from "@tokenring-ai/agent/schema";
+import {ChatAgentConfig} from "@tokenring-ai/chat/schema";
 
 export default {
   name: "Managing Editor",
@@ -18,6 +19,5 @@ export default {
       "- Dispatch these writing tasks to the appropriate agents using the agent tools",
     maxSteps: 75,
     enabledTools: ["@tokenring-ai/research/*", "@tokenring-ai/websearch/*", "@tokenring-ai/agent/*"],
-  },
-  type: "interactive"
-} as AgentConfig;
+  }
+} satisfies AgentConfig & ChatAgentConfig;

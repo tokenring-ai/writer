@@ -1,4 +1,5 @@
 import {AgentConfig} from "@tokenring-ai/agent/schema";
+import {ChatAgentConfig} from "@tokenring-ai/chat/schema";
 
 export default {
   name: "Content Writer",
@@ -11,6 +12,5 @@ export default {
       "When creating content, focus on clarity, engagement, and providing value to readers. " +
       "Use available tools to research topics, gather information, and enhance your writing with relevant data and insights.",
     enabledTools: ["@tokenring-ai/research/*", "@tokenring-ai/blog/*", "@tokenring-ai/websearch/*"],
-  },
-  type: "interactive"
-} as AgentConfig;
+  }
+} satisfies AgentConfig & ChatAgentConfig;
