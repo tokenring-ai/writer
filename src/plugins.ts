@@ -23,6 +23,7 @@ import PolymarketPlugin from "@tokenring-ai/polymarket/plugin";
 import QueuePlugin from "@tokenring-ai/queue/plugin";
 import RedditPlugin from "@tokenring-ai/reddit/plugin";
 import ResearchPlugin from "@tokenring-ai/research/plugin";
+import RPCPlugin from "@tokenring-ai/rpc/plugin";
 import S3Plugin from "@tokenring-ai/s3/plugin";
 import SchedulerPlugin from "@tokenring-ai/scheduler/plugin";
 import ScraperAPIPlugin from "@tokenring-ai/scraperapi/plugin";
@@ -65,6 +66,7 @@ export const plugins = [
   QueuePlugin,
   RedditPlugin,
   ResearchPlugin,
+  RPCPlugin,
   S3Plugin,
   SchedulerPlugin,
   ScraperAPIPlugin,
@@ -108,6 +110,7 @@ export const configSchema = z.object({
   ...QueuePlugin.config.shape,
   ...RedditPlugin.config.shape,
   ...ResearchPlugin.config.shape,
+  ...RPCPlugin.config.shape,
   ...S3Plugin.config.shape,
   ...SchedulerPlugin.config.shape,
   ...ScraperAPIPlugin.config.shape,
