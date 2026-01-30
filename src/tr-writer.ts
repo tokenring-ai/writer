@@ -8,8 +8,9 @@ import {CheckpointConfigSchema} from "@tokenring-ai/checkpoint";
 import {CLIConfigSchema} from "@tokenring-ai/cli";
 import {InkCLIConfigSchema} from "@tokenring-ai/cli-ink";
 import {FileSystemConfigSchema} from "@tokenring-ai/filesystem/schema";
+import {TerminalConfigSchema} from "@tokenring-ai/terminal/schema";
 import formatLogMessages from "@tokenring-ai/utility/string/formatLogMessage";
-import {WebHostConfigSchema} from "@tokenring-ai/web-host";
+import {WebHostConfigSchema} from "@tokenring-ai/web-host/schema";
 import chalk from "chalk";
 import {Command} from "commander";
 import path from "path";
@@ -97,11 +98,22 @@ async function runApp({workingDirectory, dataDirectory, ui, http, httpPassword, 
         },
         providers: {
           local: {
-            type: "local",
-            baseDirectory: workingDirectory,
+            type: "posix",
+            workingDirectory,
           }
         }
       } satisfies z.input<typeof FileSystemConfigSchema>,
+      terminal: {
+        agentDefaults: {
+          provider: "local",
+        },
+        providers: {
+          local: {
+            type: "posix",
+            workingDirectory,
+          }
+        }
+      } satisfies z.input<typeof TerminalConfigSchema>,
       checkpoint: {
         provider: {
           type: "sqlite",

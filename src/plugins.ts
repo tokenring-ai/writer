@@ -16,7 +16,7 @@ import FilesystemPlugin from "@tokenring-ai/filesystem/plugin";
 import GhostIOPlugin from "@tokenring-ai/ghost-io/plugin";
 import KalshiPlugin from "@tokenring-ai/kalshi/plugin";
 import LinuxAudioPlugin from "@tokenring-ai/linux-audio/plugin";
-import LocalFileSystemPlugin from "@tokenring-ai/local-filesystem/plugin";
+import PosixSystemPlugin from "@tokenring-ai/posix-system/plugin";
 import MCPPlugin from "@tokenring-ai/mcp/plugin";
 import MemoryPlugin from "@tokenring-ai/memory/plugin";
 import PolymarketPlugin from "@tokenring-ai/polymarket/plugin";
@@ -31,6 +31,7 @@ import ScriptingPlugin from "@tokenring-ai/scripting/plugin";
 import SerperPlugin from "@tokenring-ai/serper/plugin";
 import TasksPlugin from "@tokenring-ai/tasks/plugin";
 import TemplatePlugin from "@tokenring-ai/template/plugin";
+import TerminalPlugin from "@tokenring-ai/terminal/plugin";
 import ThinkingPlugin from "@tokenring-ai/thinking/plugin";
 import VaultPlugin from "@tokenring-ai/vault/plugin";
 import WebHostPlugin from "@tokenring-ai/web-host/plugin";
@@ -59,7 +60,7 @@ export const plugins = [
   InkCLIPlugin,
   KalshiPlugin,
   LinuxAudioPlugin,
-  LocalFileSystemPlugin,
+  PosixSystemPlugin,
   MCPPlugin,
   MemoryPlugin,
   PolymarketPlugin,
@@ -74,6 +75,7 @@ export const plugins = [
   SerperPlugin,
   TasksPlugin,
   TemplatePlugin,
+  TerminalPlugin,
   ThinkingPlugin,
   VaultPlugin,
   WebHostPlugin,
@@ -103,7 +105,7 @@ export const configSchema = z.object({
   ...InkCLIPlugin.config.shape,
   ...KalshiPlugin.config.shape,
   ...LinuxAudioPlugin.config.shape,
-  ...LocalFileSystemPlugin.config.shape,
+  ...PosixSystemPlugin.config.shape,
   ...PolymarketPlugin.config.shape,
   ...MCPPlugin.config.shape,
   ...MemoryPlugin.config.shape,
@@ -118,6 +120,7 @@ export const configSchema = z.object({
   ...SerperPlugin.config.shape,
   ...TasksPlugin.config.shape,
   ...TemplatePlugin.config.shape,
+  ...TerminalPlugin.config.shape,
   ...ThinkingPlugin.config.shape,
   ...VaultPlugin.config.shape,
   ...WebHostPlugin.config.shape,
