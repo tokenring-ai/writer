@@ -11,13 +11,14 @@ TokenRing Writer (tr-writer) is an AI-powered content creation and management pl
 - **Persistent content history**: Sessions and content drafts are saved in a SQLite database.
 - **Command system**: Issue commands prefixed with `/` to manage agents, content, and workflows.
 - **HTTP server integration**: Start an HTTP server for web-based interaction with the application.
-- **Multi-model support**: Support for various AI models from different providers (OpenAI, Anthropic, Google, Cerebras, DeepSeek, Groq, Perplexity, xAI).
+- **Multi-model support**: Support for various AI models from different providers (OpenAI, Anthropic, Google, Cerebras, DeepSeek, Groq, Perplexity, xAI, LlamaCpp, OpenRouter, Qwen).
 - **Research capabilities**: Built-in web search, Wikipedia integration, and research tools for content research.
 - **File system integration**: Direct integration with local and cloud file systems (S3, local filesystem).
 - **Publishing integrations**: Support for WordPress, Ghost.io, Reddit, blog platforms, and CDN management.
 - **Flexible UI options**: Support for different UI implementations (Inquirer, Ink CLI, or headless mode).
 - **Task scheduling**: Automated scheduling and task management for content workflows.
 - **Checkpoint and state management**: Persistent state and session recovery capabilities.
+- **Audio recording**: Built-in audio recording and transcription capabilities.
 
 ## Available Agents
 
@@ -33,6 +34,7 @@ TokenRing Writer includes specialized AI agents for different content creation w
 
 - Bun (for local development)
 - Git initialized content directory
+- API keys for AI providers and external services (optional, can be configured via environment variables)
 
 ### Installation (Local Development)
 
@@ -48,7 +50,13 @@ TokenRing Writer includes specialized AI agents for different content creation w
    bun install
    ```
 
-3. **Run the application**: Use Bun to start the application:
+3. **Build the application**:
+
+   ```bash
+   bun run build
+   ```
+
+4. **Run the application**: Use Bun to start the application:
 
    ```bash
    bun src/tr-writer.ts --source ./path-to-your-content
@@ -113,7 +121,6 @@ tr-writer --source ./path-to-your-content --initialize
 ```
 
 This creates a `.tokenring` directory in your project, which stores:
-
 - `writer-config.mjs`: Configuration file for your project
 - `writer-database.sqlite`: SQLite database storing your content history
 - `.gitignore`: File ignoring database files
@@ -121,7 +128,6 @@ This creates a `.tokenring` directory in your project, which stores:
 ## Configuration
 
 The application uses a configuration file located at `.tokenring/writer-config.mjs`. This file can be customized to:
-
 - Configure different AI models and providers
 - Set up web search integration
 - Configure file system providers
@@ -141,12 +147,26 @@ export default {
     },
   },
   filesystem: {
-    defaultProvider: "local",
+    agentDefaults: {
+      provider: "local",
+    },
     providers: {
       local: {
-        type: "local",
-      },
+        type: "posix",
+        workingDirectory: "./content",
+      }
+    }
+  },
+  terminal: {
+    agentDefaults: {
+      provider: "local",
     },
+    providers: {
+      local: {
+        type: "posix",
+        workingDirectory: "./content",
+      }
+    }
   },
   wikipedia: {
     baseUrl: "https://en.wikipedia.org",
@@ -162,17 +182,55 @@ export default {
         provider: "anthropic",
         apiKey: process.env.ANTHROPIC_API_KEY,
       },
+      Cerebras: {
+        provider: "cerebras",
+        apiKey: process.env.CEREBRAS_API_KEY,
+      },
+      DeepSeek: {
+        provider: "deepseek",
+        apiKey: process.env.DEEPSEEK_API_KEY,
+      },
       Google: {
         provider: "google",
         apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+      },
+      Groq: {
+        provider: "groq",
+        apiKey: process.env.GROQ_API_KEY,
       },
       OpenAI: {
         provider: "openai",
         apiKey: process.env.OPENAI_API_KEY,
       },
+      Perplexity: {
+        provider: "perplexity",
+        apiKey: process.env.PERPLEXITY_API_KEY,
+      },
+      xAi: {
+        provider: "xai",
+        apiKey: process.env.XAI_API_KEY,
+      },
     },
   },
 };
+```
+
+### Default AI Models
+
+The application comes with a default configuration of AI models that are tried in order:
+
+```javascript
+defaultModels: [
+  'llamacpp:*',                    // Local LlamaCpp models
+  'openrouter:openrouter/auto',    // OpenRouter models
+  'openai:gpt-5-mini',             // OpenAI models
+  'anthropic:claude-4.5-haiku',    // Anthropic models
+  'google:gemini-3-flash-preview', // Google models
+  'xai:grok-code-fast-1',          // xAI models
+  'deepseek:deepseek-chat',        // DeepSeek models
+  'qwen:qwen3-coder-flash',        // Qwen models
+  '*'                               // Fallback to any available model
+]
 ```
 
 ## Command Line Options
@@ -184,11 +242,11 @@ tr-writer [options]
 ### Options
 
 - `--ui <inquirer|ink|none>`: Select the UI to use for the application (default: inquirer)
-- `--workingDirectory <path>`: Path to the working directory (default: cwd)
-- `--dataDirectory <path>`: Path to the data directory (default: `<workingDirectory>/.tokenring`)
-- `--http [host:port]`: Starts an HTTP server for web-based interaction
-- `--httpPassword <user:password>`: Basic auth username and password
-- `--httpBearer <user:bearer>`: Bearer token auth username and token
+- `--workingDirectory <path>`: Path to the working directory to work in (default: cwd)
+- `--dataDirectory <path>`: Path to the data directory to use to store data (knowledge, session database, etc.) (default: <workingDirectory>/.tokenring)
+- `--http [host:port]`: Starts an HTTP server for interacting with the application, by default listening on 127.0.0.1 and a random port, unless host and port are specified
+- `--httpPassword <user:password>`: Username and password for authentication with the webui (default: No auth required)
+- `--httpBearer <user:bearer>`: Username and bearer token for authentication with the webui (default: No auth required)
 
 ### Examples
 
@@ -197,13 +255,16 @@ tr-writer [options]
 tr-writer --source ./content
 
 # Run with custom directories
-tr-writer --source ./my-content --dataDirectory ./my-data
+tr-writer --workingDirectory ./my-app --dataDirectory ./my-data
 
 # Run with HTTP server
 tr-writer --source ./content --http 127.0.0.1:3000
 
 # Run with basic authentication
 tr-writer --source ./content --http 127.0.0.1:3000 --httpPassword user:password
+
+# Run with Bearer token authentication
+tr-writer --source ./content --http 127.0.0.1:3000 --httpBearer user:token
 
 # Run with Ink CLI UI
 tr-writer --source ./content --ui ink
@@ -232,6 +293,15 @@ tr-writer --source ./path-to-content --http 127.0.0.1:3000
   tr-writer --http 127.0.0.1:3000 --httpBearer user:token
   ```
 
+### Web Interface
+
+The web interface provides:
+- Interactive chat with AI agents
+- Agent selection and switching
+- Workflow management
+- Real-time agent responses
+- Markdown rendering for content
+
 ## UI Options
 
 The application supports different UI implementations:
@@ -240,16 +310,24 @@ The application supports different UI implementations:
   ```bash
   tr-writer --source ./content --ui inquirer
   ```
+  - Terminal-based interactive interface
+  - Banner displays during loading
+  - Keyboard-based navigation
 
 - **Ink CLI UI**:
   ```bash
   tr-writer --source ./content --ui ink
   ```
+  - Modern CLI interface with Ink
+  - Animated banners
+  - Rich text formatting
 
 - **Headless mode** (no UI):
   ```bash
   tr-writer --source ./content --ui none
   ```
+  - Backend-only operation
+  - Suitable for scheduled tasks or automation
 
 ## Chat and Commands
 
@@ -273,13 +351,18 @@ Some example commands:
 
 ## Architecture
 
-- **CLI**: Entry point with argument parsing and agent team initialization (`tr-writer.ts`).
+The application is built on the TokenRing framework and consists of several components:
+
+- **CLI Entry Point**: Argument parsing and agent team initialization (`src/tr-writer.ts`).
 - **Agents**: Specialized AI agents for different content creation tasks (writer, managing editor).
-- **Plugins**: 37 integrated plugins providing services for AI, chat, filesystem, research, publishing, and more.
+  - `src/agents/interactive/writer.ts`: Content writer agent
+  - `src/agents/interactive/manager.ts`: Managing editor agent
+- **Plugins**: 43 integrated plugins providing services for AI, chat, filesystem, research, publishing, and more.
 - **Services**: Core services for file system, web search, models, database management, and scheduling.
 - **Configuration**: Flexible configuration system supporting multiple models and services.
 - **HTTP Server**: Optional web server for remote interaction.
 - **UI Frameworks**: Support for both Inquirer and Ink CLI interfaces.
+- **Frontend**: React-based web interface for HTTP server mode.
 
 ### Plugin Ecosystem
 
@@ -290,8 +373,8 @@ The application integrates the following plugin packages:
 - **Content**: @blog, @wordpress, @ghost-io, @reddit
 - **Data**: @checkpoint, @drizzle-storage, @vault, @memory
 - **Filesystem**: @filesystem, @local-filesystem, @browser-file-system, @s3
-- **Research**: @research, @websearch, @wikipedia, @serper
-- **Infrastructure**: @web-host, @cli, @cli-ink, @scheduler
+- **Research**: @research, @websearch, @wikipedia, @serper, @kalshi, @polymarket
+- **Infrastructure**: @web-host, @cli, @cli-ink, @scheduler, @rpc
 - **Integration**: @mcp, @scripting, @tasks, @workflow
 - **Audio/Video**: @audio, @linux-audio, @chrome
 - **Utility**: @feedback, @queue, @cdn, @cloudquote, @scraperapi, @thinking
@@ -319,7 +402,7 @@ The application requires various API keys for external services. Common environm
 The system supports:
 
 - **Custom agents**: Define new agents with specific roles and capabilities.
-- **Multiple AI models**: Support for various providers (OpenAI, Anthropic, Google, Cerebras, DeepSeek, Groq, Perplexity, xAI).
+- **Multiple AI models**: Support for various providers (OpenAI, Anthropic, Google, Cerebras, DeepSeek, Groq, Perplexity, xAI, LlamaCpp, OpenRouter, Qwen).
 - **Service providers**: Pluggable services for file systems, web search, and content publishing.
 - **Tool integration**: Extensible tool system for agent capabilities.
 - **UI customization**: Support for different UI frameworks and headless mode.
