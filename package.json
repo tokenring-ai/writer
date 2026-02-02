@@ -1,7 +1,7 @@
 {
   "name": "@tokenring-ai/writer",
   "description": "TokenRing Writer Application",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "devDependencies": {
     "@inquirer/prompts": "^8.2.0",
     "@tokenring-ai/agent": "workspace:*",
@@ -71,6 +71,8 @@
     "README.md"
   ],
   "scripts": {
+    "build": "bun build --compile --outfile=dist/tr-writer src/tr-writer.ts",
+    "prepack": "bun run build && cp -Lr frontend dist",
     "writer": "bun src/tr-writer.js --source ./",
     "build-container": "docker build -t tr-writer:latest -f docker/Dockerfile .",
     "test": "vitest run",
