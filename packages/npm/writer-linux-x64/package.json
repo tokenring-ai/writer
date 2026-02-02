@@ -1,6 +1,6 @@
 {
   "name": "@tokenring-ai/writer-linux-x64",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "description": "TokenRing Writer - Linux x64 binary",
   "license": "MIT",
   "os": ["linux"],
