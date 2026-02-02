@@ -64,17 +64,13 @@
     "directory": "app/writer"
   },
   "license": "MIT",
-  "bin": {
-    "tr-writer": "dist/tr-writer"
-  },
+  "bin": {},
+  "optionalDependencies": {},
   "files": [
-    "dist",
     "LICENSE",
     "README.md"
   ],
   "scripts": {
-    "build": "bun build --compile --outfile=dist/tr-writer src/tr-writer.ts",
-    "prepack": "bun run build && cp -Lr frontend dist",
     "writer": "bun src/tr-writer.js --source ./",
     "build-container": "docker build -t tr-writer:latest -f docker/Dockerfile .",
     "test": "vitest run",

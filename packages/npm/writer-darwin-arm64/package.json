@@ -1,0 +1,20 @@
+{
+  "name": "@tokenring-ai/writer-darwin-arm64",
+  "version": "0.2.12",
+  "description": "TokenRing Writer - macOS ARM64 binary",
+  "license": "MIT",
+  "os": ["darwin"],
+  "cpu": ["arm64"],
+  "bin": {
+    "tr-writer": "writer-macos-arm64"
+  },
+  "files": [
+    "writer-macos-arm64",
+    "frontend"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tokenring-ai/monorepo",
+    "directory": "app/writer"
+  }
+}
