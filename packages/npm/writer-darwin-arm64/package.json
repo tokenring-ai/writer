@@ -9,6 +9,7 @@
     "tr-writer": "writer-macos-arm64"
   },
   "files": [
+    "libportaudio.dylib",
     "writer-macos-arm64",
     "frontend"
   ],
