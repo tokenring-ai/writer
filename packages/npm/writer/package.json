@@ -1,6 +1,6 @@
 {
   "name": "@tokenring-ai/writer",
-  "version": "0.2.22",
+  "version": "0.2.23",
   "description": "TokenRing Writer Application",
   "license": "MIT",
   "bin": {
