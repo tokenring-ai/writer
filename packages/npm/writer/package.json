@@ -1,17 +1,19 @@
 {
   "name": "@tokenring-ai/writer",
-  "version": "0.2.18",
+  "version": "0.2.19",
   "description": "TokenRing Writer Application",
   "license": "MIT",
   "bin": {
     "tr-writer": "tr-writer.js"
   },
   "optionalDependencies": {
-    "@tokenring-ai/writer-darwin-arm64": "0.2.18",
-    "@tokenring-ai/writer-linux-x64": "0.2.18"
+    "@tokenring-ai/writer-darwin-arm64": "0.2.19",
+    "@tokenring-ai/writer-linux-x64": "0.2.19"
   },
   "files": [
-   "tr-writer.js"
+   "tr-writer.js",
+   "writer-darwin-arm64",
+   "writer-linux-x64"
   ],
   "repository": {
     "type": "git",
