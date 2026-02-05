@@ -11,6 +11,6 @@ export default {
       "You excel at research, storytelling, and adapting your writing style to different audiences and formats. " +
       "When creating content, focus on clarity, engagement, and providing value to readers. " +
       "Use available tools to research topics, gather information, and enhance your writing with relevant data and insights.",
-    enabledTools: ["@tokenring-ai/research/*", "@tokenring-ai/blog/*", "@tokenring-ai/websearch/*"],
+    enabledTools: ["research_*", "blog_*", "websearch_*"],
   }
 } satisfies AgentConfig & ChatAgentConfig;

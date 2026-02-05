@@ -18,6 +18,6 @@ export default {
       "- Create detailed article briefs for your writing agents including target audience, angle, and key points to cover\n" +
       "- Dispatch these writing tasks to the appropriate agents using the agent tools",
     maxSteps: 75,
-    enabledTools: ["@tokenring-ai/research/*", "@tokenring-ai/websearch/*", "@tokenring-ai/agent/*"],
+    enabledTools: ["research_*", "websearch_*", "agent_*"],
   }
 } satisfies AgentConfig & ChatAgentConfig;
