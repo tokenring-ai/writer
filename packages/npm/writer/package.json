@@ -1,15 +1,17 @@
 {
   "name": "@tokenring-ai/writer",
-  "version": "0.2.20",
+  "version": "0.2.21",
   "description": "TokenRing Writer Application",
   "license": "MIT",
   "bin": {
-    "writer": "writer.js"
+    "@tokenring-ai/writer": "writer.js"
   },
   "files": [
    "writer.js",
    "writer-macos-arm64",
-   "writer-linux-x64"
+   "writer-linux-x64",
+   "libportaudio.dylib",
+   "frontend"
   ],
   "repository": {
     "type": "git",
