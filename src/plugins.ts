@@ -7,7 +7,6 @@ import ChatFrontendPlugin from "@tokenring-ai/chat-frontend/plugin";
 import ChatPlugin from "@tokenring-ai/chat/plugin";
 import CheckpointPlugin from "@tokenring-ai/checkpoint/plugin";
 import ChromePlugin from "@tokenring-ai/chrome/plugin";
-import InkCLIPlugin from "@tokenring-ai/cli-ink/plugin";
 import CLIPlugin from "@tokenring-ai/cli/plugin";
 import CloudQuotePlugin from "@tokenring-ai/cloudquote/plugin";
 import DrizzleStoragePlugin from "@tokenring-ai/drizzle-storage/plugin";
@@ -57,7 +56,6 @@ export const plugins = [
   FeedbackPlugin,
   FilesystemPlugin,
   GhostIOPlugin,
-  InkCLIPlugin,
   KalshiPlugin,
   LinuxAudioPlugin,
   PosixSystemPlugin,
@@ -102,7 +100,6 @@ export const configSchema = z.object({
   ...FeedbackPlugin.config.shape,
   ...FilesystemPlugin.config.shape,
   ...GhostIOPlugin.config.shape,
-  ...InkCLIPlugin.config.shape,
   ...KalshiPlugin.config.shape,
   ...LinuxAudioPlugin.config.shape,
   ...PosixSystemPlugin.config.shape,

@@ -1,7 +1,7 @@
 {
   "name": "@tokenring-ai/writer",
   "description": "TokenRing Writer Application",
-  "version": "0.2.23",
+  "version": "0.2.24",
   "devDependencies": {
     "@inquirer/prompts": "^8.2.0",
     "@tokenring-ai/agent": "workspace:*",
@@ -14,7 +14,6 @@
     "@tokenring-ai/checkpoint": "workspace:*",
     "@tokenring-ai/chrome": "workspace:*",
     "@tokenring-ai/cli": "workspace:*",
-    "@tokenring-ai/cli-ink": "workspace:*",
     "@tokenring-ai/cloudquote": "workspace:*",
     "@tokenring-ai/drizzle-storage": "workspace:*",
     "@tokenring-ai/feedback": "workspace:*",
