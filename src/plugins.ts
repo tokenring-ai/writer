@@ -10,6 +10,7 @@ import ChromePlugin from "@tokenring-ai/chrome/plugin";
 import CLIPlugin from "@tokenring-ai/cli/plugin";
 import CloudQuotePlugin from "@tokenring-ai/cloudquote/plugin";
 import DrizzleStoragePlugin from "@tokenring-ai/drizzle-storage/plugin";
+import EscalationPlugin from "@tokenring-ai/escalation/plugin";
 import FeedbackPlugin from "@tokenring-ai/feedback/plugin";
 import FilesystemPlugin from "@tokenring-ai/filesystem/plugin";
 import GhostIOPlugin from "@tokenring-ai/ghost-io/plugin";
@@ -29,6 +30,7 @@ import ScraperAPIPlugin from "@tokenring-ai/scraperapi/plugin";
 import ScriptingPlugin from "@tokenring-ai/scripting/plugin";
 import SerperPlugin from "@tokenring-ai/serper/plugin";
 import TasksPlugin from "@tokenring-ai/tasks/plugin";
+import TelegramPlugin from "@tokenring-ai/telegram/plugin";
 import TemplatePlugin from "@tokenring-ai/template/plugin";
 import TerminalPlugin from "@tokenring-ai/terminal/plugin";
 import ThinkingPlugin from "@tokenring-ai/thinking/plugin";
@@ -53,6 +55,7 @@ export const plugins = [
   ChromePlugin,
   CloudQuotePlugin,
   DrizzleStoragePlugin,
+  EscalationPlugin,
   FeedbackPlugin,
   FilesystemPlugin,
   GhostIOPlugin,
@@ -72,6 +75,7 @@ export const plugins = [
   ScriptingPlugin,
   SerperPlugin,
   TasksPlugin,
+  TelegramPlugin,
   TemplatePlugin,
   TerminalPlugin,
   ThinkingPlugin,
@@ -97,6 +101,7 @@ export const configSchema = z.object({
   ...ChromePlugin.config.shape,
   ...CloudQuotePlugin.config.shape,
   ...DrizzleStoragePlugin.config.shape,
+  ...EscalationPlugin.config.shape,
   ...FeedbackPlugin.config.shape,
   ...FilesystemPlugin.config.shape,
   ...GhostIOPlugin.config.shape,
@@ -116,6 +121,7 @@ export const configSchema = z.object({
   ...ScriptingPlugin.config.shape,
   ...SerperPlugin.config.shape,
   ...TasksPlugin.config.shape,
+  ...TelegramPlugin.config.shape,
   ...TemplatePlugin.config.shape,
   ...TerminalPlugin.config.shape,
   ...ThinkingPlugin.config.shape,
