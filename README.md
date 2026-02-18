@@ -15,10 +15,11 @@ TokenRing Writer (tr-writer) is an AI-powered content creation and management pl
 - **Research capabilities**: Built-in web search, Wikipedia integration, and research tools for content research.
 - **File system integration**: Direct integration with local and cloud file systems (S3, local filesystem).
 - **Publishing integrations**: Support for WordPress, Ghost.io, Reddit, blog platforms, and CDN management.
-- **Flexible UI options**: Support for different UI implementations (Inquirer, Ink CLI, or headless mode).
+- **Flexible UI options**: Support for different UI implementations (OpenTUI, Ink CLI, or headless mode).
 - **Task scheduling**: Automated scheduling and task management for content workflows.
 - **Checkpoint and state management**: Persistent state and session recovery capabilities.
 - **Audio recording**: Built-in audio recording and transcription capabilities.
+- **Frontend web interface**: Modern React-based web interface for HTTP server mode.
 
 ## Available Agents
 
@@ -59,7 +60,7 @@ TokenRing Writer includes specialized AI agents for different content creation w
 4. **Run the application**: Use Bun to start the application:
 
    ```bash
-   bun src/tr-writer.ts --source ./path-to-your-content
+   bun run writer --source ./path-to-your-content
    ```
 
 ### Quick Start (NPM)
@@ -67,7 +68,7 @@ TokenRing Writer includes specialized AI agents for different content creation w
 Run directly using npx without installation:
 
 ```bash
-npx @tokenring-ai/writer --source ./path-to-your-content --initialize
+npx @tokenring-ai/writer --source ./path-to-your-content
 ```
 
 ### Quick Start (Docker)
@@ -206,7 +207,7 @@ export default {
         provider: "perplexity",
         apiKey: process.env.PERPLEXITY_API_KEY,
       },
-      xAi: {
+      xAI: {
         provider: "xai",
         apiKey: process.env.XAI_API_KEY,
       },
@@ -241,7 +242,7 @@ tr-writer [options]
 
 ### Options
 
-- `--ui <inquirer|ink|none>`: Select the UI to use for the application (default: inquirer)
+- `--ui <opentui|ink|none>`: Select the UI to use for the application (default: opentui)
 - `--workingDirectory <path>`: Path to the working directory to work in (default: cwd)
 - `--dataDirectory <path>`: Path to the data directory to use to store data (knowledge, session database, etc.) (default: <workingDirectory>/.tokenring)
 - `--http [host:port]`: Starts an HTTP server for interacting with the application, by default listening on 127.0.0.1 and a random port, unless host and port are specified
@@ -252,25 +253,28 @@ tr-writer [options]
 
 ```bash
 # Run with default settings
-tr-writer --source ./content
+tr-writer
 
 # Run with custom directories
 tr-writer --workingDirectory ./my-app --dataDirectory ./my-data
 
+# Run with specific UI
+tr-writer --ui ink
+
 # Run with HTTP server
-tr-writer --source ./content --http 127.0.0.1:3000
+tr-writer --http 127.0.0.1:3000
 
 # Run with basic authentication
-tr-writer --source ./content --http 127.0.0.1:3000 --httpPassword user:password
+tr-writer --http 127.0.0.1:3000 --httpPassword user:password
 
 # Run with Bearer token authentication
-tr-writer --source ./content --http 127.0.0.1:3000 --httpBearer user:token
-
-# Run with Ink CLI UI
-tr-writer --source ./content --ui ink
+tr-writer --http 127.0.0.1:3000 --httpBearer user:token
 
 # Run in headless mode
-tr-writer --source ./content --ui none
+tr-writer --ui none
+
+# Run with custom source directory
+tr-writer --source ./content
 ```
 
 ## HTTP Server
@@ -278,7 +282,7 @@ tr-writer --source ./content --ui none
 The application can start an HTTP server for web-based interaction:
 
 ```bash
-tr-writer --source ./path-to-content --http 127.0.0.1:3000
+tr-writer --http 127.0.0.1:3000
 ```
 
 ### Authentication Options
@@ -302,21 +306,24 @@ The web interface provides:
 - Real-time agent responses
 - Markdown rendering for content
 
+The frontend is a React-based web application located at `frontend/chat/` that serves as the user interface when running in HTTP server mode. The frontend is automatically built and included in the distribution.
+
 ## UI Options
 
 The application supports different UI implementations:
 
-- **Inquirer UI** (default):
+- **OpenTUI UI** (default):
   ```bash
-  tr-writer --source ./content --ui inquirer
+  tr-writer --ui opentui
   ```
-  - Terminal-based interactive interface
-  - Banner displays during loading
+  - Modern terminal UI framework
+  - Animated banners during loading
   - Keyboard-based navigation
+  - Rich text formatting
 
 - **Ink CLI UI**:
   ```bash
-  tr-writer --source ./content --ui ink
+  tr-writer --ui ink
   ```
   - Modern CLI interface with Ink
   - Animated banners
@@ -324,7 +331,7 @@ The application supports different UI implementations:
 
 - **Headless mode** (no UI):
   ```bash
-  tr-writer --source ./content --ui none
+  tr-writer --ui none
   ```
   - Backend-only operation
   - Suitable for scheduled tasks or automation
@@ -357,11 +364,11 @@ The application is built on the TokenRing framework and consists of several comp
 - **Agents**: Specialized AI agents for different content creation tasks (writer, managing editor).
   - `src/agents/interactive/writer.ts`: Content writer agent
   - `src/agents/interactive/manager.ts`: Managing editor agent
-- **Plugins**: 43 integrated plugins providing services for AI, chat, filesystem, research, publishing, and more.
+- **Plugins**: 41 integrated plugins providing services for AI, chat, filesystem, research, publishing, and more.
 - **Services**: Core services for file system, web search, models, database management, and scheduling.
 - **Configuration**: Flexible configuration system supporting multiple models and services.
 - **HTTP Server**: Optional web server for remote interaction.
-- **UI Frameworks**: Support for both Inquirer and Ink CLI interfaces.
+- **UI Frameworks**: Support for both OpenTUI and Ink CLI interfaces.
 - **Frontend**: React-based web interface for HTTP server mode.
 
 ### Plugin Ecosystem
@@ -408,6 +415,34 @@ The system supports:
 - **UI customization**: Support for different UI frameworks and headless mode.
 - **Publishing integrations**: Connect to WordPress, Ghost.io, Reddit, and other platforms.
 - **Workflow automation**: Task scheduling and workflow management for automated content pipelines.
+
+## Development
+
+### Building
+
+```bash
+bun run build
+```
+
+### Testing
+
+```bash
+# Run tests
+bun test
+
+# Run tests in watch mode
+bun test --watch
+
+# Run tests with coverage
+bun test --coverage
+```
+
+### Docker Container
+
+```bash
+# Build container
+docker build -t tr-writer:latest -f docker/Dockerfile .
+```
 
 ## Contributing
 
