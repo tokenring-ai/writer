@@ -1,7 +1,7 @@
 {
   "name": "@tokenring-ai/writer",
   "description": "TokenRing Writer Application",
-  "version": "0.2.25",
+  "version": "0.2.26",
   "devDependencies": {
     "@inquirer/prompts": "^8.2.1",
     "@tokenring-ai/agent": "workspace:*",
