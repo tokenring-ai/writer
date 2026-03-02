@@ -2,7 +2,8 @@ import {AgentConfig} from "@tokenring-ai/agent/schema";
 import {ChatAgentConfig} from "@tokenring-ai/chat/schema";
 
 export default {
-  name: "Managing Editor",
+  agentType: "manager",
+  displayName: "Managing Editor",
   description: "A managing editor that searches for trending news topics and coordinates article writing with specialized agents",
   category: "Interactive",
   chat: {

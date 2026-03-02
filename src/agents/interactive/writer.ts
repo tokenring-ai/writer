@@ -2,7 +2,8 @@ import {AgentConfig} from "@tokenring-ai/agent/schema";
 import {ChatAgentConfig} from "@tokenring-ai/chat/schema";
 
 export default {
-  name: "Content Writer",
+  agentType: "writer",
+  displayName: "Content Writer",
   description: "A content writer that creates engaging articles and blog posts",
   category: "Interactive",
   chat: {

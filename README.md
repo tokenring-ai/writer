@@ -34,33 +34,26 @@ TokenRing Writer includes specialized AI agents for different content creation w
 ### Prerequisites
 
 - Bun (for local development)
-- Git initialized content directory
 - API keys for AI providers and external services (optional, can be configured via environment variables)
 
 ### Installation (Local Development)
 
-1. **Sync git submodules**: This project uses git submodules that need to be initialized and updated before installation:
-
-   ```bash
-   git submodule update --init --recursive
-   ```
-
-2. **Install dependencies**: This project uses Bun as the package manager in a monorepo structure:
+1. **Install dependencies**: This project uses Bun as the package manager in a monorepo structure:
 
    ```bash
    bun install
    ```
 
-3. **Build the application**:
+2. **Build the application**:
 
    ```bash
    bun run build
    ```
 
-4. **Run the application**: Use Bun to start the application:
+3. **Run the application**: Use Bun to start the application:
 
    ```bash
-   bun run writer --source ./path-to-your-content
+   bun run writer
    ```
 
 ### Quick Start (NPM)
@@ -68,34 +61,19 @@ TokenRing Writer includes specialized AI agents for different content creation w
 Run directly using npx without installation:
 
 ```bash
-npx @tokenring-ai/writer --source ./path-to-your-content
-```
-
-### Quick Start (Docker)
-
-Pull and run from GitHub Container Registry:
-
-```bash
-docker pull ghcr.io/tokenring-ai/writer:latest
-docker run -ti --net host $(env | grep '_KEY' | sed 's/^/-e /') -v ./path-to-your-content:/repo:rw ghcr.io/tokenring-ai/writer:latest
+npx @tokenring-ai/writer
 ```
 
 ### Installation (As Local Docker Container)
 
-1. **Sync git submodules**: This project uses git submodules that need to be initialized and updated before installation:
-
-   ```bash
-   git submodule update --init --recursive
-   ```
-
-2. **Build the docker container**:
+1. **Build the docker container**:
 
    ```bash
    # This command must be run in the root directory of the repo
    docker build -t tokenring-ai/writer:latest -f docker/Dockerfile .
    ```
 
-3. **Run the docker container**:
+2. **Run the docker container**:
 
    ```bash
    docker run -ti --net host $(env | grep '_KEY' | sed 's/^/-e /') -v ./:/repo:rw tokenring-ai/writer:latest
@@ -112,19 +90,6 @@ The Docker image is automatically built and published to GitHub Container Regist
 ```bash
 docker pull ghcr.io/tokenring-ai/writer:latest
 ```
-
-## Initialization
-
-To initialize your content directory with the necessary TokenRing configuration file, run:
-
-```bash
-tr-writer --source ./path-to-your-content --initialize
-```
-
-This creates a `.tokenring` directory in your project, which stores:
-- `writer-config.mjs`: Configuration file for your project
-- `writer-database.sqlite`: SQLite database storing your content history
-- `.gitignore`: File ignoring database files
 
 ## Configuration
 
@@ -272,9 +237,6 @@ tr-writer --http 127.0.0.1:3000 --httpBearer user:token
 
 # Run in headless mode
 tr-writer --ui none
-
-# Run with custom source directory
-tr-writer --source ./content
 ```
 
 ## HTTP Server

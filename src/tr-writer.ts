@@ -146,7 +146,9 @@ async function runApp({workingDirectory, dataDirectory, ui, http, httpPassword, 
           auth,
         } satisfies z.input<typeof WebHostConfigSchema>
       }),
-      agents,
+      agents: {
+        app: agents
+      },
       tasks: {}
     };
 
