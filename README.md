@@ -326,7 +326,7 @@ The application is built on the TokenRing framework and consists of several comp
 - **Agents**: Specialized AI agents for different content creation tasks (writer, managing editor).
   - `src/agents/interactive/writer.ts`: Content writer agent
   - `src/agents/interactive/manager.ts`: Managing editor agent
-- **Plugins**: 41 integrated plugins providing services for AI, chat, filesystem, research, publishing, and more.
+- **Plugins**: 42 integrated plugins providing services for AI, chat, filesystem, research, publishing, and more.
 - **Services**: Core services for file system, web search, models, database management, and scheduling.
 - **Configuration**: Flexible configuration system supporting multiple models and services.
 - **HTTP Server**: Optional web server for remote interaction.
@@ -335,18 +335,71 @@ The application is built on the TokenRing framework and consists of several comp
 
 ### Plugin Ecosystem
 
-The application integrates the following plugin packages:
+The application integrates 42 plugins providing comprehensive functionality:
 
-- **Core**: @agent, @ai-client, @app, @utility
-- **Chat**: @chat, @chat-frontend
-- **Content**: @blog, @wordpress, @ghost-io, @reddit
-- **Data**: @checkpoint, @drizzle-storage, @vault, @memory
-- **Filesystem**: @filesystem, @local-filesystem, @browser-file-system, @s3
-- **Research**: @research, @websearch, @wikipedia, @serper, @kalshi, @polymarket
-- **Infrastructure**: @web-host, @cli, @cli-ink, @scheduler, @rpc
-- **Integration**: @mcp, @scripting, @tasks, @workflow
-- **Audio/Video**: @audio, @linux-audio, @chrome
-- **Utility**: @feedback, @queue, @cdn, @cloudquote, @scraperapi, @thinking
+- **AI & Agent**:
+  - `@tokenring-ai/agent`: Agent orchestration and management
+  - `@tokenring-ai/ai-client`: Multi-provider AI integration
+
+- **Chat & Interface**:
+  - `@tokenring-ai/chat`: Chat service and agent interaction
+  - `@tokenring-ai/chat-frontend`: Frontend interface components
+  - `@tokenring-ai/cli`: Command-line interface and UI framework
+  - `@tokenring-ai/rpc`: Remote procedure call support
+
+- **Content & Publishing**:
+  - `@tokenring-ai/blog`: Blog content management
+  - `@tokenring-ai/wordpress`: WordPress integration
+  - `@tokenring-ai/ghost-io`: Ghost.io publishing
+  - `@tokenring-ai/reddit`: Reddit integration
+
+- **Data & Storage**:
+  - `@tokenring-ai/checkpoint`: State persistence and recovery
+  - `@tokenring-ai/drizzle-storage`: Database storage layer
+  - `@tokenring-ai/vault`: Secure data vault
+  - `@tokenring-ai/memory`: Memory and context management
+  - `@tokenring-ai/queue`: Task queue management
+
+- **Filesystem & Terminal**:
+  - `@tokenring-ai/filesystem`: File system abstraction
+  - `@tokenring-ai/s3`: Amazon S3 integration
+  - `@tokenring-ai/terminal`: Terminal operations
+  - `@tokenring-ai/posix-system`: POSIX system operations
+
+- **Research & Web**:
+  - `@tokenring-ai/research`: Research tools and workflows
+  - `@tokenring-ai/websearch`: Web search capabilities
+  - `@tokenring-ai/wikipedia`: Wikipedia integration
+  - `@tokenring-ai/serper`: Serper API integration
+  - `@tokenring-ai/scraperapi`: Web scraping tools
+
+- **Market Data**:
+  - `@tokenring-ai/kalshi`: Kalshi prediction market integration
+  - `@tokenring-ai/polymarket`: Polymarket integration
+  - `@tokenring-ai/cloudquote`: Cloud quote services
+
+- **Infrastructure**:
+  - `@tokenring-ai/web-host`: Web server and hosting
+  - `@tokenring-ai/scheduler`: Task scheduling and automation
+  - `@tokenring-ai/escalation`: Communication escalation
+  - `@tokenring-ai/template`: Template management
+
+- **Integration & Automation**:
+  - `@tokenring-ai/mcp`: Model Context Protocol support
+  - `@tokenring-ai/scripting`: Scripting capabilities
+  - `@tokenring-ai/tasks`: Task management
+  - `@tokenring-ai/workflow`: Workflow automation
+
+- **Audio & Media**:
+  - `@tokenring-ai/audio`: Audio recording and processing
+  - `@tokenring-ai/linux-audio`: Linux audio support
+  - `@tokenring-ai/chrome`: Chrome browser integration
+
+- **Utility & Communication**:
+  - `@tokenring-ai/feedback`: User feedback system
+  - `@tokenring-ai/cdn`: CDN management
+  - `@tokenring-ai/telegram`: Telegram integration
+  - `@tokenring-ai/thinking`: AI thinking and reasoning
 
 ## Data Persistence
 

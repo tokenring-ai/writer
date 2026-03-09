@@ -6,12 +6,14 @@ import {AudioServiceConfigSchema} from "@tokenring-ai/audio";
 import {ChatServiceConfigSchema} from "@tokenring-ai/chat/schema";
 import {CheckpointConfigSchema} from "@tokenring-ai/checkpoint";
 import {CLIConfigSchema} from "@tokenring-ai/cli";
+import type {DrizzleStorageConfigSchema} from "@tokenring-ai/drizzle-storage/schema";
 import {FileSystemConfigSchema} from "@tokenring-ai/filesystem/schema";
 import {TerminalConfigSchema} from "@tokenring-ai/terminal/schema";
 import formatLogMessages from "@tokenring-ai/utility/string/formatLogMessage";
 import {WebHostConfigSchema} from "@tokenring-ai/web-host/schema";
 import chalk from "chalk";
 import {Command} from "commander";
+import {hostname} from "os";
 import path from "path";
 import {z} from "zod";
 import packageInfo from '../package.json' with {type: 'json'};
@@ -77,7 +79,21 @@ async function runApp({workingDirectory, dataDirectory, ui, http, httpPassword, 
       process.exit(1);
     }
 
+    // TODO: Figure out a more elegant way to bundle SPA apps into a Single Executable
+    let packageDirectory = path.resolve(import.meta.dirname, "../");
+    if (packageDirectory.startsWith("/$bunfs")) {
+      packageDirectory = path.resolve(process.execPath, "../");
+    }
+
     const defaultConfig = {
+      app: {
+        configSchema,
+        configFileName: 'coder-config',
+        hostname: hostname(),
+        packageDirectory,
+        workingDirectory,
+        dataDirectory,
+      },
       chat: {
         defaultModels: [
           'llamacpp:*',
@@ -113,12 +129,10 @@ async function runApp({workingDirectory, dataDirectory, ui, http, httpPassword, 
           }
         }
       } satisfies z.input<typeof TerminalConfigSchema>,
-      checkpoint: {
-        provider: {
-          type: "sqlite",
-          databasePath: path.resolve(dataDirectory, "./writer-database.sqlite"),
-        }
-      } satisfies z.input<typeof CheckpointConfigSchema>,
+      drizzleStorage: {
+        type: "sqlite",
+        databasePath: path.resolve(dataDirectory, "./writer-database.sqlite"),
+      } satisfies z.input<typeof DrizzleStorageConfigSchema>,
       audio: {
         agentDefaults: {
           provider: "linux",
@@ -150,23 +164,11 @@ async function runApp({workingDirectory, dataDirectory, ui, http, httpPassword, 
         app: agents
       },
       tasks: {}
-    };
+    } satisfies z.input<typeof configSchema>;
 
-    // TODO: Figure out a more elegant way to bundle SPA apps into a Single Executable
-    let packageDirectory = path.resolve(import.meta.dirname, "../");
-    if (packageDirectory.startsWith("/$bunfs")) {
-      packageDirectory = path.resolve(process.execPath, "../");
-    }
+    const appConfig = await buildTokenRingAppConfig<typeof configSchema>(defaultConfig);
 
-    const appConfig = await buildTokenRingAppConfig({
-      workingDirectory: workingDirectory,
-      dataDirectory: dataDirectory,
-      configSchema,
-      configFileName: 'writer-config',
-      defaultConfig
-    });
-
-    const app = new TokenRingApp(packageDirectory, appConfig);
+    const app = new TokenRingApp(appConfig);
 
     const pluginManager = new PluginManager(app);
 

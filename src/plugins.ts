@@ -1,5 +1,6 @@
 import AgentPlugin from "@tokenring-ai/agent/plugin";
 import AIClientPlugin from "@tokenring-ai/ai-client/plugin";
+import {TokenRingAppConfigSchema} from "@tokenring-ai/app/TokenRingApp";
 import AudioPlugin from "@tokenring-ai/audio/plugin";
 import BlogPlugin from "@tokenring-ai/blog/plugin";
 import CDNPlugin from "@tokenring-ai/cdn/plugin";
@@ -89,6 +90,7 @@ export const plugins = [
 
 
 export const configSchema = z.object({
+  ...TokenRingAppConfigSchema.shape,
   ...AgentPlugin.config.shape,
   ...AudioPlugin.config.shape,
   ...AIClientPlugin.config.shape,
