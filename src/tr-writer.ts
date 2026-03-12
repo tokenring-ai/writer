@@ -133,6 +133,14 @@ async function runApp({workingDirectory, dataDirectory, ui, http, httpPassword, 
         type: "sqlite",
         databasePath: path.resolve(dataDirectory, "./writer-database.sqlite"),
       } satisfies z.input<typeof DrizzleStorageConfigSchema>,
+      lifecycle: {
+        agentDefaults: {
+          enabledHooks: [
+            "autoCheckpoint",
+            "clearReadFiles"
+          ],
+        }
+      },
       audio: {
         agentDefaults: {
           provider: "linux",

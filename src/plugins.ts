@@ -3,6 +3,7 @@ import AIClientPlugin from "@tokenring-ai/ai-client/plugin";
 import {TokenRingAppConfigSchema} from "@tokenring-ai/app/TokenRingApp";
 import AudioPlugin from "@tokenring-ai/audio/plugin";
 import BlogPlugin from "@tokenring-ai/blog/plugin";
+import CalendarPlugin from "@tokenring-ai/calendar/plugin";
 import CDNPlugin from "@tokenring-ai/cdn/plugin";
 import ChatFrontendPlugin from "@tokenring-ai/chat-frontend/plugin";
 import ChatPlugin from "@tokenring-ai/chat/plugin";
@@ -11,15 +12,19 @@ import ChromePlugin from "@tokenring-ai/chrome/plugin";
 import CLIPlugin from "@tokenring-ai/cli/plugin";
 import CloudQuotePlugin from "@tokenring-ai/cloudquote/plugin";
 import DrizzleStoragePlugin from "@tokenring-ai/drizzle-storage/plugin";
+import EmailPlugin from "@tokenring-ai/email/plugin";
 import EscalationPlugin from "@tokenring-ai/escalation/plugin";
 import FeedbackPlugin from "@tokenring-ai/feedback/plugin";
 import FilesystemPlugin from "@tokenring-ai/filesystem/plugin";
+import GooglePlugin from "@tokenring-ai/google/plugin";
 import GhostIOPlugin from "@tokenring-ai/ghost-io/plugin";
 import KalshiPlugin from "@tokenring-ai/kalshi/plugin";
+import LifecyclePlugin from "@tokenring-ai/lifecycle/plugin";
 import LinuxAudioPlugin from "@tokenring-ai/linux-audio/plugin";
 import PosixSystemPlugin from "@tokenring-ai/posix-system/plugin";
 import MCPPlugin from "@tokenring-ai/mcp/plugin";
 import MemoryPlugin from "@tokenring-ai/memory/plugin";
+import MetricsPlugin from "@tokenring-ai/metrics/plugin";
 import PolymarketPlugin from "@tokenring-ai/polymarket/plugin";
 import QueuePlugin from "@tokenring-ai/queue/plugin";
 import RedditPlugin from "@tokenring-ai/reddit/plugin";
@@ -30,6 +35,7 @@ import SchedulerPlugin from "@tokenring-ai/scheduler/plugin";
 import ScraperAPIPlugin from "@tokenring-ai/scraperapi/plugin";
 import ScriptingPlugin from "@tokenring-ai/scripting/plugin";
 import SerperPlugin from "@tokenring-ai/serper/plugin";
+import SkillsPlugin from "@tokenring-ai/skills/plugin";
 import TasksPlugin from "@tokenring-ai/tasks/plugin";
 import TelegramPlugin from "@tokenring-ai/telegram/plugin";
 import TemplatePlugin from "@tokenring-ai/template/plugin";
@@ -48,6 +54,7 @@ export const plugins = [
   AIClientPlugin,
   AudioPlugin,
   BlogPlugin,
+  CalendarPlugin,
   CDNPlugin,
   ChatFrontendPlugin,
   ChatPlugin,
@@ -56,15 +63,19 @@ export const plugins = [
   ChromePlugin,
   CloudQuotePlugin,
   DrizzleStoragePlugin,
+  EmailPlugin,
   EscalationPlugin,
   FeedbackPlugin,
   FilesystemPlugin,
   GhostIOPlugin,
+  GooglePlugin,
   KalshiPlugin,
+  LifecyclePlugin,
   LinuxAudioPlugin,
   PosixSystemPlugin,
   MCPPlugin,
   MemoryPlugin,
+  MetricsPlugin,
   PolymarketPlugin,
   QueuePlugin,
   RedditPlugin,
@@ -75,6 +86,7 @@ export const plugins = [
   ScraperAPIPlugin,
   ScriptingPlugin,
   SerperPlugin,
+  SkillsPlugin,
   TasksPlugin,
   TelegramPlugin,
   TemplatePlugin,
@@ -95,6 +107,7 @@ export const configSchema = z.object({
   ...AudioPlugin.config.shape,
   ...AIClientPlugin.config.shape,
   ...BlogPlugin.config.shape,
+  ...CalendarPlugin.config.shape,
   ...CDNPlugin.config.shape,
   ...ChatFrontendPlugin.config.shape,
   ...ChatPlugin.config.shape,
@@ -104,12 +117,16 @@ export const configSchema = z.object({
   ...CloudQuotePlugin.config.shape,
   ...DrizzleStoragePlugin.config.shape,
   ...EscalationPlugin.config.shape,
+  ...EmailPlugin.config.shape,
   ...FeedbackPlugin.config.shape,
   ...FilesystemPlugin.config.shape,
   ...GhostIOPlugin.config.shape,
+  ...GooglePlugin.config.shape,
   ...KalshiPlugin.config.shape,
+  ...LifecyclePlugin.config.shape,
   ...LinuxAudioPlugin.config.shape,
   ...PosixSystemPlugin.config.shape,
+  ...MetricsPlugin.config.shape,
   ...PolymarketPlugin.config.shape,
   ...MCPPlugin.config.shape,
   ...MemoryPlugin.config.shape,
@@ -122,6 +139,7 @@ export const configSchema = z.object({
   ...ScraperAPIPlugin.config.shape,
   ...ScriptingPlugin.config.shape,
   ...SerperPlugin.config.shape,
+  ...SkillsPlugin.config.shape,
   ...TasksPlugin.config.shape,
   ...TelegramPlugin.config.shape,
   ...TemplatePlugin.config.shape,
