@@ -34,7 +34,7 @@ TokenRing Writer includes specialized AI agents for different content creation w
 ### Prerequisites
 
 - Bun (for local development)
-- API keys for AI providers and external services (optional, can be configured via environment variables)
+- At least one AI provider API key (see [Environment Variables](#environment-variables))
 
 ### Installation (Local Development)
 
@@ -58,37 +58,40 @@ TokenRing Writer includes specialized AI agents for different content creation w
 
 ### Quick Start (NPM)
 
-Run directly using npx without installation:
+The package is published to npm with the `next` tag on every version release:
 
 ```bash
-npx @tokenring-ai/writer
+npx @tokenring-ai/writer@next
+
+# Run against a specific directory
+npx @tokenring-ai/writer@next --workingDirectory ./your-content
 ```
 
 ### Installation (As Local Docker Container)
 
-1. **Build the docker container**:
-
-   ```bash
-   # This command must be run in the root directory of the repo
-   docker build -t tokenring-ai/writer:latest -f docker/Dockerfile .
-   ```
-
-2. **Run the docker container**:
-
-   ```bash
-   docker run -ti --net host $(env | grep '_KEY' | sed 's/^/-e /') -v ./:/repo:rw tokenring-ai/writer:latest
-   ```
-
-#### Container Registry
-
-The Docker image is automatically built and published to GitHub Container Registry on version tags. Available tags:
-
-- `latest`: Latest stable release
-- `v*.*.*`: Specific version tags
-- `main`: Latest build from main branch
+The Docker image is automatically built and published to GitHub Container Registry:
 
 ```bash
 docker pull ghcr.io/tokenring-ai/writer:latest
+
+docker run -ti --rm \
+  -v ./your-content:/repo:rw \
+  -e OPENAI_API_KEY \
+  ghcr.io/tokenring-ai/writer:latest
+
+# With web interface
+docker run -ti --rm \
+  -p 3000:3000 \
+  -v ./your-content:/repo:rw \
+  -e OPENAI_API_KEY \
+  ghcr.io/tokenring-ai/writer:latest \
+  --http 0.0.0.0:3000
+```
+
+Or build locally from the repo root:
+
+```bash
+docker build -t tokenring-ai/writer:latest -f app/writer/docker/Dockerfile .
 ```
 
 ## Configuration
@@ -183,19 +186,19 @@ export default {
 
 ### Default AI Models
 
-The application comes with a default configuration of AI models that are tried in order:
+The application tries models in this order, using the first available:
 
 ```javascript
 defaultModels: [
   'llamacpp:*',                    // Local LlamaCpp models
-  'openrouter:openrouter/auto',    // OpenRouter models
-  'openai:gpt-5-mini',             // OpenAI models
-  'anthropic:claude-4.5-haiku',    // Anthropic models
-  'google:gemini-3-flash-preview', // Google models
-  'xai:grok-code-fast-1',          // xAI models
-  'deepseek:deepseek-chat',        // DeepSeek models
-  'qwen:qwen3-coder-flash',        // Qwen models
-  '*'                               // Fallback to any available model
+  'openrouter:openrouter/auto',    // OpenRouter auto-routing
+  'openai:gpt-5-mini',             // OpenAI
+  'anthropic:claude-4.5-haiku',    // Anthropic
+  'google:gemini-3-flash-preview', // Google
+  'xai:grok-code-fast-1',          // xAI
+  'deepseek:deepseek-chat',        // DeepSeek
+  'qwen:qwen3-coder-flash',        // Qwen
+  '*'                              // Fallback to any available model
 ]
 ```
 
@@ -207,35 +210,36 @@ tr-writer [options]
 
 ### Options
 
-- `--ui <opentui|ink|none>`: Select the UI to use for the application (default: opentui)
-- `--workingDirectory <path>`: Path to the working directory to work in (default: cwd)
-- `--dataDirectory <path>`: Path to the data directory to use to store data (knowledge, session database, etc.) (default: <workingDirectory>/.tokenring)
-- `--http [host:port]`: Starts an HTTP server for interacting with the application, by default listening on 127.0.0.1 and a random port, unless host and port are specified
-- `--httpPassword <user:password>`: Username and password for authentication with the webui (default: No auth required)
-- `--httpBearer <user:bearer>`: Username and bearer token for authentication with the webui (default: No auth required)
+- `--ui <opentui|ink|none>`: Select the UI to use (default: `opentui`)
+- `--workingDirectory <path>`: Working directory (default: cwd)
+- `--dataDirectory <path>`: Data directory for session database, knowledge, etc. (default: `<workingDirectory>/.tokenring`)
+- `--acp`: Start in ACP mode over stdin/stdout
+- `--http [host:port]`: Start an HTTP server (default host: `127.0.0.1`, random port)
+- `--httpPassword <user:password>`: Basic auth for the web UI
+- `--httpBearer <user:bearer>`: Bearer token auth for the web UI
 
 ### Examples
 
 ```bash
-# Run with default settings
+# Interactive mode (default)
 tr-writer
 
-# Run with custom directories
-tr-writer --workingDirectory ./my-app --dataDirectory ./my-data
+# Run against a specific directory
+tr-writer --workingDirectory ./my-content
 
-# Run with specific UI
-tr-writer --ui ink
-
-# Run with HTTP server
+# Start HTTP server with web UI
 tr-writer --http 127.0.0.1:3000
 
-# Run with basic authentication
+# With basic authentication
 tr-writer --http 127.0.0.1:3000 --httpPassword user:password
 
-# Run with Bearer token authentication
+# With Bearer token authentication
 tr-writer --http 127.0.0.1:3000 --httpBearer user:token
 
-# Run in headless mode
+# ACP mode (stdin/stdout)
+tr-writer --acp --workingDirectory ./my-content
+
+# Headless mode
 tr-writer --ui none
 ```
 
@@ -407,17 +411,22 @@ Content data and sessions are stored in a SQLite database (`writer-database.sqli
 
 ## Environment Variables
 
-The application requires various API keys for external services. Common environment variables include:
+At least one AI provider key is required:
 
-- `ANTHROPIC_API_KEY`: Anthropic API key
-- `CEREBRAS_API_KEY`: Cerebras API key
-- `DEEPSEEK_API_KEY`: DeepSeek API key
-- `GOOGLE_GENERATIVE_AI_API_KEY`: Google Gemini API key
-- `GROQ_API_KEY`: Groq API key
-- `OPENAI_API_KEY`: OpenAI API key
-- `PERPLEXITY_API_KEY`: Perplexity API key
-- `XAI_API_KEY`: xAI API key
-- `SERPER_API_KEY`: Serper API key
+```bash
+export OPENAI_API_KEY=sk-...              # OpenAI
+export ANTHROPIC_API_KEY=sk-ant-...      # Anthropic
+export GOOGLE_GENERATIVE_AI_API_KEY=...  # Google Gemini
+export GROQ_API_KEY=gsk_...              # Groq
+export CEREBRAS_API_KEY=...              # Cerebras
+export DEEPSEEK_API_KEY=...              # DeepSeek
+export PERPLEXITY_API_KEY=...            # Perplexity
+export XAI_API_KEY=...                   # xAI
+export OPENROUTER_API_KEY=...            # OpenRouter
+
+# Optional: web search
+export SERPER_API_KEY=...
+```
 
 ## Extensibility
 

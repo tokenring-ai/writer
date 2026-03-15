@@ -92,7 +92,7 @@ async function runApp({workingDirectory, dataDirectory, acp, ui, http, httpPassw
     const defaultConfig = {
       app: {
         configSchema,
-        configFileName: 'coder-config',
+        configFileName: 'writer-config',
         hostname: hostname(),
         packageDirectory,
         workingDirectory,
