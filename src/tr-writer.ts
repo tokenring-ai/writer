@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import {ACPConfigSchema} from "@tokenring-ai/acp";
 import TokenRingApp, {PluginManager} from "@tokenring-ai/app";
 import buildTokenRingAppConfig from "@tokenring-ai/app/buildTokenRingAppConfig";
 import {AudioServiceConfigSchema} from "@tokenring-ai/audio";
@@ -27,6 +28,7 @@ import {configSchema, plugins} from "./plugins.ts";
 interface CommandOptions {
   workingDirectory: string;
   dataDirectory: string;
+  acp: boolean;
   http?: string;
   httpPassword?: string;
   httpBearer?: string;
@@ -43,6 +45,7 @@ program
   .option("--ui <opentui|ink|none>", "Select the UI to use for the application", "opentui")
   .option("--workingDirectory <path>", "Path to the working directory to work in (default: cwd)", ".")
   .option("--dataDirectory <path>", "Path to the data directory to use to store data (knowledge, session database, etc.) (default: <workingDirectory>/.tokenring)", "")
+  .option("--acp", "Start the app in ACP mode over stdin/stdout")
   .option("--http [host:port]", "Starts an HTTP server for interacting with the application, by default listening on 127.0.0.1 and a random port, unless host and port are specified")
   .option("--httpPassword <user:password>", "Username and password for authentication with the webui (default: No auth required)")
   .option("--httpBearer <user:bearer>", "Username and bearer token for authentication with the webui (default: No auth required)")
@@ -52,12 +55,13 @@ program
 Examples:
   tr-writer
   tr-writer --workingDirectory ./my-app --dataDirectory ./my-data
+  tr-writer --acp --workingDirectory ./my-app
 `,
   )
   .action(runApp)
   .parse();
 
-async function runApp({workingDirectory, dataDirectory, ui, http, httpPassword, httpBearer}: CommandOptions): Promise<void> {
+async function runApp({workingDirectory, dataDirectory, acp, ui, http, httpPassword, httpBearer}: CommandOptions): Promise<void> {
   try {
     workingDirectory = path.resolve(workingDirectory);
     dataDirectory = path.resolve(dataDirectory || path.join(workingDirectory, "/.tokenring"));
@@ -110,22 +114,22 @@ async function runApp({workingDirectory, dataDirectory, ui, http, httpPassword, 
       filesystem: {
         agentDefaults: {
           provider: "local",
+          workingDirectory,
         },
         providers: {
           local: {
             type: "posix",
-            workingDirectory,
           }
         }
       } satisfies z.input<typeof FileSystemConfigSchema>,
       terminal: {
         agentDefaults: {
           provider: "local",
+          workingDirectory,
         },
         providers: {
           local: {
             type: "posix",
-            workingDirectory,
           }
         }
       } satisfies z.input<typeof TerminalConfigSchema>,
@@ -151,7 +155,13 @@ async function runApp({workingDirectory, dataDirectory, ui, http, httpPassword, 
           }
         }
       } satisfies z.input<typeof AudioServiceConfigSchema>,
-      ...(ui !== 'none' && {
+      ...(acp && {
+        acp: {
+          transport: "stdio",
+          defaultAgentType: "writer",
+        } satisfies z.input<typeof ACPConfigSchema>
+      }),
+      ...(!acp && ui !== 'none' && {
         cli: {
           chatBanner: `TokenRing Writer ${packageInfo.version}`,
           screenBanner: `TokenRing Writer ${packageInfo.version}`,

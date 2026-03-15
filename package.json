@@ -1,9 +1,10 @@
 {
   "name": "@tokenring-ai/writer",
   "description": "TokenRing Writer Application",
-  "version": "0.2.29",
+  "version": "0.2.30",
   "devDependencies": {
     "@inquirer/prompts": "^8.3.0",
+    "@tokenring-ai/acp": "workspace:*",
     "@tokenring-ai/agent": "workspace:*",
     "@tokenring-ai/audio": "workspace:*",
     "@tokenring-ai/ai-client": "workspace:*",
@@ -62,7 +63,7 @@
     "jsdom": "^28.1.0",
     "node-gyp": "^12.2.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.18",
+    "vitest": "^4.1.0",
     "zod": "^4.3.6"
   },
   "repository": {
@@ -78,7 +79,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "bun build --compile --outfile=dist/tr-writer src/tr-writer.ts",
+    "build": "tsc --noEmit",
     "prepack": "bun run build && cp -Lr frontend dist",
     "writer": "bun src/tr-writer.js --source ./",
     "build-container": "docker build -t tr-writer:latest -f docker/Dockerfile .",
@@ -86,5 +87,9 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
   },
-  "type": "module"
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./*": "./*.ts"
+  }
 }
