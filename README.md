@@ -64,7 +64,7 @@ The package is published to npm with the `next` tag on every version release:
 npx @tokenring-ai/writer@next
 
 # Run against a specific directory
-npx @tokenring-ai/writer@next --workingDirectory ./your-content
+npx @tokenring-ai/writer@next --projectDirectory ./your-content
 ```
 
 ### Installation (As Local Docker Container)
@@ -122,7 +122,7 @@ export default {
     providers: {
       local: {
         type: "posix",
-        workingDirectory: "./content",
+        projectDirectory: "./content",
       }
     }
   },
@@ -133,7 +133,7 @@ export default {
     providers: {
       local: {
         type: "posix",
-        workingDirectory: "./content",
+        projectDirectory: "./content",
       }
     }
   },
@@ -211,8 +211,8 @@ tr-writer [options]
 ### Options
 
 - `--ui <opentui|ink|none>`: Select the UI to use (default: `opentui`)
-- `--workingDirectory <path>`: Working directory (default: cwd)
-- `--dataDirectory <path>`: Data directory for session database, knowledge, etc. (default: `<workingDirectory>/.tokenring`)
+- `--projectDirectory <path>`: Working directory (default: cwd)
+- `--dataDirectory <path>`: Data directory for session database, knowledge, etc. (default: `<projectDirectory>/.tokenring`)
 - `--acp`: Start in ACP mode over stdin/stdout
 - `--http [host:port]`: Start an HTTP server (default host: `127.0.0.1`, random port)
 - `--httpPassword <user:password>`: Basic auth for the web UI
@@ -225,7 +225,7 @@ tr-writer [options]
 tr-writer
 
 # Run against a specific directory
-tr-writer --workingDirectory ./my-content
+tr-writer --projectDirectory ./my-content
 
 # Start HTTP server with web UI
 tr-writer --http 127.0.0.1:3000
@@ -237,7 +237,7 @@ tr-writer --http 127.0.0.1:3000 --httpPassword user:password
 tr-writer --http 127.0.0.1:3000 --httpBearer user:token
 
 # ACP mode (stdin/stdout)
-tr-writer --acp --workingDirectory ./my-content
+tr-writer --acp --projectDirectory ./my-content
 
 # Headless mode
 tr-writer --ui none

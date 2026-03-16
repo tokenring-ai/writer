@@ -5,7 +5,6 @@ import TokenRingApp, {PluginManager} from "@tokenring-ai/app";
 import buildTokenRingAppConfig from "@tokenring-ai/app/buildTokenRingAppConfig";
 import {AudioServiceConfigSchema} from "@tokenring-ai/audio";
 import {ChatServiceConfigSchema} from "@tokenring-ai/chat/schema";
-import {CheckpointConfigSchema} from "@tokenring-ai/checkpoint";
 import {CLIConfigSchema} from "@tokenring-ai/cli";
 import type {DrizzleStorageConfigSchema} from "@tokenring-ai/drizzle-storage/schema";
 import {FileSystemConfigSchema} from "@tokenring-ai/filesystem/schema";
@@ -14,25 +13,29 @@ import formatLogMessages from "@tokenring-ai/utility/string/formatLogMessage";
 import {WebHostConfigSchema} from "@tokenring-ai/web-host/schema";
 import chalk from "chalk";
 import {Command} from "commander";
-import {hostname} from "os";
+import fs from "fs";
+import os, {hostname} from "os";
 import path from "path";
 import {z} from "zod";
 import packageInfo from '../package.json' with {type: 'json'};
 import agents from "./agents/index.ts";
+import bannerCompact from "./banner.compact.txt" with {type: "text"};
 import bannerNarrow from "./banner.narrow.txt" with {type: "text"};
 import bannerWide from "./banner.wide.txt" with {type: "text"};
-import bannerCompact from "./banner.compact.txt" with {type: "text"};
 import {configSchema, plugins} from "./plugins.ts";
 
 // Interface definitions
 interface CommandOptions {
-  workingDirectory: string;
+  projectDirectory: string;
   dataDirectory: string;
   acp: boolean;
   http?: string;
   httpPassword?: string;
   httpBearer?: string;
   ui: "opentui" | "ink" | "none";
+  agent: string;
+  p: boolean;
+  args: string[];
 }
 
 // Create a new Commander program
@@ -43,37 +46,51 @@ program
   .description("TokenRing Writer - AI-powered writing assistant")
   .version(packageInfo.version)
   .option("--ui <opentui|ink|none>", "Select the UI to use for the application", "opentui")
-  .option("--workingDirectory <path>", "Path to the working directory to work in (default: cwd)", ".")
-  .option("--dataDirectory <path>", "Path to the data directory to use to store data (knowledge, session database, etc.) (default: <workingDirectory>/.tokenring)", "")
+  .option("--projectDirectory <path>", "Path to the working directory to work in (default: cwd)", ".")
+  .option("--dataDirectory <path>", "Path to the data directory to use to store data (knowledge, session database, etc.) (default: <projectDirectory>/.tokenring)", "")
   .option("--acp", "Start the app in ACP mode over stdin/stdout")
   .option("--http [host:port]", "Starts an HTTP server for interacting with the application, by default listening on 127.0.0.1 and a random port, unless host and port are specified")
   .option("--httpPassword <user:password>", "Username and password for authentication with the webui (default: No auth required)")
   .option("--httpBearer <user:bearer>", "Username and bearer token for authentication with the webui (default: No auth required)")
+  .option("--agent <type>", "Agent type to start with", "editor")
+  .option("-p", "Enable shutdown when done")
+  .allowExcessArguments(true)
   .addHelpText(
     "after",
     `
 Examples:
   tr-writer
-  tr-writer --workingDirectory ./my-app --dataDirectory ./my-data
-  tr-writer --acp --workingDirectory ./my-app
+  tr-writer --projectDirectory ./my-app --dataDirectory ./my-data
+  tr-writer --acp --projectDirectory ./my-app
+  tr-writer --agent editor "Write a news article about Nvidia Stock"
+  tr-writer -p "Write a blog post covering the difference between there, their, and they're"
 `,
   )
   .action(runApp)
   .parse();
 
-async function runApp({workingDirectory, dataDirectory, acp, ui, http, httpPassword, httpBearer}: CommandOptions): Promise<void> {
+async function runApp({projectDirectory, dataDirectory, acp, ui, http, httpPassword, httpBearer, agent, p}: CommandOptions): Promise<void> {
+  const args = program.args;
   try {
-    workingDirectory = path.resolve(workingDirectory);
-    dataDirectory = path.resolve(dataDirectory || path.join(workingDirectory, "/.tokenring"));
+    if (acp && args.length > 0) {
+      throw new Error("ACP mode does not support positional startup prompts");
+    }
+
+    projectDirectory = path.resolve(projectDirectory);
+    dataDirectory = path.resolve(dataDirectory || path.join(projectDirectory, "/.tokenring"));
+    const configDirectory = path.resolve(os.homedir(), "/.tokenring");
+    if (!fs.existsSync(configDirectory)) {
+      fs.mkdirSync(configDirectory, {recursive: true});
+    }
 
     let auth: z.infer<typeof WebHostConfigSchema>["auth"] = undefined;
     if (httpPassword) {
       const [username, password] = httpPassword.split(":");
-      ((auth ??= { users: {}}).users[username] ??= {}).password = password;
+      ((auth ??= {users: {}}).users[username] ??= {}).password = password;
     }
     if (httpBearer) {
       const [username, bearerToken] = httpBearer.split(":");
-      ((auth ??= { users: {}}).users[username] ??= {}).bearerToken = bearerToken;
+      ((auth ??= {users: {}}).users[username] ??= {}).bearerToken = bearerToken;
     }
 
     const [listenHost, listenPortStr] = http?.split?.(":") ?? ['127.0.0.1', ''];
@@ -93,14 +110,20 @@ async function runApp({workingDirectory, dataDirectory, acp, ui, http, httpPassw
       app: {
         configSchema,
         configFileName: 'writer-config',
-        hostname: hostname(),
-        packageDirectory,
-        workingDirectory,
         dataDirectory,
+      },
+      checkpoint: {
+        app: {
+          projectDirectory,
+        },
+      },
+      chatFrontend: {
+        spaDirectory: path.resolve(packageDirectory,"frontend/chat")
       },
       chat: {
         defaultModels: [
           'llamacpp:*',
+          'zai:glm-5',
           'openrouter:openrouter/auto',
           'openai:gpt-5-mini',
           'anthropic:claude-4.5-haiku',
@@ -114,7 +137,7 @@ async function runApp({workingDirectory, dataDirectory, acp, ui, http, httpPassw
       filesystem: {
         agentDefaults: {
           provider: "local",
-          workingDirectory,
+          workingDirectory: projectDirectory,
         },
         providers: {
           local: {
@@ -125,7 +148,7 @@ async function runApp({workingDirectory, dataDirectory, acp, ui, http, httpPassw
       terminal: {
         agentDefaults: {
           provider: "local",
-          workingDirectory,
+          workingDirectory: projectDirectory,
         },
         providers: {
           local: {
@@ -135,7 +158,7 @@ async function runApp({workingDirectory, dataDirectory, acp, ui, http, httpPassw
       } satisfies z.input<typeof TerminalConfigSchema>,
       drizzleStorage: {
         type: "sqlite",
-        databasePath: path.resolve(dataDirectory, "./writer-database.sqlite"),
+        databasePath: path.resolve(configDirectory, "./coder-database.sqlite"),
       } satisfies z.input<typeof DrizzleStorageConfigSchema>,
       lifecycle: {
         agentDefaults: {
@@ -158,7 +181,7 @@ async function runApp({workingDirectory, dataDirectory, acp, ui, http, httpPassw
       ...(acp && {
         acp: {
           transport: "stdio",
-          defaultAgentType: "writer",
+          defaultAgentType: agent,
         } satisfies z.input<typeof ACPConfigSchema>
       }),
       ...(!acp && ui !== 'none' && {
@@ -169,6 +192,13 @@ async function runApp({workingDirectory, dataDirectory, acp, ui, http, httpPassw
           loadingBannerNarrow: bannerNarrow,
           loadingBannerCompact: bannerCompact,
           uiFramework: ui,
+          ...(args.length > 0 && {
+            startAgent: {
+              type: agent,
+              prompt: args.join(' '),
+              shutdownWhenDone: p,
+            }
+          }),
         } satisfies z.input<typeof CLIConfigSchema>
       }),
       ...(http && {
@@ -181,7 +211,7 @@ async function runApp({workingDirectory, dataDirectory, acp, ui, http, httpPassw
       agents: {
         app: agents
       },
-      tasks: {}
+      tasks: {},
     } satisfies z.input<typeof configSchema>;
 
     const appConfig = await buildTokenRingAppConfig<typeof configSchema>(defaultConfig);
@@ -192,9 +222,18 @@ async function runApp({workingDirectory, dataDirectory, acp, ui, http, httpPassw
 
     await pluginManager.installPlugins(plugins)
 
-    await app.run();
+    try {
+      await app.run();
+    } catch (err) {
+      app.shutdown();
+      // Exit alternate screen, clear screen, and move cursor to top-left
+      process.stdout.write("\u001B[?1049l\u001B[2J\u001B[H\n\n");
+
+      console.error(chalk.red(formatLogMessages(['Caught Error: ', err as Error])));
+    }
   } catch (err) {
+    // Exit alternate screen, clear screen, and move cursor to top-left
+    process.stdout.write("\u001B[?1049l\u001B[2J\u001B[H\n\n");
     console.error(chalk.red(formatLogMessages(['Caught Error: ', err as Error])));
-    process.exit(1);
   }
 }
