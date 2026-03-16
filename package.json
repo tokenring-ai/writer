@@ -3,7 +3,6 @@
   "description": "TokenRing Writer Application",
   "version": "0.2.31",
   "devDependencies": {
-    "@inquirer/prompts": "^8.3.0",
     "@tokenring-ai/acp": "workspace:*",
     "@tokenring-ai/agent": "workspace:*",
     "@tokenring-ai/audio": "workspace:*",
@@ -60,7 +59,6 @@
     "chalk": "^5.6.2",
     "commander": "^14.0.3",
     "husky": "^9.1.7",
-    "jsdom": "^28.1.0",
     "node-gyp": "^12.2.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.0",
