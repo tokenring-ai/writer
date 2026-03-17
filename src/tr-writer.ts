@@ -3,26 +3,26 @@
 import {ACPConfigSchema} from "@tokenring-ai/acp";
 import TokenRingApp, {PluginManager} from "@tokenring-ai/app";
 import buildTokenRingAppConfig from "@tokenring-ai/app/buildTokenRingAppConfig";
-import {AudioServiceConfigSchema} from "@tokenring-ai/audio";
-import {ChatServiceConfigSchema} from "@tokenring-ai/chat/schema";
-import {CLIConfigSchema} from "@tokenring-ai/cli";
+import type {AudioServiceConfigSchema} from "@tokenring-ai/audio";
+import type {ChatServiceConfigSchema} from "@tokenring-ai/chat/schema";
+import type {CLIConfigSchema} from "@tokenring-ai/cli";
 import type {DrizzleStorageConfigSchema} from "@tokenring-ai/drizzle-storage/schema";
-import {FileSystemConfigSchema} from "@tokenring-ai/filesystem/schema";
-import {TerminalConfigSchema} from "@tokenring-ai/terminal/schema";
+import type {FileSystemConfigSchema} from "@tokenring-ai/filesystem/schema";
+import type {TerminalConfigSchema} from "@tokenring-ai/terminal/schema";
 import formatLogMessages from "@tokenring-ai/utility/string/formatLogMessage";
-import {WebHostConfigSchema} from "@tokenring-ai/web-host/schema";
+import type {WebHostConfigSchema} from "@tokenring-ai/web-host/schema";
 import chalk from "chalk";
 import {Command} from "commander";
 import fs from "fs";
-import os, {hostname} from "os";
 import path from "path";
 import {z} from "zod";
 import packageInfo from '../package.json' with {type: 'json'};
 import agents from "./agents/index.ts";
-import bannerCompact from "./banner.compact.txt" with {type: "text"};
 import bannerNarrow from "./banner.narrow.txt" with {type: "text"};
 import bannerWide from "./banner.wide.txt" with {type: "text"};
+import bannerCompact from "./banner.compact.txt" with {type: "text"};
 import {configSchema, plugins} from "./plugins.ts";
+import os from 'os';
 
 // Interface definitions
 interface CommandOptions {
@@ -78,7 +78,7 @@ async function runApp({projectDirectory, dataDirectory, acp, ui, http, httpPassw
 
     projectDirectory = path.resolve(projectDirectory);
     dataDirectory = path.resolve(dataDirectory || path.join(projectDirectory, "/.tokenring"));
-    const configDirectory = path.resolve(os.homedir(), "/.tokenring");
+    const configDirectory = path.join(os.homedir(),"/.tokenring");
     if (!fs.existsSync(configDirectory)) {
       fs.mkdirSync(configDirectory, {recursive: true});
     }
@@ -218,22 +218,17 @@ async function runApp({projectDirectory, dataDirectory, acp, ui, http, httpPassw
 
     const app = new TokenRingApp(appConfig);
 
-    const pluginManager = new PluginManager(app);
-
-    await pluginManager.installPlugins(plugins)
-
     try {
-      await app.run();
-    } catch (err) {
-      app.shutdown();
-      // Exit alternate screen, clear screen, and move cursor to top-left
-      process.stdout.write("\u001B[?1049l\u001B[2J\u001B[H\n\n");
+      const pluginManager = new PluginManager(app);
 
-      console.error(chalk.red(formatLogMessages(['Caught Error: ', err as Error])));
+      await pluginManager.installPlugins(plugins)
+
+      await app.run();
+    } finally {
+      app.shutdown();
     }
   } catch (err) {
-    // Exit alternate screen, clear screen, and move cursor to top-left
-    process.stdout.write("\u001B[?1049l\u001B[2J\u001B[H\n\n");
+    process.stdout.write("\u001B[2J\u001B[H\n\n");
     console.error(chalk.red(formatLogMessages(['Caught Error: ', err as Error])));
   }
 }
