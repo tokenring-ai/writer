@@ -58,13 +58,13 @@ TokenRing Writer includes specialized AI agents for different content creation w
 
 ### Quick Start (NPM)
 
-The package is published to npm with the `next` tag on every version release:
+The package is published to npm with the `latest` tag on every version release:
 
 ```bash
-npx @tokenring-ai/writer@next
+npx @tokenring-ai/writer
 
 # Run against a specific directory
-npx @tokenring-ai/writer@next --projectDirectory ./your-content
+npx @tokenring-ai/writer --projectDirectory ./your-content
 ```
 
 ### Installation (As Local Docker Container)
