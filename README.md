@@ -11,23 +11,41 @@ TokenRing Writer (tr-writer) is an AI-powered content creation and management pl
 - **Persistent content history**: Sessions and content drafts are saved in a SQLite database.
 - **Command system**: Issue commands prefixed with `/` to manage agents, content, and workflows.
 - **HTTP server integration**: Start an HTTP server for web-based interaction with the application.
-- **Multi-model support**: Support for various AI models from different providers (OpenAI, Anthropic, Google, Cerebras, DeepSeek, Groq, Perplexity, xAI, LlamaCpp, OpenRouter, Qwen).
+- **Multi-model support**: Support for various AI models from different providers (OpenAI, Anthropic, Google, Cerebras, DeepSeek, Groq, Perplexity, xAI, LlamaCpp, OpenRouter, Qwen, ZAI).
 - **Research capabilities**: Built-in web search, Wikipedia integration, and research tools for content research.
-- **File system integration**: Direct integration with local and cloud file systems (S3, local filesystem).
+- **File system integration**: Direct integration with local file systems (POSIX, local filesystem).
 - **Publishing integrations**: Support for WordPress, Ghost.io, Reddit, blog platforms, and CDN management.
-- **Flexible UI options**: Support for different UI implementations (OpenTUI, Ink CLI, or headless mode).
+- **Flexible UI options**: Support for different UI implementations (CLI, or headless mode).
 - **Task scheduling**: Automated scheduling and task management for content workflows.
 - **Checkpoint and state management**: Persistent state and session recovery capabilities.
-- **Audio recording**: Built-in audio recording and transcription capabilities.
+- **Audio recording**: Built-in audio recording and transcription capabilities (Linux audio support).
 - **Frontend web interface**: Modern React-based web interface for HTTP server mode.
+- **Model Context Protocol (MCP)**: Support for MCP integration.
+- **Escalation and communication**: Communication escalation capabilities.
+- **Template management**: Template-based content creation workflows.
+- **Workflow automation**: Workflow automation and task management.
+- **Secure data vault**: Secure data storage and management.
+- **Memory and context management**: Persistent memory and context tracking.
+- **Metrics tracking**: Performance metrics and monitoring.
+- **Task queue**: Task queue management for background processing.
+- **Chrome integration**: Browser automation capabilities.
+- **Cloud quote services**: Cloud quote and pricing integration.
+- **Prediction markets**: Integration with Kalshi and Polymarket prediction markets.
+- **Email integration**: Email sending and management capabilities.
+- **Calendar integration**: Calendar event management and scheduling.
+- **Scripting**: Scripting capabilities for custom workflows.
+- **ScraperAPI**: Web scraping tools and capabilities.
+- **Skills system**: Skills management and integration.
+- **Telegram integration**: Telegram bot and messaging support.
+- **Thinking/AI reasoning**: AI thinking and reasoning capabilities.
 
 ## Available Agents
 
 TokenRing Writer includes specialized AI agents for different content creation workflows:
 
-- **Content Writer**: Expert content writer specializing in creating engaging, well-structured articles and blog posts. Excels at research, storytelling, and adapting writing style to different audiences. Uses research, blog, and websearch tools.
+- **Content Writer** (`writer`): Expert content writer specializing in creating engaging, well-structured articles and blog posts. Excels at research, storytelling, and adapting writing style to different audiences. Uses research, blog, and websearch tools.
 
-- **Managing Editor**: Coordinates content creation by searching for trending news topics, evaluating newsworthiness, creating article assignments, and dispatching tasks to specialized writing agents. Uses research, websearch, and agent tools with a max step limit of 75.
+- **Managing Editor** (`manager`): Coordinates content creation by searching for trending news topics, evaluating newsworthiness, creating article assignments, and dispatching tasks to specialized writing agents. Uses research, websearch, and agent tools with a max step limit of 75.
 
 ## Getting Started
 
@@ -96,11 +114,10 @@ docker build -t tokenring-ai/writer:latest -f app/writer/docker/Dockerfile .
 
 ## Configuration
 
-The application uses a configuration file located at `.tokenring/writer-config.mjs`. This file can be customized to:
+The application uses a configuration file located at `~/.tokenring/writer-config.mjs` (in the user's home directory). This file can be customized to:
 - Configure different AI models and providers
 - Set up web search integration
 - Configure file system providers
-- Set up HTTP server authentication
 - Define custom agent configurations
 
 Example configuration structure:
@@ -116,26 +133,12 @@ export default {
     },
   },
   filesystem: {
-    agentDefaults: {
-      provider: "local",
-    },
+    defaultProvider: "local",
     providers: {
       local: {
-        type: "posix",
-        projectDirectory: "./content",
-      }
-    }
-  },
-  terminal: {
-    agentDefaults: {
-      provider: "local",
+        type: "local",
+      },
     },
-    providers: {
-      local: {
-        type: "posix",
-        projectDirectory: "./content",
-      }
-    }
   },
   wikipedia: {
     baseUrl: "https://en.wikipedia.org",
@@ -175,7 +178,7 @@ export default {
         provider: "perplexity",
         apiKey: process.env.PERPLEXITY_API_KEY,
       },
-      xAI: {
+      xAi: {
         provider: "xai",
         apiKey: process.env.XAI_API_KEY,
       },
@@ -191,13 +194,14 @@ The application tries models in this order, using the first available:
 ```javascript
 defaultModels: [
   'llamacpp:*',                    // Local LlamaCpp models
+  'zai:glm-5',                     // ZAI GLM models
   'openrouter:openrouter/auto',    // OpenRouter auto-routing
   'openai:gpt-5-mini',             // OpenAI
   'anthropic:claude-4.5-haiku',    // Anthropic
   'google:gemini-3-flash-preview', // Google
   'xai:grok-code-fast-1',          // xAI
   'deepseek:deepseek-chat',        // DeepSeek
-  'qwen:qwen3-coder-flash',        // Qwen
+  'qwen3-coder-flash',             // Qwen
   '*'                              // Fallback to any available model
 ]
 ```
@@ -210,13 +214,14 @@ tr-writer [options]
 
 ### Options
 
-- `--ui <opentui|ink|none>`: Select the UI to use (default: `opentui`)
+- `--ui <cli|none>`: Select the UI to use (default: `cli`)
 - `--projectDirectory <path>`: Working directory (default: cwd)
 - `--dataDirectory <path>`: Data directory for session database, knowledge, etc. (default: `<projectDirectory>/.tokenring`)
 - `--acp`: Start in ACP mode over stdin/stdout
 - `--http [host:port]`: Start an HTTP server (default host: `127.0.0.1`, random port)
-- `--httpPassword <user:password>`: Basic auth for the web UI
-- `--httpBearer <user:bearer>`: Bearer token auth for the web UI
+- `--auth`: Require authentication for the web UI (tokens must be provided via `TR_AUTH_PASSWORD` or `TR_AUTH_BEARER` environment variables)
+- `--agent <type>`: Agent type to start with (default: `editor`)
+- `-p`: Enable shutdown when done
 
 ### Examples
 
@@ -230,17 +235,25 @@ tr-writer --projectDirectory ./my-content
 # Start HTTP server with web UI
 tr-writer --http 127.0.0.1:3000
 
-# With basic authentication
-tr-writer --http 127.0.0.1:3000 --httpPassword user:password
+# With authentication (requires environment variables)
+export TR_AUTH_PASSWORD=user:password
+tr-writer --http 127.0.0.1:3000 --auth
 
 # With Bearer token authentication
-tr-writer --http 127.0.0.1:3000 --httpBearer user:token
+export TR_AUTH_BEARER=user:token
+tr-writer --http 127.0.0.1:3000 --auth
 
 # ACP mode (stdin/stdout)
 tr-writer --acp --projectDirectory ./my-content
 
 # Headless mode
 tr-writer --ui none
+
+# Start with a specific agent
+tr-writer --agent manager "Find trending tech news and write an article"
+
+# Start with shutdown when done
+tr-writer -p "Write a blog post about AI trends"
 ```
 
 ## HTTP Server
@@ -251,16 +264,27 @@ The application can start an HTTP server for web-based interaction:
 tr-writer --http 127.0.0.1:3000
 ```
 
-### Authentication Options
+### Authentication
 
-- **Basic Auth**:
+Authentication is configured via environment variables when using the `--auth` flag:
+
+- **Basic Auth** (via `TR_AUTH_PASSWORD`):
   ```bash
-  tr-writer --http 127.0.0.1:3000 --httpPassword user:password
+  export TR_AUTH_PASSWORD=user:password
+  tr-writer --http 127.0.0.1:3000 --auth
   ```
 
-- **Bearer Token Auth**:
+- **Bearer Token Auth** (via `TR_AUTH_BEARER`):
   ```bash
-  tr-writer --http 127.0.0.1:3000 --httpBearer user:token
+  export TR_AUTH_BEARER=user:token
+  tr-writer --http 127.0.0.1:3000 --auth
+  ```
+
+- **Both** (users can authenticate with either method):
+  ```bash
+  export TR_AUTH_PASSWORD=user1:password1
+  export TR_AUTH_BEARER=user2:token2
+  tr-writer --http 127.0.0.1:3000 --auth
   ```
 
 ### Web Interface
@@ -278,21 +302,13 @@ The frontend is a React-based web application located at `frontend/chat/` that s
 
 The application supports different UI implementations:
 
-- **OpenTUI UI** (default):
+- **CLI UI** (default):
   ```bash
-  tr-writer --ui opentui
+  tr-writer --ui cli
   ```
   - Modern terminal UI framework
   - Animated banners during loading
   - Keyboard-based navigation
-  - Rich text formatting
-
-- **Ink CLI UI**:
-  ```bash
-  tr-writer --ui ink
-  ```
-  - Modern CLI interface with Ink
-  - Animated banners
   - Rich text formatting
 
 - **Headless mode** (no UI):
@@ -327,29 +343,31 @@ Some example commands:
 The application is built on the TokenRing framework and consists of several components:
 
 - **CLI Entry Point**: Argument parsing and agent team initialization (`src/tr-writer.ts`).
-- **Agents**: Specialized AI agents for different content creation tasks (writer, managing editor).
+- **Agents**: Specialized AI agents for different content creation tasks (writer, manager).
   - `src/agents/interactive/writer.ts`: Content writer agent
   - `src/agents/interactive/manager.ts`: Managing editor agent
-- **Plugins**: 42 integrated plugins providing services for AI, chat, filesystem, research, publishing, and more.
+- **Plugins**: 49 integrated plugins providing services for AI, chat, filesystem, research, publishing, and more.
 - **Services**: Core services for file system, web search, models, database management, and scheduling.
 - **Configuration**: Flexible configuration system supporting multiple models and services.
 - **HTTP Server**: Optional web server for remote interaction.
-- **UI Frameworks**: Support for both OpenTUI and Ink CLI interfaces.
+- **UI Frameworks**: Support for CLI interface.
 - **Frontend**: React-based web interface for HTTP server mode.
 
 ### Plugin Ecosystem
 
-The application integrates 42 plugins providing comprehensive functionality:
+The application integrates 49 plugins providing comprehensive functionality:
 
 - **AI & Agent**:
   - `@tokenring-ai/agent`: Agent orchestration and management
   - `@tokenring-ai/ai-client`: Multi-provider AI integration
+  - `@tokenring-ai/thinking`: AI thinking and reasoning capabilities
 
 - **Chat & Interface**:
   - `@tokenring-ai/chat`: Chat service and agent interaction
   - `@tokenring-ai/chat-frontend`: Frontend interface components
   - `@tokenring-ai/cli`: Command-line interface and UI framework
   - `@tokenring-ai/rpc`: Remote procedure call support
+  - `@tokenring-ai/acp`: Agent Communication Protocol support
 
 - **Content & Publishing**:
   - `@tokenring-ai/blog`: Blog content management
@@ -366,9 +384,9 @@ The application integrates 42 plugins providing comprehensive functionality:
 
 - **Filesystem & Terminal**:
   - `@tokenring-ai/filesystem`: File system abstraction
-  - `@tokenring-ai/s3`: Amazon S3 integration
   - `@tokenring-ai/terminal`: Terminal operations
   - `@tokenring-ai/posix-system`: POSIX system operations
+  - `@tokenring-ai/s3`: Amazon S3 integration
 
 - **Research & Web**:
   - `@tokenring-ai/research`: Research tools and workflows
@@ -387,12 +405,13 @@ The application integrates 42 plugins providing comprehensive functionality:
   - `@tokenring-ai/scheduler`: Task scheduling and automation
   - `@tokenring-ai/escalation`: Communication escalation
   - `@tokenring-ai/template`: Template management
+  - `@tokenring-ai/workflow`: Workflow automation
 
 - **Integration & Automation**:
   - `@tokenring-ai/mcp`: Model Context Protocol support
   - `@tokenring-ai/scripting`: Scripting capabilities
   - `@tokenring-ai/tasks`: Task management
-  - `@tokenring-ai/workflow`: Workflow automation
+  - `@tokenring-ai/lifecycle`: Lifecycle management and hooks
 
 - **Audio & Media**:
   - `@tokenring-ai/audio`: Audio recording and processing
@@ -403,11 +422,16 @@ The application integrates 42 plugins providing comprehensive functionality:
   - `@tokenring-ai/feedback`: User feedback system
   - `@tokenring-ai/cdn`: CDN management
   - `@tokenring-ai/telegram`: Telegram integration
-  - `@tokenring-ai/thinking`: AI thinking and reasoning
+  - `@tokenring-ai/skills`: Skills management
+  - `@tokenring-ai/metrics`: Metrics and monitoring
+
+- **Communication & Scheduling**:
+  - `@tokenring-ai/email`: Email integration
+  - `@tokenring-ai/calendar`: Calendar integration
 
 ## Data Persistence
 
-Content data and sessions are stored in a SQLite database (`writer-database.sqlite`) managed through the Checkpoint service. The database is located in the `.tokenring` directory.
+Content data and sessions are stored in a SQLite database (`coder-database.sqlite`) managed through the Checkpoint service. The database is located in the `~/.tokenring` directory (user's home directory).
 
 ## Environment Variables
 
@@ -426,6 +450,10 @@ export OPENROUTER_API_KEY=...            # OpenRouter
 
 # Optional: web search
 export SERPER_API_KEY=...
+
+# Optional: authentication for HTTP server
+export TR_AUTH_PASSWORD=user:password    # Basic auth (username:password)
+export TR_AUTH_BEARER=user:token         # Bearer token auth (username:token)
 ```
 
 ## Extensibility
@@ -433,12 +461,13 @@ export SERPER_API_KEY=...
 The system supports:
 
 - **Custom agents**: Define new agents with specific roles and capabilities.
-- **Multiple AI models**: Support for various providers (OpenAI, Anthropic, Google, Cerebras, DeepSeek, Groq, Perplexity, xAI, LlamaCpp, OpenRouter, Qwen).
+- **Multiple AI models**: Support for various providers (OpenAI, Anthropic, Google, Cerebras, DeepSeek, Groq, Perplexity, xAI, LlamaCpp, OpenRouter, Qwen, ZAI).
 - **Service providers**: Pluggable services for file systems, web search, and content publishing.
 - **Tool integration**: Extensible tool system for agent capabilities.
 - **UI customization**: Support for different UI frameworks and headless mode.
 - **Publishing integrations**: Connect to WordPress, Ghost.io, Reddit, and other platforms.
 - **Workflow automation**: Task scheduling and workflow management for automated content pipelines.
+- **MCP integration**: Model Context Protocol support for enhanced AI capabilities.
 
 ## Development
 
