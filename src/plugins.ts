@@ -1,7 +1,7 @@
 import ACPPlugin from "@tokenring-ai/acp/plugin";
 import AgentPlugin from "@tokenring-ai/agent/plugin";
 import AIClientPlugin from "@tokenring-ai/ai-client/plugin";
-import {TokenRingAppConfigSchema} from "@tokenring-ai/app/TokenRingApp";
+import {TokenRingAppConfigSchema} from "@tokenring-ai/app/schema";
 import AudioPlugin from "@tokenring-ai/audio/plugin";
 import BlogPlugin from "@tokenring-ai/blog/plugin";
 import CalendarPlugin from "@tokenring-ai/calendar/plugin";
@@ -17,16 +17,16 @@ import EmailPlugin from "@tokenring-ai/email/plugin";
 import EscalationPlugin from "@tokenring-ai/escalation/plugin";
 import FeedbackPlugin from "@tokenring-ai/feedback/plugin";
 import FilesystemPlugin from "@tokenring-ai/filesystem/plugin";
-import GooglePlugin from "@tokenring-ai/google/plugin";
 import GhostIOPlugin from "@tokenring-ai/ghost-io/plugin";
+import GooglePlugin from "@tokenring-ai/google/plugin";
 import KalshiPlugin from "@tokenring-ai/kalshi/plugin";
 import LifecyclePlugin from "@tokenring-ai/lifecycle/plugin";
 import LinuxAudioPlugin from "@tokenring-ai/linux-audio/plugin";
-import PosixSystemPlugin from "@tokenring-ai/posix-system/plugin";
 import MCPPlugin from "@tokenring-ai/mcp/plugin";
 import MemoryPlugin from "@tokenring-ai/memory/plugin";
 import MetricsPlugin from "@tokenring-ai/metrics/plugin";
 import PolymarketPlugin from "@tokenring-ai/polymarket/plugin";
+import PosixSystemPlugin from "@tokenring-ai/posix-system/plugin";
 import QueuePlugin from "@tokenring-ai/queue/plugin";
 import RedditPlugin from "@tokenring-ai/reddit/plugin";
 import ResearchPlugin from "@tokenring-ai/research/plugin";
@@ -37,11 +37,12 @@ import ScraperAPIPlugin from "@tokenring-ai/scraperapi/plugin";
 import ScriptingPlugin from "@tokenring-ai/scripting/plugin";
 import SerperPlugin from "@tokenring-ai/serper/plugin";
 import SkillsPlugin from "@tokenring-ai/skills/plugin";
+import SlackPlugin from "@tokenring-ai/slack/plugin";
 import TasksPlugin from "@tokenring-ai/tasks/plugin";
 import TelegramPlugin from "@tokenring-ai/telegram/plugin";
-import TemplatePlugin from "@tokenring-ai/template/plugin";
 import TerminalPlugin from "@tokenring-ai/terminal/plugin";
 import ThinkingPlugin from "@tokenring-ai/thinking/plugin";
+import TodoPlugin from "@tokenring-ai/todo/plugin";
 import VaultPlugin from "@tokenring-ai/vault/plugin";
 import WebHostPlugin from "@tokenring-ai/web-host/plugin";
 import WebSearchPlugin from "@tokenring-ai/websearch/plugin";
@@ -88,12 +89,13 @@ export const plugins = [
   ScraperAPIPlugin,
   ScriptingPlugin,
   SerperPlugin,
+  SlackPlugin,
   SkillsPlugin,
   TasksPlugin,
   TelegramPlugin,
-  TemplatePlugin,
   TerminalPlugin,
   ThinkingPlugin,
+  TodoPlugin,
   VaultPlugin,
   WebHostPlugin,
   WebSearchPlugin,
@@ -107,8 +109,8 @@ export const configSchema = z.object({
   ...TokenRingAppConfigSchema.shape,
   ...ACPPlugin.config.shape,
   ...AgentPlugin.config.shape,
-  ...AudioPlugin.config.shape,
   ...AIClientPlugin.config.shape,
+  ...AudioPlugin.config.shape,
   ...BlogPlugin.config.shape,
   ...CalendarPlugin.config.shape,
   ...CDNPlugin.config.shape,
@@ -143,11 +145,12 @@ export const configSchema = z.object({
   ...ScriptingPlugin.config.shape,
   ...SerperPlugin.config.shape,
   ...SkillsPlugin.config.shape,
+  ...SlackPlugin.config.shape,
   ...TasksPlugin.config.shape,
   ...TelegramPlugin.config.shape,
-  ...TemplatePlugin.config.shape,
   ...TerminalPlugin.config.shape,
   ...ThinkingPlugin.config.shape,
+  ...TodoPlugin.config.shape,
   ...VaultPlugin.config.shape,
   ...WebHostPlugin.config.shape,
   ...WebSearchPlugin.config.shape,

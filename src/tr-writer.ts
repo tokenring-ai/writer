@@ -31,11 +31,14 @@ interface CommandOptions {
   acp: boolean;
   http?: string;
   auth: boolean;
+  vault?: string | true;
   ui: "cli" | "none";
   agent: string;
   p: boolean;
   args: string[];
 }
+
+const homeDir = process.env.HOME || '/home/' + process.env.USER || '/root';
 
 // Create a new Commander program
 const program = new Command();
@@ -51,6 +54,7 @@ program
   .option("--http [host:port]", "Starts an HTTP server for interacting with the application, by default listening on 127.0.0.1 and a random port, unless host and port are specified")
   .option("--auth", "Require authentication for the webui (tokens must be provided via TR_AUTH_PASSWORD or TR_AUTH_BEARER environment variables)")
   .option("--agent <type>", "Agent type to start with", "editor")
+  .option("--vault [path]", "Use a vault file for storing secrets. The vault password will be prompted for at startup, or can be provided from TR_VAULT_PASSWORD. (default: ~/.tokenring/secrets.vault)")
   .option("-p", "Enable shutdown when done")
   .allowExcessArguments(true)
   .addHelpText(
@@ -67,7 +71,7 @@ Examples:
   .action(runApp)
   .parse();
 
-async function runApp({projectDirectory, dataDirectory, acp, ui, http, auth, agent, p}: CommandOptions): Promise<void> {
+async function runApp({projectDirectory, dataDirectory, acp, ui, http, auth, agent, vault, p}: CommandOptions): Promise<void> {
   const args = program.args;
   try {
     if (acp && args.length > 0) {
@@ -167,25 +171,15 @@ async function runApp({projectDirectory, dataDirectory, acp, ui, http, auth, age
       } as z.input<typeof ChatServiceConfigSchema>,
       filesystem: {
         agentDefaults: {
-          provider: "local",
+          provider: "posix",
           workingDirectory: projectDirectory,
         },
-        providers: {
-          local: {
-            type: "posix",
-          }
-        }
       } satisfies z.input<typeof FileSystemConfigSchema>,
       terminal: {
         agentDefaults: {
-          provider: "local",
+          provider: "posix",
           workingDirectory: projectDirectory,
         },
-        providers: {
-          local: {
-            type: "posix",
-          }
-        }
       } satisfies z.input<typeof TerminalConfigSchema>,
       drizzleStorage: {
         type: "sqlite",
@@ -201,15 +195,15 @@ async function runApp({projectDirectory, dataDirectory, acp, ui, http, auth, age
           ],
         }
       },
+      linuxAudio: {
+        accounts: {
+          linux: {},
+        },
+      },
       audio: {
         agentDefaults: {
           provider: "linux",
         },
-        providers: {
-          linux: {
-            type: "linux"
-          }
-        }
       } satisfies z.input<typeof AudioServiceConfigSchema>,
       ...(acp && {
         acp: {
@@ -233,16 +227,20 @@ async function runApp({projectDirectory, dataDirectory, acp, ui, http, auth, age
           }),
         } satisfies z.input<typeof CLIConfigSchema>
       }),
-      ...(http && {
-        webHost: {
-          host: listenHost,
-          ...(listenPort && {port: listenPort}),
-          auth: webAuth,
-        } satisfies z.input<typeof WebHostConfigSchema>
-      }),
+      webHost: {
+        host: listenHost,
+        port: listenPort ?? 0,
+        auth: webAuth,
+        autoStart: !!http
+      } satisfies z.input<typeof WebHostConfigSchema>,
       agents: {
         app: agents
       },
+      ...(vault && {
+        vault: {
+          vaultFile: typeof vault === 'string' ? vault : `${homeDir}/.tokenring/secrets.vault`,
+        }
+      }),
       tasks: {},
     } satisfies z.input<typeof configSchema>;
 
@@ -250,15 +248,11 @@ async function runApp({projectDirectory, dataDirectory, acp, ui, http, auth, age
 
     const app = new TokenRingApp(appConfig);
 
-    try {
-      const pluginManager = new PluginManager(app);
+    const pluginManager = new PluginManager(app);
 
-      await pluginManager.installPlugins(plugins)
+    await pluginManager.installPlugins(plugins);
 
-      await app.run();
-    } finally {
-      app.shutdown();
-    }
+    await app.run();
   } catch (err) {
     process.stdout.write("\u001B[2J\u001B[H\n\n");
     console.error(chalk.red(formatLogMessages(['Caught Error: ', err as Error])));
