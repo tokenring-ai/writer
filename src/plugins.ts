@@ -19,6 +19,7 @@ import FeedbackPlugin from "@tokenring-ai/feedback/plugin";
 import FilesystemPlugin from "@tokenring-ai/filesystem/plugin";
 import GhostIOPlugin from "@tokenring-ai/ghost-io/plugin";
 import GooglePlugin from "@tokenring-ai/google/plugin";
+import ImageGenerationPlugin from "@tokenring-ai/image-generation/plugin";
 import KalshiPlugin from "@tokenring-ai/kalshi/plugin";
 import LifecyclePlugin from "@tokenring-ai/lifecycle/plugin";
 import LinuxAudioPlugin from "@tokenring-ai/linux-audio/plugin";
@@ -72,6 +73,7 @@ export const plugins = [
   FilesystemPlugin,
   GhostIOPlugin,
   GooglePlugin,
+  ImageGenerationPlugin,
   KalshiPlugin,
   LifecyclePlugin,
   LinuxAudioPlugin,
@@ -127,6 +129,7 @@ export const configSchema = z.object({
   ...FilesystemPlugin.config.shape,
   ...GhostIOPlugin.config.shape,
   ...GooglePlugin.config.shape,
+  ...ImageGenerationPlugin.config.shape,
   ...KalshiPlugin.config.shape,
   ...LifecyclePlugin.config.shape,
   ...LinuxAudioPlugin.config.shape,
