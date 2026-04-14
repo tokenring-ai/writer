@@ -115,6 +115,7 @@ docker build -t tokenring-ai/writer:latest -f app/writer/docker/Dockerfile .
 ## Configuration
 
 The application uses a configuration file located at `~/.tokenring/writer-config.mjs` (in the user's home directory). This file can be customized to:
+
 - Configure different AI models and providers
 - Set up web search integration
 - Configure file system providers
@@ -269,18 +270,21 @@ tr-writer --http 127.0.0.1:3000
 Authentication is configured via environment variables when using the `--auth` flag:
 
 - **Basic Auth** (via `TR_AUTH_PASSWORD`):
+
   ```bash
   export TR_AUTH_PASSWORD=user:password
   tr-writer --http 127.0.0.1:3000 --auth
   ```
 
 - **Bearer Token Auth** (via `TR_AUTH_BEARER`):
+
   ```bash
   export TR_AUTH_BEARER=user:token
   tr-writer --http 127.0.0.1:3000 --auth
   ```
 
 - **Both** (users can authenticate with either method):
+
   ```bash
   export TR_AUTH_PASSWORD=user1:password1
   export TR_AUTH_BEARER=user2:token2
@@ -290,6 +294,7 @@ Authentication is configured via environment variables when using the `--auth` f
 ### Web Interface
 
 The web interface provides:
+
 - Interactive chat with AI agents
 - Agent selection and switching
 - Workflow management
@@ -303,18 +308,22 @@ The frontend is a React-based web application located at `frontend/chat/` that s
 The application supports different UI implementations:
 
 - **CLI UI** (default):
+
   ```bash
   tr-writer --ui cli
   ```
+
   - Modern terminal UI framework
   - Animated banners during loading
   - Keyboard-based navigation
   - Rich text formatting
 
 - **Headless mode** (no UI):
+
   ```bash
   tr-writer --ui none
   ```
+
   - Backend-only operation
   - Suitable for scheduled tasks or automation
 
