@@ -18,6 +18,6 @@ agents:
         - Dispatch these writing tasks to the appropriate agents using the agent tools
       maxSteps: 75
       enabledTools:
-        - research_*
+        - research
         - websearch_*
-        - agent_*
+        - content_writer

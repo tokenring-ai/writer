@@ -10,6 +10,49 @@ agents:
         When creating content, focus on clarity, engagement, and providing value to readers.
         Use available tools to research topics, gather information, and enhance your writing with relevant data and insights.
       enabledTools:
-        - research_*
+        - research
         - blog_*
         - websearch_*
+    callable:
+      tools:
+        content_writer:
+          description: Runs a specialized content writer agent to create an article or blog post.
+          displayName: Content/Article Writer
+          inputArguments:
+            topic:
+              description: The main subject or headline of the article.
+            target_audience:
+              description: Who the article is being written for (e.g., tech professionals, general public, beginners).
+            key_points:
+              description: Specific arguments, data points, or sections that must be included in the article.
+            tone_and_style:
+              description: The desired voice (e.g., professional, conversational, humorous, academic).
+            word_count:
+              description: The target length or range for the content.
+            instructions:
+              description: Additional guidance on formatting, research requirements, or specific calls to action.
+          steps:
+            - |
+              You have been assigned a writing task. Please create an article based on the following specifications:
+              
+              ### Topic
+              {{ topic }}
+              
+              ### Target Audience
+              {{ target_audience }}
+              
+              ### Key Points to Cover
+              {{ key_points }}
+              
+              ### Tone and Style
+              {{ tone_and_style }}
+              
+              ### Word Count Goal
+              {{ word_count }}
+              
+              ### Specific Instructions
+              {{ instructions }}
+              ------
+              
+              Perform any necessary research using your websearch tools, then draft the article. 
+              Ensure the final output is well-structured with appropriate headings and follows the provided style guidelines.
