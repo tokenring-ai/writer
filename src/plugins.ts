@@ -1,13 +1,13 @@
 import ACPPlugin from "@tokenring-ai/acp/plugin";
 import AgentPlugin from "@tokenring-ai/agent/plugin";
 import AIClientPlugin from "@tokenring-ai/ai-client/plugin";
-import {TokenRingAppConfigSchema} from "@tokenring-ai/app/schema";
+import { TokenRingAppConfigSchema } from "@tokenring-ai/app/schema";
 import AudioPlugin from "@tokenring-ai/audio/plugin";
 import BlogPlugin from "@tokenring-ai/blog/plugin";
 import CalendarPlugin from "@tokenring-ai/calendar/plugin";
 import CDNPlugin from "@tokenring-ai/cdn/plugin";
-import ChatFrontendPlugin from "@tokenring-ai/chat-frontend/plugin";
 import ChatPlugin from "@tokenring-ai/chat/plugin";
+import ChatFrontendPlugin from "@tokenring-ai/chat-frontend/plugin";
 import CheckpointPlugin from "@tokenring-ai/checkpoint/plugin";
 import ChromePlugin from "@tokenring-ai/chrome/plugin";
 import CLIPlugin from "@tokenring-ai/cli/plugin";
@@ -49,7 +49,7 @@ import WebSearchPlugin from "@tokenring-ai/websearch/plugin";
 import WikipediaPlugin from "@tokenring-ai/wikipedia/plugin";
 import WordPressPlugin from "@tokenring-ai/wordpress/plugin";
 import WorkflowPlugin from "@tokenring-ai/workflow/plugin";
-import {z} from "zod";
+import { z } from "zod";
 
 export const plugins = [
   ACPPlugin,
@@ -103,7 +103,6 @@ export const plugins = [
   WordPressPlugin,
   WorkflowPlugin,
 ];
-
 
 export const configSchema = z.object({
   ...TokenRingAppConfigSchema.shape,
