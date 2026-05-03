@@ -10,6 +10,8 @@ if (platform === 'darwin' && arch === 'arm64') {
   binary = "./writer-macos-arm64";
 } else if (platform === 'linux' && arch === 'x64') {
   binary = "./writer-linux-x64";
+} else if (platform === 'linux' && arch === 'arm64') {
+  binary = "./writer-linux-arm64";
 } else {
   console.error(`Unsupported platform: ${platform}-${arch}`);
   process.exit(1);
