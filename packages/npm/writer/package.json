@@ -8,10 +8,7 @@
   },
   "files": [
    "writer.js",
-   "writer-macos-arm64",
-   "writer-linux-x64",
-   "writer-linux-arm64",
-   "libportaudio.dylib",
+   "bin",
    "frontend"
   ],
   "repository": {
